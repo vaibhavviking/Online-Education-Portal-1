@@ -69,23 +69,6 @@ app.post('/student_login',(req,res)=>{
     var username = req.body.username;
     var password = req.body.password;
     student_authenticate(username,password,res,req);
-    // if(username && password){
-    //     connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?' , [username,password], (err,results,fields)=>{
-    //         if(results.length > 0){
-    //             console.log(results);
-    //             req.session.loggedin = true;
-    //             req.session.username = username;
-    //             res.redirect('/student_home');
-    //             res.end();
-    //         }else{
-    //             res.send('Wrong username/password');
-    //         }
-    //         res.end();
-    //     });
-    // }else{
-    //     res.send('enter login credentials');
-    //     res.end();
-    // }
 });
 
 app.get('/student_home',(req,res)=>{
