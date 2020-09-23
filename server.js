@@ -44,27 +44,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
 
 app.get('/student_login', (req,res)=>{
-    res.render('index.ejs');
+    res.render('student_login.ejs');
 })
 
-async function student_authenticate(username,password,res,req){
-    if(username && password){
-        connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?' , [username,password], (err,results,fields)=>{
-            if(results.length > 0){
-                console.log(results);
-                req.session.loggedin = true;
-                req.session.username = username;
-                res.redirect('/student_home');
-            }else{
-                res.send('Wrong username/password');
-            }
-            res.end();
-        });
-    }else{
-        res.send('enter login credentials');
-        res.end();
-    }
-}
+
 app.post('/student_login',(req,res)=>{
     var username = req.body.username;
     var password = req.body.password;
@@ -73,15 +56,31 @@ app.post('/student_login',(req,res)=>{
 
 app.get('/student_home',(req,res)=>{
     if(req.session.loggedin){
-        res.send('welcome'+req.session.username+'!');
+        res.render('student_home.ejs');
     }else {
         res.send('please login first');
     }
     res.send();
 });
 
+app.get('/teacher_login',(req,res)=>{
+    res.render('teacher_login.ejs');
+})
+
+app.post('/teacher_login',(req,res)=>{
+    var username=req.body.username;
+    var password=req.body.password;
+
+    teacher_authenticate(username,password,res,req);
+})
+
 app.get('/teacher_home', (req,res)=>{
-    res.send('teacher home');
+    if(req.session.loggedin){
+        res.render('teacher_home.ejs');
+    }else {
+        res.send('please login first');
+    }
+    res.send();
 })
 
 app.get('/admin_home', (req,res)=>{
@@ -101,3 +100,41 @@ app.listen(port, ()=>{
 
 // Parse JSON bodies (as sent by API clients)
 app.use(express.json());
+
+
+async function student_authenticate(username,password,res,req){
+    if(username && password){
+        connection.query('SELECT * FROM students WHERE username = ? AND password = ?' , [username,password], (err,results,fields)=>{
+            if(results.length > 0){
+                console.log(results);
+                req.session.loggedin = true;
+                req.session.username = username;
+                res.redirect('/student_home');
+            }else{
+                res.send('Wrong username/password');
+            }
+            res.end();
+        });
+    }else{
+        res.send('enter login credentials');
+        res.end();
+    }
+}
+async function teacher_authenticate(username,password,res,req){
+    if(username && password){
+        connection.query('SELECT * FROM teachers WHERE username = ? AND password = ?' , [username,password], (err,results,fields)=>{
+            if(results.length > 0){
+                console.log(results);
+                req.session.loggedin = true;
+                req.session.username = username;
+                res.redirect('/teacher_home');
+            }else{
+                res.send('Wrong username/password');
+            }
+            res.end();
+        });
+    }else{
+        res.send('enter login credentials');
+        res.end();
+    }
+}
