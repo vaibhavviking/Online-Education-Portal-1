@@ -1,0 +1,47 @@
+body {
+    margin: 0px;
+    background-color: #efeffb;
+    box-sizing: border-box;
+
+}
+
+
+h1 {
+    height: 60px;
+    margin-top: 2vh;
+    text-align: center;
+    padding-top: 20px;
+    background-color: #e8e2b9;
+    border: 2px solid black;
+}
+
+img{
+    padding: 0px 40vw;
+    width: 20vw;
+}
+.login {
+    display: grid;
+    margin-top: 14vh;
+    justify-content: center;
+}
+
+input {
+    font-size: 30px;
+    border: 2px solid black;
+    margin: 5px;
+    height: 50px;
+    width: 70vw;
+}
+
+#button {
+    border-radius: 30px;
+}
+
+#button:hover {
+    background-color: rgb(174 174 239);
+    cursor: pointer;
+}
+
+#button:active {
+    background-color: rgb(113 113 202);
+}
