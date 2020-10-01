@@ -22,7 +22,7 @@ Relationships
 */
 
 create table Administration(
-Admin_ID varchar(30),
+Admin_ID int,
 primary key(Admin_ID)
 );
 /*drop table Administration*/
@@ -37,11 +37,11 @@ primary key(User_ID_)
 /*drop table Account*/
 
 create table Admin_Account_Relation(
-Admin_ID varchar(30),
+Admin_ID int,
 User_ID_ varchar(30),
 primary key(User_ID_),
-foreign key(Admin_ID) references Administration(Admin_ID),
-foreign key(User_ID_) references Account(User_ID_)
+foreign key(Admin_ID) references Administration(Admin_ID) on delete cascade,
+foreign key(User_ID_) references Account(User_ID_) on delete cascade
 );
 /*drop table Admin_Account_Relation*/
 
@@ -55,7 +55,7 @@ primary key(Dept_ID)
 create table Student(
 Roll_No int,
 S_Name varchar(40),
-Program_Enrolled varchar(5),
+Program_Enrolled varchar(6),
 Year_Of_Study int,
 Department_ID int,
 check ( Program_Enrolled='B.Tech' or Program_Enrolled='M.Tech' or Program_Enrolled='PhD' or Program_Enrolled='MS' or Program_Enrolled='M.Sc'),
