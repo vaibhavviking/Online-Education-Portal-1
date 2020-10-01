@@ -55,7 +55,7 @@ primary key(Dept_ID)
 create table Student(
 Roll_No int,
 S_Name varchar(40),
-Program_Enrolled varchar(4),
+Program_Enrolled varchar(5),
 Year_Of_Study int,
 Department_ID int,
 check ( Program_Enrolled='B.Tech' or Program_Enrolled='M.Tech' or Program_Enrolled='PhD' or Program_Enrolled='MS' or Program_Enrolled='M.Sc'),
