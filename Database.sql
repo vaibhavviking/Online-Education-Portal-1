@@ -28,20 +28,20 @@ primary key(Admin_ID)
 /*drop table Administration*/
 
 create table Account(
-Username varchar(30),
+User_ID_ varchar(30),
 Password_ varchar(30) not null,
 Type_ varchar(15) not null, 
 check( Type_='student' or Type_='professor' or Type_='admin' ),
-primary key(Username)
+primary key(User_ID_)
 );
 /*drop table Account*/
 
 create table Admin_Account_Relation(
 Admin_ID varchar(30),
-Username varchar(30),
-primary key(Username),
+User_ID_ varchar(30),
+primary key(User_ID_),
 foreign key(Admin_ID) references Administration(Admin_ID),
-foreign key(Username) references Account(Username)
+foreign key(User_ID_) references Account(User_ID_)
 );
 /*drop table Admin_Account_Relation*/
 
@@ -76,19 +76,19 @@ foreign key(Department_ID) references Department(Dept_ID)
 
 create table Student_Account_Relation(
 Roll_No int,
-Username varchar(30),
-primary key(Username),
+User_ID_ varchar(30),
+primary key(User_ID_),
 foreign key(Roll_No) references Student(Roll_No),
-foreign key(Username) references Account(Username)
+foreign key(User_ID_) references Account(User_ID_)
 );
 /*drop table Student_Account_Relation*/
 
 create table Professor_Account_Relation(
 Employee_ID int,
-Username varchar(30),
-primary key(Username),
+User_ID_ varchar(30),
+primary key(User_ID_),
 foreign key(Employee_ID) references Professor(Employee_ID),
-foreign key(Username) references Account(Username)
+foreign key(User_ID_) references Account(User_ID_)
 );
 /*drop table Professor_Account_Relation*/
 
@@ -106,7 +106,7 @@ Course_Code varchar(7),
 Roll_No int,
 Attendance int,
 check(Attendance<=100 and Attendance>=0),
-primary key(Course_Code),
+primary key(Course_Code,Roll_No),
 foreign key(Roll_no) references Student(Roll_No),
 foreign key(Course_Code) references Courses(Course_Code)
 );
@@ -115,7 +115,7 @@ foreign key(Course_Code) references Courses(Course_Code)
 create table Courses_Professor_Relation(
 Course_Code varchar(7),
 Employee_ID int,
-primary key(Course_Code),
+primary key(Course_Code,Employee_ID),
 foreign key(Employee_ID) references Professor(Employee_ID),
 foreign key(Course_Code) references Courses(Course_Code)
 );
