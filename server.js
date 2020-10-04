@@ -220,11 +220,14 @@ async function student_authenticate(username, password, res, req) {
 
         let sql = `call Retrieve_ID(?,?,@ID)`
         connection.query(sql, [username, password], (err, result, fields) => {
-            if (err) res.redirect('/student_login') ;
+            if (err) res.redirect('/student_login');
 
             connection.query('SELECT @ID', (err, results, fields) => {
                 if (err) throw err;
-                if (results.length > 0) {
+                else if (results[0]['@ID'] == -1) {
+                    res.send('Wrong username/Password');
+                    res.end();
+                } else if (results[0]['@ID'] > 0) {
                     console.log(results);
                     var Rno = req.body.Rno;
                     req.session.user = username;
@@ -236,8 +239,6 @@ async function student_authenticate(username, password, res, req) {
                         console.log('Instance created');
                     })
                     res.redirect('/student_home');
-                } else {
-                    res.send("Wrong Username or Password");
                 }
                 res.end();
             })
@@ -257,7 +258,10 @@ async function teacher_authenticate(username, password, res, req) {
 
             connection.query('SELECT @ID', (err, results, fields) => {
                 if (err) throw err;
-                if (results.length > 0) {
+                if (results[0]['@ID'] == -1) {
+                    res.send('Wrong username/Password');
+                }
+                if (results[0]['@ID'] > 0) {
                     console.log(results);
                     var Rno = req.body.Rno;
                     req.session.user = username;
