@@ -55,12 +55,12 @@ primary key(Dept_ID)
 create table Student(
 Roll_No int,
 S_Name varchar(40),
-Program_Enrolled varchar(6),
+Program_Enrolled varchar(10),
 Year_Of_Study int,
 Department_ID int,
 check ( Program_Enrolled='B.Tech' or Program_Enrolled='M.Tech' or Program_Enrolled='PhD' or Program_Enrolled='MS' or Program_Enrolled='M.Sc'),
 primary key(Roll_No),
-foreign key(Department_ID) references Department(Dept_ID)
+foreign key(Department_ID) references Department(Dept_ID) 
 );
 /*drop table Student*/
 
@@ -70,7 +70,7 @@ P_Name varchar(40) not null,
 Post varchar(30),
 Department_ID int,
 primary key(Employee_ID),
-foreign key(Department_ID) references Department(Dept_ID)
+foreign key(Department_ID) references Department(Dept_ID) 
 );
 /*drop table Professor*/
 
@@ -78,8 +78,8 @@ create table Student_Account_Relation(
 Roll_No int,
 User_ID_ varchar(30),
 primary key(User_ID_),
-foreign key(Roll_No) references Student(Roll_No),
-foreign key(User_ID_) references Account(User_ID_)
+foreign key(Roll_No) references Student(Roll_No) on delete cascade,
+foreign key(User_ID_) references Account(User_ID_) on delete cascade
 );
 /*drop table Student_Account_Relation*/
 
@@ -87,8 +87,8 @@ create table Professor_Account_Relation(
 Employee_ID int,
 User_ID_ varchar(30),
 primary key(User_ID_),
-foreign key(Employee_ID) references Professor(Employee_ID),
-foreign key(User_ID_) references Account(User_ID_)
+foreign key(Employee_ID) references Professor(Employee_ID) on delete cascade,
+foreign key(User_ID_) references Account(User_ID_) on delete cascade 
 );
 /*drop table Professor_Account_Relation*/
 
@@ -107,8 +107,8 @@ Roll_No int,
 Attendance int,
 check(Attendance<=100 and Attendance>=0),
 primary key(Course_Code,Roll_No),
-foreign key(Roll_no) references Student(Roll_No),
-foreign key(Course_Code) references Courses(Course_Code)
+foreign key(Roll_no) references Student(Roll_No) on delete cascade,
+foreign key(Course_Code) references Courses(Course_Code) on delete cascade
 );
 /*drop table Courses_Student_Relation*/
 
@@ -116,8 +116,8 @@ create table Courses_Professor_Relation(
 Course_Code varchar(7),
 Employee_ID int,
 primary key(Course_Code,Employee_ID),
-foreign key(Employee_ID) references Professor(Employee_ID),
-foreign key(Course_Code) references Courses(Course_Code)
+foreign key(Employee_ID) references Professor(Employee_ID) on delete cascade,
+foreign key(Course_Code) references Courses(Course_Code) on delete cascade
 );
 /*drop table Courses_Professor_Relation*/
 
