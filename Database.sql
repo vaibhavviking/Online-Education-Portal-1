@@ -104,11 +104,12 @@ primary key(Course_Code)
 create table Courses_Student_Relation(
 Course_Code varchar(7),
 Roll_No int,
-Attendance int,
-check(Attendance<=100 and Attendance>=0),
+Total_Days int,
+Days_Attended int,
+check(Days_Attended<=Total_Days and Days_Attended>=0 and Total_Days>=0),
 primary key(Course_Code,Roll_No),
-foreign key(Roll_no) references Student(Roll_No) on delete cascade,
-foreign key(Course_Code) references Courses(Course_Code) on delete cascade
+foreign key(Roll_no) references Student(Roll_No) ,
+foreign key(Course_Code) references Courses(Course_Code) 
 );
 /*drop table Courses_Student_Relation*/
 
@@ -116,32 +117,34 @@ create table Courses_Professor_Relation(
 Course_Code varchar(7),
 Employee_ID int,
 primary key(Course_Code,Employee_ID),
-foreign key(Employee_ID) references Professor(Employee_ID) on delete cascade,
-foreign key(Course_Code) references Courses(Course_Code) on delete cascade
+foreign key(Employee_ID) references Professor(Employee_ID),
+foreign key(Course_Code) references Courses(Course_Code) 
 );
 /*drop table Courses_Professor_Relation*/
 
 create table Time_Slots(
-Day_Time varchar(20),
-primary key(Day_Time)
+Day varchar(20),
+Time varchar(5),
+primary key(Day,Time)
 );
 /*drop table Time_Slots*/
 
 create table Courses_Time_Slots_Relation(
 Course_Code varchar(7),
-Day_Time varchar(20),
-primary key(Day_Time,Course_Code),
-foreign key(Day_Time) references Time_Slots(Day_Time),
-foreign key(Course_Code) references Courses(Course_Code)
+Day varchar(20),
+Time varchar(5),
+primary key(Day,Time,Course_Code),
+foreign key(Day,Time) references Time_Slots(Day,Time),
+foreign key(Course_Code) references Courses(Course_Code) on delete cascade
 );
 /*drop table Courses_Time_Slots_Relation*/
 
 create table Study_Material(
-Material_No int,
+Material_No int auto_increment,
 Link varchar(200),
 Course_Code varchar(7),
 primary key(Material_No),
-foreign key(Course_Code) references Courses(Course_Code)
+foreign key(Course_Code) references Courses(Course_Code) on delete cascade
 );
 /*drop table Study_Material*/
 
