@@ -602,12 +602,6 @@ select Course into val4 from temp where temp.Day='Thursday' and temp.Time='17:00
 select Course into val5 from temp where temp.Day='Friday' and temp.Time='17:00';
 select Course into val6 from temp where temp.Day='Saturday' and temp.Time='17:00';
 insert into Time_Table values('17:00',val1,val2,val3,val4,val5,val6);
-set val1= null;
-set val2= null;
-set val3= null;
-set val4= null;
-set val5= null;
-set val6= null;
 select * from Time_Table;
 drop table temp;
 drop table Time_Table;
@@ -768,12 +762,6 @@ select Course into val4 from temp where temp.Day='Thursday' and temp.Time='17:00
 select Course into val5 from temp where temp.Day='Friday' and temp.Time='17:00';
 select Course into val6 from temp where temp.Day='Saturday' and temp.Time='17:00';
 insert into Time_Table values('17:00',val1,val2,val3,val4,val5,val6);
-set val1= null;
-set val2= null;
-set val3= null;
-set val4= null;
-set val5= null;
-set val6= null;
 select * from Time_Table;
 drop table temp;
 drop table Time_Table;
@@ -784,6 +772,115 @@ call Professor_Time_Table(1); /* Employee ID */
 /*End*/
 
 
+/* Total_Days_Increment called everytime when class occurs for a course*/
+/* Mark Attendance will be executed for only those students who have pressed the button */
+/*Total Days Incrementer*/
+delimiter //
+create procedure Total_Days_Increment()
+begin
+update Courses_Student_Relation as a
+set a.Total_Days=a.Total_Days+1;
+end //
+delimiter ;
+/*Execute*/
+call Total_Days_Increment();
+/*End*/
 
+/* Mark Attendance */
+delimiter //
+create procedure Mark_Attendance(
+in rollno int,
+in code varchar(7)
+)
+begin
+update Courses_Student_Relation as a 
+set a.Days_Attended=a.Days_Attended+1
+where a.Roll_No=rollno and a.Course_Code=code;
+end //
+delimiter ;
+/*Execute*/
+call Mark_Attendance(1,'CS 207');
+/*End*/
+
+/* Check Attendance (for Professor)*/
+delimiter //
+create procedure Check_Attendance(
+in code varchar(7)
+)
+begin
+select a.Roll_No, a.S_Name, b.Days_Attended, b.Total_Days
+from Student as a inner join Courses_Student_Relation as b
+on a.Roll_No=b.Roll_No
+where b.Course_Code=code
+order by b.Total_Days DESC;
+end //
+delimiter ;
+/*Execute*/
+call Check_Attendance('CS 207');
+/*End*/
+
+/* Get Student's Courses */
+delimiter //
+create procedure Get_Student_Courses(
+in rollno int
+)
+begin
+select b.Course_Code, b.Course_Name, b.Credits
+from Courses_Student_Relation as a inner join Courses as b
+on a.Course_Code=b.Course_Code
+where a.Roll_No=rollno;
+end //
+delimiter ;
+/*Execute*/
+call Get_Student_Courses(1);
+/*End*/
+
+/* Get Professor's Courses */
+delimiter //
+create procedure Get_Professor_Courses(
+in empid int
+)
+begin
+select b.Course_Code, b.Course_Name, b.Credits
+from Courses_Professor_Relation as a inner join Courses as b
+on a.Course_Code=b.Course_Code
+where a.Employee_ID=empid;
+end //
+delimiter ;
+/*Execute*/
+call Get_Professor_Courses(20);
+/*End*/
+
+/* Get Student's Class links */
+delimiter //
+create procedure Get_Student_Links(
+in rollno int
+)
+begin
+select b.Class_Link
+from Courses_Student_Relation as a inner join Courses as b
+on a.Course_Code=b.Course_Code
+where a.Roll_No=rollno;
+end //
+delimiter ;
+/*Execute*/
+call Get_Student_Links(1);
+/*End*/
+
+/* Get Professor's Class Links */
+delimiter //
+create procedure Get_Professor_Links(
+in empid int
+)
+begin
+select b.Class_Link
+from Courses_Professor_Relation as a inner join Courses as b
+on a.Course_Code=b.Course_Code
+where a.Employee_ID=empid;
+end //
+delimiter ;
+/*Execute*/
+call Get_Professor_Links(20);
+/*End*/
 
 
