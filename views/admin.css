@@ -1,72 +1,43 @@
-*{
-    margin: 0px;
-    padding: 0px;
-}
-body{
-    background: url('bg1.jpg') no-repeat center center fixed;
-    background-size: cover;
-}
+<!doctype html>
+<html>
+  <head>
+    <!-- Place your kit's code here -->
+    <script src="https://kit.fontawesome.com/63e2b2b603.js" crossorigin="anonymous"></script>
+    <title>login to admin login page</title>
+    <link rel="stylesheet" href="admin.css">
+  </head>
 
-.container{
+  <body>
+    <header>
+      <h1>भारतीय प्रौद्योगिकी संस्थान इंदौर Indian Institute of Technology Indore
+      </h1>
+      <h2>welcome to online education portol</h2>
+    </header>
+    <div class="logo">
+      <img src="logo.png" alt="logo">
+    </div>
+    <div class="container">
+        <h1>login for admin</h1>
+       <div class="box">
+            <i class="fa fa-user"></i>
+         <input type="text" name="name" id="name" placeholder="Enter Your Name">
+        </div>
+      <!-- <div class="box">
+            
+            <i class="fa fa-envelope"></i>
+            <input type="email" name="email" id="email" placeholder="Enter Your Email ID">
+        </div>-->
+        <div class="box">
+            <i class="fa fa-key"></i>
+            <input type="password" name="password"  id="password"  placeholder="Enter Your Password">
 
-    color: white;
-    position: absolute;
-    top: 45%;
-    left: 40%; 
-}
-.container h1{
-    font-size: 40px;
-    color: black;
-    border-bottom: 5px solid purple;
-    display: inline-block;
-    margin-bottom: 15px;
-    padding: 13px 0px;
+        </div>
+<button class="btn">Sign In</button>
 
-}
-.box{
-    width: 100%;
-    border-bottom: 2px solid purple;
-    margin: 22px 0px;
+    </div>
     
-}
-.box input{
-    background: none;
-    width: 75%;
-    outline:  none;
-    border: none;
-    color: red;
-    padding: 5px 10px;
-    font-size: 25px;
-    font-family: cursive;
-    font-weight: bold;
-    opacity: .6;
-}
-.box i{
-    width: 25px;
-    text-align: center;
-}
- .btn{
-     cursor: pointer;
-     outline: none;
-     width: 25%;
-     margin: 12px 0;
-     padding: 10px 21px;
-     color:black;
-     border-radius: 10px ;
-     border: 2px solid purple;
-     font-size: 18px;
-     background: none;
-     font-weight: bold;
- }
-
- .btn:hover{
-    color: rgb(228, 13, 13);
-    
-    background: white;
-
-}
- 
- .logo img{
-    float: right;
-    position: relative;
- }
+  <!--<div class="footer">
+  <p>welcome to login page</p>
+</div>-->
+  </body>
+</html>
