@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students Listt</title>
+</head>
+<body>
+    <div class="container">
+        <table class="table">
+            <tr>
+                <th>Serial No.</th>
+                <th>Name</th>
+                <th>Roll No.</th>
+                <th>Program</th>
+                <th>Year Of Admission</th>
+            </tr>
+
+
+            <%
+            if(data.length>0){
+                var i=1;
+                data.forEach((inf)=>{ 
+                    %>
+                    <tr>
+                        <td><%= i; %></td>
+                        <td><%= inf.S_Name %></td>
+                        <td><%= inf.Roll_No %></td>
+                        <td><%= inf.Program_Enrolled %></td>
+                        <td><%= inf.Year_Of_Study %></td>
+                    </tr>
+            <% i++;    })%>
+            <% }else{ %>
+                <td colspan="7">No Data Found</td>
+            <% }%>
+        </table>
+    </div>
+</body>
+</html>

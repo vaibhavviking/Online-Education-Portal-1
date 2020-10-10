@@ -60,97 +60,29 @@
 </head>
 
 <body>
-  <h1> Time-table</h1>
-  <div class="box">Course 1</div>
-  <div class="container">
-    <div class="item" id="item1">Day</div>
-    <div class="item" id="item2">Time</div>
-    <div class="item" id="item3">Monday</div>
-    <div class="item" id="item4"></div>
-    <div class="item" id="item5">Tuesday</div>
-    <div class="item" id="item6"></div>
-    <div class="item" id="item7">Wednesday</div>
-    <div class="item" id="item8"></div>
-    <div class="item" id="item9">Thrusday</div>
-    <div class="item" id="item10"></div>
-    <div class="item" id="item11">Friday</div>
-    <div class="item" id="item12"></div>
-    <div class="item" id="item13">Saturday</div>
-    <div class="item" id="item14"></div>
-  </div>
-
-  <div class="box">Course 2</div>
-  <div class="container">
-    <div class="item" id="item1">Day</div>
-    <div class="item" id="item2">Time</div>
-    <div class="item" id="item3">Monday</div>
-    <div class="item" id="item4"></div>
-    <div class="item" id="item5">Tuesday</div>
-    <div class="item" id="item6"></div>
-    <div class="item" id="item7">Wednesday</div>
-    <div class="item" id="item8"></div>
-    <div class="item" id="item9">Thrusday</div>
-    <div class="item" id="item10"></div>
-    <div class="item" id="item11">Friday</div>
-    <div class="item" id="item12"></div>
-    <div class="item" id="item13">Saturday</div>
-    <div class="item" id="item14"></div>
-  </div>
-
-  <div class="box">Course 3</div>
-  <div class="container">
-    <div class="item" id="item1">Day</div>
-    <div class="item" id="item2">Time</div>
-    <div class="item" id="item3">Monday</div>
-    <div class="item" id="item4"></div>
-    <div class="item" id="item5">Tuesday</div>
-    <div class="item" id="item6"></div>
-    <div class="item" id="item7">Wednesday</div>
-    <div class="item" id="item8"></div>
-    <div class="item" id="item9">Thrusday</div>
-    <div class="item" id="item10"></div>
-    <div class="item" id="item11">Friday</div>
-    <div class="item" id="item12"></div>
-    <div class="item" id="item13">Saturday</div>
-    <div class="item" id="item14"></div>
-  </div>
-
-  <div class="box">Course 4</div>
-  <div class="container">
-    <div class="item" id="item1">Day</div>
-    <div class="item" id="item2">Time</div>
-    <div class="item" id="item3">Monday</div>
-    <div class="item" id="item4"></div>
-    <div class="item" id="item5">Tuesday</div>
-    <div class="item" id="item6"></div>
-    <div class="item" id="item7">Wednesday</div>
-    <div class="item" id="item8"></div>
-    <div class="item" id="item9">Thrusday</div>
-    <div class="item" id="item10"></div>
-    <div class="item" id="item11">Friday</div>
-    <div class="item" id="item12"></div>
-    <div class="item" id="item13">Saturday</div>
-    <div class="item" id="item14"></div>
-  </div>
-
-  <div class="box">Course 5</div>
-  <div class="container">
-    <div class="item" id="item1">Day</div>
-    <div class="item" id="item2">Time</div>
-    <div class="item" id="item3">Monday</div>
-    <div class="item" id="item4"></div>
-    <div class="item" id="item5">Tuesday</div>
-    <div class="item" id="item6"></div>
-    <div class="item" id="item7">Wednesday</div>
-    <div class="item" id="item8"></div>
-    <div class="item" id="item9">Thrusday</div>
-    <div class="item" id="item10"></div>
-    <div class="item" id="item11">Friday</div>
-    <div class="item" id="item12"></div>
-    <div class="item" id="item13">Saturday</div>
-    <div class="item" id="item14"></div>
-  </div>
-
+    <table class="table">
+      <tr>
+        <th>Time</th>
+        <th>Monday</th>
+        <th>Tuesday</th>
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th>Friday</th>
+        <th>Saturday</th>
+      </tr>
+      <% data.forEach((item)=>{ %>
+        <tr>
+          <td><%= item.Time %></td>
+          <td><%= item.Monday %></td>
+          <td><%= item.Tuesday %></td>
+          <td><%= item.Wednesday %></td>
+          <td><%= item.Thursday %></td>
+          <td><%= item.Friday %></td>
+          <td><%= item.Saturday %></td>
+          <!-- <td><%= item.day %></td> -->
+      </tr>
+      <% }) %>
+    </table>
 </body>
 
 </html>
