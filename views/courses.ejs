@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Time-table</title>
+  <link rel="stylesheet" href="./css/Timetable.css">
+</head>
+
+<body>
+    <table class="table">
+      <tr>
+        <th>Serial No.</th>
+        <th>Course Code</th>
+        <th>Course Name</th>
+        <th>Credits</th>
+       
+      </tr>
+      <% var i =1%>
+      <% data.forEach((item)=>{ %>
+        <tr>
+          <td><%= i %></td>
+          <td><%= item.Course_Code %></td>
+          <td><%= item.Course_Name %></td>
+          <td><%= item.Credits %></td>
+          <!-- <td><%= item.day %></td> -->
+      </tr>
+      <% i++}) %>
+    </table>
+</body>
+
+</html>
