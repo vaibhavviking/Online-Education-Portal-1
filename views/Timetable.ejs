@@ -5,179 +5,36 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>Time-table</title>
-  <link rel="stylesheet" href="vaibhavviking/Online-Education-Portal/views/css/Timetable.css">
+  <link rel="stylesheet" href="./css/Timetable.css">
 </head>
 
 <body>
-
-  <nav class="navbar">
-    <img class="logo" src="img/logo.png" alt="...">
-    <h3>Indian Institute of Technology Indore</h2>
-  </nav>
-
-  <h1> Time-table </h1>
-  <header>
-    <h2>Welcome to Online Education Portal.</h2>
-    <h2>Today is -----day and you have to take --- classes today.</h2>
-  </header>
-  
-  <!-- <div class="container">
-    <div class="item" id="item1">Time</div>
-    <div class="item" id="item2">Monday</div>
-    <div class="item" id="item3">Tuesday</div>
-    <div class="item" id="item4">Wednesday</div>
-    <div class="item" id="item5">Thrusday</div>
-    <div class="item" id="item6">Friday</div>
-    <div class="item" id="item7">Saturday</div>
-    <div class="item" id="item8">8:00AM-8:50AM</div>
-    <div class="item" id="item9"></div>
-    <div class="item" id="item10"></div>
-    <div class="item" id="item11"></div>
-    <div class="item" id="item12"></div>
-    <div class="item" id="item13"></div>
-    <div class="item" id="item14"></div>
-    <div class="item" id="item15">9:00AM-9:50AM</div>
-    <div class="item" id="item16"></div>
-    <div class="item" id="item17"></div>
-    <div class="item" id="item18"></div>
-    <div class="item" id="item19"></div>
-    <div class="item" id="item20"></div>
-    <div class="item" id="item21"></div>
-    <div class="item" id="item22">10:00AM-10:50AM</div>
-    <div class="item" id="item23"></div>
-    <div class="item" id="item24"></div>
-    <div class="item" id="item25"></div>
-    <div class="item" id="item26"></div>
-    <div class="item" id="item27"></div>
-    <div class="item" id="item28"></div>
-    <div class="item" id="item29">11:00AM-11:50AM</div>
-    <div class="item" id="item30"></div>
-    <div class="item" id="item31"></div>
-    <div class="item" id="item32"></div>
-    <div class="item" id="item33"></div>
-    <div class="item" id="item34"></div>
-    <div class="item" id="item35"></div>
-    <div class="item" id="item36">2:00PM-2:50PM</div>
-    <div class="item" id="item37"></div>
-    <div class="item" id="item38"></div>
-    <div class="item" id="item39"></div>
-    <div class="item" id="item40"></div>
-    <div class="item" id="item41"></div>
-    <div class="item" id="item42"></div>
-    <div class="item" id="item43">3:00PM-3:50PM</div>
-    <div class="item" id="item44"></div>
-    <div class="item" id="item45"></div>
-    <div class="item" id="item46"></div>
-    <div class="item" id="item47"></div>
-    <div class="item" id="item48"></div>
-    <div class="item" id="item49"></div>
-    <div class="item" id="item50">4:00PM-4:50PM</div>
-    <div class="item" id="item51"></div>
-    <div class="item" id="item52"></div>
-    <div class="item" id="item53"></div>
-    <div class="item" id="item54"></div>
-    <div class="item" id="item55"></div>
-    <div class="item" id="item56"></div>
-    <div class="item" id="item57">5:00PM-5:50PM</div>
-    <div class="item" id="item58"></div>
-    <div class="item" id="item59"></div>
-    <div class="item" id="item60"></div>
-    <div class="item" id="item61"></div>
-    <div class="item" id="item62"></div>
-    <div class="item" id="item63"></div>
-  </div> -->
-
-  <table>
-
-    <thead>
+    <table class="table">
       <tr>
         <th>Time</th>
         <th>Monday</th>
         <th>Tuesday</th>
         <th>Wednesday</th>
-        <th>Thrusday</th>
+        <th>Thursday</th>
         <th>Friday</th>
         <th>Saturday</th>
+       
       </tr>
-    </thead>
-
-    <tbody>
-      <tr>
-        <td>8:00AM-8:50AM</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+      <% var i =1%>
+      <% data.forEach((item)=>{ %>
+        <tr>
+          <td><%= item.Time %></td>
+          <td><%= item.Monday %></td>
+          <td><%= item.Tuesday %></td>
+          <td><%= item.Wednesday %></td>
+          <td><%= item.Thursday %></td>
+          <td><%= item.Friday %></td>
+          <td><%= item.Saturday %></td>
+          
+          
       </tr>
-      <tr>
-        <td>9:00AM-9:50AM</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>10:00AM-10:50AM</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>11:00AM-11:50AM</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>2:00PM-2:50PM</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>3:00PM-3:50PM</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>4:00PM-4:50PM</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>5:00PM-5:50PM</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-    </tbody>
-    
-  </table>
-
+      <% i++}) %>
+    </table>
 </body>
 
 </html>
