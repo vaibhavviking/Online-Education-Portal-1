@@ -148,3 +148,18 @@ foreign key(Course_Code) references Courses(Course_Code) on delete cascade
 );
 /*drop table Study_Material*/
 
+create table Session(
+Session_ID varchar(50),
+User_ID_ varchar(30),
+primary key(User_ID_),
+foreign key(User_ID_) references Account(User_ID_) on delete cascade
+);
+/*drop table Session*/
+
+create table Attendance_Marked(
+Roll_No int,
+Time varchar(5),
+primary key(Roll_No, Time),
+foreign key(Roll_No) references Student(Roll_No) on delete cascade
+);
+/*drop table Attendance_Marked*/
