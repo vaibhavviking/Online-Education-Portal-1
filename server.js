@@ -7,6 +7,7 @@ const url = require('url');
 var mysql = require('mysql');
 const cookieParser = require('cookie-parser');
 const { promises } = require('fs');
+const { get } = require('http');
 // const passport = require('passport');
 // const Stratergy = require('passport-local').Stratergy;
 
@@ -81,7 +82,7 @@ app.get('/student_login', (req, res) => {
         if (err) throw err;
         else console.log('session refreshed');
     })
-    res.render('login.ejs');
+    res.render('teacher_login.ejs');
 })
 
 app.get('/student_list', (req, res) => {
@@ -101,7 +102,7 @@ app.get('/student_home', (req, res) => {
     } else {
         res.send('please login first');
     }
-    res.send();
+    res.end();
 });
 
 app.get('/teacher_login', (req, res) => {
@@ -109,9 +110,15 @@ app.get('/teacher_login', (req, res) => {
 })
 
 app.get('/admin_login', (req, res) => {
-    res.render('login.ejs');
+    res.render('admin_login.ejs');
 })
 
+app.post('/admin_login',(req,res)=>{
+    var username=req.body.name;
+    var passsword=req.body.password;
+
+    admin_authenticate(username,passsword,res,req);
+})
 app.get('/logout', (req, res) => {
     var query = 'DELETE FROM current_session';
     connection.query(query, (err, results) => {
@@ -132,36 +139,8 @@ app.post('/teacher_login', (req, res) => {
     teacher_authenticate(username, password, res, req);
 })
 
-app.get('/timetable', (req, res) => {
-    var sql1 = 'select User_ID from current_session';
-    var id;
-    connection.query(sql1, (err, results1) => {
-        if (err) throw err;
-        if (results1.length > 0) {
-            id = results1[0].User_ID;
-            console.log(id);
-            var sql = 'call Student_Time_Table(?)';
-            connection.query(sql, [id], (err, results) => {
-                if (err) throw err;
-                // console.log(results);
-                results[0].forEach(element => {
-                    if (element.Monday == null) { element.Monday = '-' }
-                    if (element.Tuesday == null) { element.Tuesday = '-' }
-                    if (element.Wednesday == null) { element.Wednesday = '-' }
-                    if (element.Thursday == null) { element.Thursday = '-' }
-                    if (element.Friday == null) { element.Friday = '-' }
-                    if (element.Saturday == null) { element.Saturday = '-' }
-                    // console.log(element.Time);
-                });
-                res.render('Timetable.ejs', { data: results[0] });
-            })
-        } else {
-            res.send('lol');
-        }
-        // console.log(results1[0].User_ID);
-    })
-
-    // console.log('outside',id);
+app.get('/student_timetable', (req, res) => {
+  student_timetable(req,res);
 
 })
 
@@ -274,7 +253,7 @@ app.get('/teacher_home', (req, res) => {
 })
 
 app.get('/admin_home', (req, res) => {
-    res.send('admin home');
+    res.render('Admin_home.ejs');
 })
 
 app.get('/', (req, res) => {
@@ -287,7 +266,13 @@ app.get('/', (req, res) => {
 })
 
 app.get('/prof_timetable', (req, res) => {
-    timetable(req,res);
+    prof_timetable(req,res);
+})
+
+app.get('/study_material',(req,res)=>{
+    
+
+    Get_Student_Material(req,res);
 })
 
 app.get('/student_courses',(req,res)=>{
@@ -300,7 +285,10 @@ app.listen(port, () => {
     console.log("application started successfully")
 })
 
+app.get('/ongoing_classes',(req,res)=>{
+    get_ongoing_courses(req,res);
 
+})
 app.use(express.urlencoded({ extended: false }));
 
 // Parse JSON bodies (as sent by API clients)
@@ -338,7 +326,7 @@ async function student_authenticate(username, password, res, req) {
                         console.log('cache cleared');
                     })
                     var query2 = 'INSERT INTO current_session VALUES (?,?)';
-                    connection.query(query2, [req.sessionID, Rno], (err, results) => {
+                    connection.query(query2, [req.sessionID, results[0]['@ID']], (err, results1) => {
                         if (err) throw err;
                         console.log('Instance created');
                     })
@@ -391,9 +379,48 @@ async function teacher_authenticate(username, password, res, req) {
         res.end();
     }
 }
+async function admin_authenticate(username, password, res, req) {
+    if (username && password) {
+
+        let sql = `call Retrieve_ID(?,?,@ID)`
+        connection.query(sql, [username, password], (err, result, fields) => {
+            if (err) res.redirect('/admin_login');
+
+            connection.query('SELECT @ID', (err, results, fields) => {
+                if (err) throw err;
+                else if (results[0]['@ID'] == -1) {
+                    res.send('Wrong username/Password');
+                    res.end();
+                } else if (results[0]['@ID'] > 0) {
+                    console.log(results);
+                    var Rno = req.body.Rno;
+                    req.session.user = username;
+                    req.session.loggedin = true;
+                    req.session.username = username;
+                    var sql2 = 'delete from current_session';
+                    connection.query(sql2, (err, results) => {
+                        if (err) throw err;
+                        console.log('cache cleared');
+                    })
+                    var query2 = 'INSERT INTO current_session VALUES (?,?)';
+                    connection.query(query2, [req.sessionID, results[0]['@ID']], (err, results) => {
+                        if (err) throw err;
+                        console.log('Instance created');
+                    })
+                    res.redirect('/admin_home');
+                }
+                res.end();
+            })
+        })
+    } else {
+        res.send('enter login credentials');
+        res.end();
+    }
+}
 
 async function get_prof_courses(req, res) {
     let id = await get_id;
+    console.log(id);
     if (id != undefined) {
         var sql = 'call Get_Professor_Courses(?)';
         connection.query(sql, [id], (err, results) => {
@@ -406,6 +433,7 @@ async function get_prof_courses(req, res) {
 
 async function get_student_courses(req,res){
     let id = await get_id;
+    console.log(id);
     if (id != undefined) {
         var sql = 'call Get_Student_Courses(?)';
         connection.query(sql, [id], (err, results) => {
@@ -415,12 +443,64 @@ async function get_student_courses(req,res){
         })
     }
 }
-async function timetable(req, res) {
+
+async function get_ongoing_courses(req,res){
+    let id = await get_id;
+    console.log(id);
+    var sql = 'call Student_Time_Table(?)';
+    connection.query(sql, [id], (err, results) => {
+        if (err) throw err;
+        // console.log(results);
+        // var d=new Date();
+
+        var count = 0;
+        var d = new Date();
+        var h = d.getHours();
+        var day = d.getDay();
+        var arr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        // var hr = document.getElementById('time').innerHTML.slice(-3);
+
+        var data = results[0];
+        // console.log(data);
+        var course=null;
+        var time;
+        data.forEach((item) => {
+            var hr = "";
+            if (item.Time[0] != 0) {
+                hr += item.Time[0];
+            }
+            hr += item.Time[1];
+            var day2=arr[day];
+            course = item[`${day2}`];
+            console.log(course);
+            // console.log(h, "and", hr);
+            if (h == parseInt(hr)  && course!=null) {
+                count++;
+                console.log('here');
+                // course = item.Monday;
+                
+                time=item.Time;
+            }
+        })
+        if (count == 0) {
+            console.log(count);
+            res.render("ongoing_classes.ejs",{error : 1,course1: null,time1:null});
+            res.end();  
+        }else{
+            console.log(count);
+            res.render("ongoing_classes.ejs",{ error:null,course1 : course , time1 : time})
+            res.end();
+        }
+
+        // res.render('ongoing_classes.ejs', { data: JSON.stringify(results[0]),  date: d});
+    })
+}
+async function prof_timetable(req, res) {
     let id = await get_id;
     var sql = 'call Professor_Time_Table(?)';
     connection.query(sql, [id], (err, results) => {
         if (err) throw err;
-        // console.log(results);
+        console.log(results);
         results[0].forEach(element => {
             if (element.Monday == null) { element.Monday = '-' }
             if (element.Tuesday == null) { element.Tuesday = '-' }
@@ -431,5 +511,33 @@ async function timetable(req, res) {
             // console.log(element.Time);
         });
         res.render('Timetable.ejs', { data: results[0] });
+    })
+}
+async function student_timetable(req, res) {
+    let id = await get_id;
+    var sql = 'call Student_Time_Table(?)';
+    connection.query(sql, [id], (err, results) => {
+        if (err) throw err;
+        console.log(results);
+        results[0].forEach(element => {
+            if (element.Monday == null) { element.Monday = '-' }
+            if (element.Tuesday == null) { element.Tuesday = '-' }
+            if (element.Wednesday == null) { element.Wednesday = '-' }
+            if (element.Thursday == null) { element.Thursday = '-' }
+            if (element.Friday == null) { element.Friday = '-' }
+            if (element.Saturday == null) { element.Saturday = '-' }
+            // console.log(element.Time);
+        });
+        res.render('Timetable.ejs', { data: results[0] });
+    })
+}
+
+async function Get_Student_Material(req,res){
+    var sql='select * from Study_Material where COurse_Code in (select Course_Code from Courses_Student_Relation where Roll_No = ?)';
+    var id = await get_id;
+    connection.query(sql,[id],(err,results)=>{
+        if(err) throw err;
+        console.log(results);
+        res.render("study_material.ejs",{data : results})
     })
 }
