@@ -823,7 +823,7 @@ order by b.Total_Days DESC;
 end //
 delimiter ;
 /*Execute*/
-call Check_Attendance('CS 207');
+call Check_Attendance('CS 207'); /*Course Code*/
 /*End*/
 
 /* Get Student's Courses */
@@ -839,7 +839,7 @@ where a.Roll_No=rollno;
 end //
 delimiter ;
 /*Execute*/
-call Get_Student_Courses(1);
+call Get_Student_Courses(1); /*Roll_No*/
 /*End*/
 
 /* Get Professor's Courses */
@@ -855,7 +855,7 @@ where a.Employee_ID=empid;
 end //
 delimiter ;
 /*Execute*/
-call Get_Professor_Courses(20);
+call Get_Professor_Courses(20); /*Employee_ID*/
 /*End*/
 
 /* Get Student's Class links */
@@ -871,7 +871,7 @@ where a.Roll_No=rollno;
 end //
 delimiter ;
 /*Execute*/
-call Get_Student_Links(1);
+call Get_Student_Links(1); /*Roll_No*/
 /*End*/
 
 /* Get Professor's Class Links */
@@ -887,7 +887,7 @@ where a.Employee_ID=empid;
 end //
 delimiter ;
 /*Execute*/
-call Get_Professor_Links(20);
+call Get_Professor_Links(20); /*Employee ID*/
 /*End*/
 
 /*Insert Session*/
@@ -953,9 +953,9 @@ delimiter ;
 call Attendance_Today('CS 207','Monday'); /*Course Code, Day */
 /*End*/
 
-/*Retrieve Study Material*/
+/*Retrieve Student Study Material*/
 delimiter //
-create procedure Retrieve_Study_Material(
+create procedure Retrieve_Student_Study_Material(
 in rollno int
 )
 begin
@@ -966,4 +966,19 @@ end //
 delimiter ;
 /*Execute*/
 call Retrieve_Study_Material(1); /*Roll No.*/
+/*End*/
+
+/*Retrieve Professor Study Material*/
+delimiter //
+create procedure Retrieve_Professor_Study_Material(
+in empid int
+)
+begin
+select a.Course_Code, a.Link
+from Study_Material as a
+where a.Course_Code in (select b.Course_Code from Courses_Professor_Relation as b where b.Employee_ID=empid );
+end //
+delimiter ;
+/*Execute*/
+call Retrieve_Study_Material(1); /*Employee ID*/
 /*End*/
