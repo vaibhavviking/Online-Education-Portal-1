@@ -240,6 +240,77 @@ app.post('/add_student', (req, res) => {
 
 })
 
+
+app.get('/add_prof',(req,res)=>{
+    res.render('add_prof.ejs');
+})
+app.post('/add_prof',(req,res)=>{
+    var name = req.body.Name;
+    var empid = req.body.empid;
+    var user_id = req.body.uid;
+    var Dep = req.body.Department;
+    var post = req.body.post;
+    var course1 = req.body.course1;
+    var course2 = req.body.course2;
+    var course3 = req.body.course3;
+    var course4 = req.body.course4;
+    var course5 = req.body.course5;
+    console.log(Dep);
+    // console.log(course1);
+    var arr = [];
+    arr.push(course1);
+    arr.push(course2);
+    arr.push(course3);
+    arr.push(course4);
+    arr.push(course5);
+    var pass = req.body.password;
+    var sql = 'call Insert_Professor(?,?,?,?,?,?,@did,@rif)';
+    // var sql=`call Insert_Student(${Rno},'${name}','${prog}',${year},${Dep},'${user_id}','${pass}',@did,@rif)`;
+    connection.query(sql, [empid, name, post, Dep, user_id, pass], (err, results2) => {
+        if (err) throw err;
+        connection.query('select @did;', (err, results1) => {
+            if (err) throw err;
+            if (results1[0]['@did'] == 1) {
+                res.send('Duplicate Entry Detected');
+                res.end();
+            }
+        })
+        connection.query('select @rif;', (err, results3) => {
+            if (err) throw err;
+            if (results3[0]['@rif'] == 1) {
+                res.send('Referential Integrity Compromised.Please check the inputs');
+                res.end();
+            }
+        })
+
+        arr.forEach((item) => {
+            if (item != undefined) {
+                var sql = 'call Add_Professor_Course(?,?,@did,@rif)';
+                connection.query(sql, [item, empid], (err, results) => {
+                    if (err) throw err;
+                    connection.query('select @did;', (err, results1) => {
+                        if (err) throw err;
+                        if (results1[0]['@did'] == 1) {
+                            res.send('Duplicate Entry Detected');
+                            res.end();
+                        }
+                    })
+                    connection.query('select @rif;', (err, results2) => {
+                        if (err) throw err;
+                        if (results2[0]['@rif'] == 1) {
+                            res.send('Referential Intigrity Breached');
+                            res.end();
+                        }
+                    })
+
+                    console.log('course added');
+                })
+            }
+        })
+        console.log('Professor added');
+        res.redirect('/');
+    })
+})
 app.get('/student_courses', (req, res) => {
     get_student_courses(req, res,)
 })
