@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -47,12 +49,10 @@
     background: none;
     font-weight: bold;
 }
-
 .btn:hover{
    color: rgb(228, 13, 13);
    
    background: white;
-
 }
 .uttam h1 {
     font-size: 40px;
@@ -62,7 +62,6 @@
     margin-top: 60px;
    /* padding: 25px 0px;*/
     bottom: 0px;
-
 }
 .btn1{
     cursor: pointer;
@@ -77,33 +76,27 @@
     background: none;
     font-weight: bold;
 }
-
 .btn1:hover{
    color: rgb(228, 13, 13);
    
    background: white;
-
 }
-
  form{
     color:black;
     position: absolute;
     top: 45%;
     left: 40%; 
  }
-
 .logo {
     height: 100px;
     width: 100px;
     margin: 10px;
 }
-
 h3 {
     font-size: 2.5rem;
     font-style: italic;
     margin: 0px 10px;
 }
-
 body {
     margin: 0px;
     box-sizing: border-box;
@@ -112,7 +105,6 @@ body {
     line-height: 1.5;
     background-color: #e2e2e296;
 }
-
 #h1 {
     margin: 0px;
     position: relative;
@@ -130,11 +122,13 @@ body {
             var x = document.getElementById('container');
             var p = document.getElementById('save');
             var i = x.childElementCount;
-            x.innerHTML += `<input type='text' required='true' placeholder='course${i}' name='course${i}'>`;
-            // p.innerHTML +=1;
+            x.innerHTML += `<div class="box">
+            <i class="fa fa-key"></i>
+            <input  placeholder='course${i}' name='course${i}' type="text" required=true>
+
+        </div>`;// p.innerHTML +=1;
             console.log(i+1);
         }
-
         function get_value(){
            return document.getElementById('container').childElementCount +1;
         }
@@ -154,11 +148,7 @@ body {
              <i class="fa fa-user"></i>
              <input placeholder="name" name="Name" type="text" required=true>
          </div>
-       <!-- <div class="box">
-             
-             <i class="fa fa-envelope"></i>
-             <input type="email" name="email" id="email" placeholder="Enter Your Email ID">
-         </div>-->
+      
          <div class="box">
              <i class="fa fa-key"></i>
              <input placeholder="password" name="password" type="text" required=true>
@@ -181,26 +171,21 @@ body {
         </div>
         <div class="box">
             <i class="fa fa-key"></i>
-            <input placeholder="User ID" name="uid" type="text" required=true>
+            <input placeholder="Username" name="uid" type="text" required=true>
 
         </div>
 
  
      
         <div id="container">
-           <!---- <% var count = 1%>-->
+          
             <p id="save" style="visibility: hidden;"><!--<%= count%> --></p>
-            <!-- <input placeholder="course1"name="course1" type="text" required=true>
-                <input placeholder="course2"name="course2" type="text" required=true>
-        <input placeholder="course3"name="course3" type="text" required=true>
-        <input placeholder="course4"name="course4" type="text" required=true>
-        <input placeholder="course5"name="course5" type="text" required=true> -->
+         
         </div>
-        <button class="btn" type="submit">Add teacher</button>
+        <button class="btn" type="submit">Add Professor</button>
         <button class="btn1" onclick='add()'>Add Course</button>
     </form>
    
 </body>
 
 </html>
-
