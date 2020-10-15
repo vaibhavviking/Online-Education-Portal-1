@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adminstration page</title>
-    <link rel="stylesheet" href="vaibhavviking/Online-Education-Portal/views/css/Admin_home.css">
+    <link rel="stylesheet" href="./css/Admin_home.css">
 </head>
 
 <body>
 
     <nav class="navbar">
-        <img class="logo" src="img/logo.png" alt="...">
+        <img class="logo" src="../logo.png" alt="...">
         <h3>Indian Institute of Technology Indore</h2>
     </nav>
 
@@ -19,11 +19,9 @@
     <h2>Welcome to Online Education Portal.</h2>
 
     <div class="bar">
-        <div class="home">
-            <a href="Home_page.html" target="_blank"><input id="button" type="button" value="Go to Home"></a>
-        </div>
         <div class="logout">
-            <input id="button" type="button" value="Log out">
+            <button><a href="/">Log Out</a></button>
+            
         </div>
     </div>
 
@@ -34,8 +32,8 @@
                 alt="...">
             <div class="card-body">
                 <h2 class="card-title">Student</h2>
-                <input id="button" type="button" value="Add a Student"><br>
-                <input id="button" type="button" value="Remove a Student">
+                <a href="/add_student">Add Student</a>
+             
             </div>
         </div>
 
@@ -44,17 +42,17 @@
                 alt="...">
             <div class="card-body">
                 <h2 class="card-title">Professor</h2>
-                <input id="button" type="button" value="Add a Professor"><br>
-                <input id="button" type="button" value="Remove a Professor">
+                <a href="add_prof">Add Professor</a>
+                
             </div>
         </div>
 
         <div class="card" id="card2">
-            <img src="img/department.png" alt="...">
+            <img src="images/department.png" alt="...">
             <div class="card-body">
                 <h2 class="card-title">Department</h2>
-                <input id="button" type="button" value="Add a Department"><br>
-                <input id="button" type="button" value="Remove a Department">
+                <a href="/add_dept">Add Department</a>
+              
             </div>
         </div>
 
@@ -62,8 +60,8 @@
             <img src="img/book.png" alt="...">
             <div class="card-body">
                 <h2 class="card-title">Course</h2>
-                <input id="button" type="button" value="Add a Course"><br>
-                <input id="button" type="button" value="Remove a Course">
+                <a href="/add_course">Add Course</a>
+              
             </div>
         </div>
 
@@ -71,8 +69,8 @@
             <img src="img/tav1.png" alt="...">
             <div class="card-body">
                 <h2 class="card-title">Admin</h2>
-                <input id="button" type="button" value="Add an Admin"><br>
-                <input id="button" type="button" value="Remove an Admin">
+                <a href="/add_admin"> Add Admin</a>
+               
             </div>
         </div>
 
