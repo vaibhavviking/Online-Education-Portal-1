@@ -26,9 +26,11 @@
 }
 
 h3 {
+    position: relative;
     font-size: 2.5rem;
     font-style: italic;
-    margin: 0px 10px;
+    margin: 0px 10px -5px 10px;
+    padding: 0px;
 }
 
 body {
@@ -51,13 +53,7 @@ body {
     font-size: 4rem;
 }
 
-#p1 {
-    margin-top: 50px;
-}
-
-#p1,
-#p2,
-#p3 {
+p {
     margin: 10px 10px 1px 20px;
     font-size: 2rem;
     font-weight: bold;
@@ -65,7 +61,12 @@ body {
     color: darkred;
 }
 
-input {
+a{
+    text-decoration: none;
+    color: black;
+}
+
+button {
     font-size: 20px;
     border: 3px solid black;
     margin: 5px;
@@ -124,9 +125,10 @@ h1{
     color: rgb(30, 110, 240);
 }
 
-.p4 {
+.p1 {
     color: black;
     font-size: 1.4rem;
     margin: 10px 10px;
     text-align: justify;
+    font-weight: 100;
 }
