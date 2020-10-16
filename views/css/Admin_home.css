@@ -18,89 +18,9 @@ body {
     align-items: center;
 }
 
-/* html::before {
-    content: "";
-    position: absolute;
-    top: 100px;
-    background: url('img/bg8.jpg') no-repeat center center/cover;
-    height: 170%;
-    width: 100%;
-    opacity: 0.3;
-    z-index: -1;
-}
-
-.navbar{
-    background-color: #e2e2e2;
-    display: flex;
-    align-items: center;
-} */
-
-.logo {
-    height: 100px;
-    width: 100px;
-    margin: 10px;
-}
-  
-h3 {
-    font-size: 2.5rem;
-    font-style: italic;
-    margin: 0px 10px;
-}
-
-
-h1 {
-    margin: 0px;
-    padding: 20px;
-    text-align: center;
-    background-color: transparent;
-    position: relative;
-    top: 20px;
-    font-size: 4em;
-}
-
-h2 {
-    font-size: 2em;
-    color: darkred;
-    margin: 10px;
-}
-
-.bar{
-    margin: 10px;
-    position: sticky;
-    top: 10px;
-    display: flex;
-    background-color: rgba(170, 206, 240, 0.4);
-}
-
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 50vh;
-}
-
-.card {
-    background-color: white;
-    margin: 40px 15px;
-}
-
-img {
-    height: 220px;
-    width: 220px;
-    margin: 10px;
-}
-
-.card-title {
-    margin: 10px;
-}
-
-input {
-    font-size: 20px;
-    border: 3px solid black;
-    margin: 5px;
-    height: 50px;
-    width: 220px;
-    background-color: transparent;
+a{
+    text-decoration: none;
+    color: black;
 }
 
 #button {
@@ -117,3 +37,225 @@ input {
     background-color: rgb(113 113 202);
 }
 
+
+@media (min-width: 770px){
+
+    .logo {
+        height: 100px;
+        width: 100px;
+        margin: 10px;
+    }
+  
+    h3 {
+        font-size: 2.5rem;
+        font-style: italic;
+        margin: 0px 10px;
+    }
+
+    h1 {
+        margin: 0px;
+        padding: 20px;
+        text-align: center;
+        background-color: transparent;
+        position: relative;
+        top: 20px;
+        font-size: 4em;
+    }
+
+    h2 {
+        font-size: 2em;
+        color: darkred;
+        margin: 10px;
+    }
+
+    .bar{
+        margin: 0px;
+        position: sticky;
+        top: 10px;
+        display: flex;
+        background-color: rgb(170, 206, 240);
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 20vh;
+    }
+
+    .card {
+        background-color: white;
+        margin: 40px 15px;
+    }
+
+    img {
+        height: 220px;
+        width: 220px;
+        margin: 10px;
+    }
+
+    .card-title {
+        margin: 10px;
+    }
+
+    button {
+        font-size: 20px;
+        border: 3px solid black;
+        margin: 5px;
+        height: 50px;
+        width: 220px;
+        background-color: transparent;
+    }
+
+}
+
+
+@media (min-width: 500px) and (max-width: 770px){
+
+    .logo {
+        height: 60px;
+        width: 60px;
+        margin: 6px;
+    }
+  
+    h3 {
+        font-size: 2rem;
+        font-style: italic;
+        margin: 0px 6px;
+    }
+
+    h1 {
+        margin: 0px;
+        padding: 16px;
+        text-align: center;
+        background-color: transparent;
+        position: relative;
+        top: 15px;
+        font-size: 2.7em;
+    }
+
+    h2 {
+        font-size: 1.5em;
+        color: darkred;
+        margin: 12px;
+    }
+
+    .bar{
+        margin: 0px;
+        position: sticky;
+        top: 8px;
+        display: flex;
+        background-color: rgb(170, 206, 240);
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 18vh;
+    }
+
+    .card {
+        background-color: white;
+        margin: 15px 15px;
+    }
+
+    img {
+        height: 220px;
+        width: 220px;
+        margin: 10px;
+    }
+
+    .card-title {
+        margin: 10px;
+    }
+
+    button {
+        font-size: 20px;
+        border: 3px solid black;
+        margin: 5px;
+        height: 50px;
+        width: 220px;
+        background-color: transparent;
+    }
+
+}
+
+
+@media (max-width: 500px){
+    
+    .logo {
+        height: 30px;
+        width: 30px;
+        margin: 5px;
+    }
+  
+    h3 {
+        font-size: 1.07rem;
+        font-style: italic;
+        margin: 0px 5px;
+    }
+
+    h1 {
+        margin: 0px;
+        padding: 10px;
+        text-align: center;
+        background-color: transparent;
+        position: relative;
+        top: 10px;
+        font-size: 1.5em;
+    }
+
+    h2 {
+        font-size: 1em;
+        color: darkred;
+        margin: 10px;
+    }
+
+    .bar{
+        margin: 0px;
+        position: sticky;
+        top: 5px;
+        display: flex;
+        background-color: rgb(170, 206, 240);
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 10vh;
+    }
+
+    .card {
+        background-color: white;
+        margin: 10px 10px;
+    }
+
+    img {
+        height: 200px;
+        width: 200px;
+        margin: 10px;
+    }
+
+    .card-title {
+        margin: 10px;
+        font-size: 1.8em;
+    }
+
+    button {
+        font-size: 15px;
+        border: 3px solid black;
+        margin: 5px;
+        height: 30px;
+        width: 100px;
+        background-color: transparent;
+    }
+
+    .card-body button{
+        font-size: 18px;
+        height: 40px;
+        width: 200px;
+    }
+
+}
