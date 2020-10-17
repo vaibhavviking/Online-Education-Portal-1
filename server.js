@@ -35,6 +35,7 @@ app.use((req, res, next) => {
 });
 
 var connection = mysql.createConnection({
+    multipleStatements: true,
     host: 'localhost',
     user: 'root',
     password: 'password',
@@ -168,6 +169,89 @@ app.get('/student_timetable', (req, res) => {
 
 })
 
+app.get('/delete_student', (req, res) => {
+    if (req.session.loggedin && req.session.user) {
+        res.render('delete_student.ejs');
+    } else {
+        res.redirect('/');
+    }
+})
+
+app.post('/delete_student', (req, res) => {
+    var Rno = req.body.Rno;
+    var sql = 'call Delete_Student(?)';
+    connection.query(sql, [Rno], (err, results) => {
+        if (err) throw err;
+        console.log('Student Removed');
+        res.redirect('/admin_home');
+    })
+})
+
+app.get('/delete_prof', (req, res) => {
+    if (req.session.loggedin && req.session.user) {
+        res.render('delete_teacher.ejs');
+    } else {
+        res.redirect('/');
+    }
+})
+
+app.post('/delete_prof', (req, res) => {
+    var empid = req.body.emp_id;
+    var sql = 'call Delete_Professor(?)';
+    connection.query(sql, [empid], (err, results) => {
+        if (err) throw err;
+        console.log('Professor Removed');
+        res.redirect('/admin_home');
+    })
+})
+
+app.post('/delete_course', (req, res) => {
+
+    var course_code = req.body.course_code;
+    var sql = 'call Delete_Course(?,@rif); select @rif';
+    connection.query(sql, [course_code], (err, results) => {
+        if (err) throw err;
+        console.log(results[1][0]['@rif']);
+        if(results[1][0]['@rif']!=null){
+            console.log(results[1][0]['@rif']);
+            res.send('rif detected');
+            // res.end();
+        }else{
+        console.log('Course Deleted');
+        res.redirect('/admin_home');
+        }    
+    })
+    
+})
+
+app.post('/delete_dept', (req, res) => {
+    var deptid = req.body.deptid;
+    var sql = 'call Delete_Dept(?,@rif); select @rif';
+    connection.query(sql, [deptid], (err, results) => {
+        if (err) throw err;
+        console.log(results[1][0]['@rif']);
+        if(results[1][0]['@rif']!=null){
+            // console.log(results[1][0]['@rif']);
+            res.send('rif detected');
+            console.log('Department not Deleted');
+            // res.end();
+        }else{
+        console.log('Department Deleted');
+        res.redirect('/admin_home');
+        }    
+    })
+})
+
+app.post('/delete_admin', (req, res) => {
+    var adminid = req.body.adminid;
+    var sql = 'call Delete_Admin(?)';
+    connection.query(sql, [adminid], (err, results) => {
+        if (err) throw err;
+        console.log('Admin Removed');
+        res.redirect('/admin_home');
+    })
+})
+
 app.get('/add_student', (req, res) => {
     if (req.session.loggedin && req.session.user) {
         res.render('add_student.ejs');
@@ -183,6 +267,30 @@ app.get('/all_courses', (req, res) => {
         console.log(results);
         res.render('all_courses.ejs', { data: results });
     })
+})
+
+app.get('/delete_dept', (req, res) => {
+    if (req.session.loggedin && req.session.user) {
+        res.render('delete_dept.ejs');
+    } else {
+        res.redirect('/admin_login');
+    }
+})
+
+app.get('/delete_course', (req, res) => {
+    if (req.session.loggedin && req.session.user) {
+        res.render('delete_course.ejs');
+    } else {
+        res.redirect('/admin_login');
+    }
+})
+
+app.get('/delete_admin', (req, res) => {
+    if (req.session.loggedin && req.session.user) {
+        res.render('delete_admin.ejs');
+    } else {
+        res.redirect('/admin_login');
+    }
 })
 
 app.post('/add_student', (req, res) => {
@@ -208,58 +316,38 @@ app.post('/add_student', (req, res) => {
         arr.push(course4);
         arr.push(course5);
         var pass = req.body.password;
-        var sql = 'call Insert_Student(?,?,?,?,?,?,?,@did,@rif)';
-        // var sql=`call Insert_Student(${Rno},'${name}','${prog}',${year},${Dep},'${user_id}','${pass}',@did,@rif)`;
+        var sql = 'call Insert_Student(?,?,?,?,?,?,?,@did,@rif); select @did; select @rif';
         connection.query(sql, [Rno, name, prog, year, Dep, user_id, pass], (err, results2) => {
             if (err) throw err;
-            connection.query('select @did;', (err, results1) => {
-                if (err) throw err;
-                if (results1[0]['@did'] == 1) {
-                    res.send('Dpulicate Entry Detected');
-                    res.end();
-                }
-            })
-            connection.query('select @rif;', (err, results3) => {
-                if (err) throw err;
-                if (results3[0]['@rif'] == 1) {
-                    res.send('Referential Integrity Compromised.Please check the inputs');
-                    res.end();
-                }
-            })
-
+        
+            console.log(results2);
+            if(results2[1][0]['@did']!=null){
+                res.send('duplicate entry detected');
+            }else if(results2[2][0]['@rif']!=null){
+                res.send('rif detected');
+            }else{
             arr.forEach((item) => {
                 if (item != undefined) {
-                    var sql = 'call Add_Student_Course(?,?,100,0,@did,@rif,@inv)';
+                    var sql = 'call Add_Student_Course(?,?,100,0,@did,@rif,@inv);select @did;select @rif;select @inv';
+                    
                     connection.query(sql, [item, Rno], (err, results) => {
-                        if (err) throw err;
-                        connection.query('select @did;', (err, results1) => {
-                            if (err) throw err;
-                            if (results1[0]['@did'] == 1) {
-                                res.send('Duplicate Entry Detected');
-                                res.end();
-                            }
-                        })
-                        connection.query('select @rif;', (err, results2) => {
-                            if (err) throw err;
-                            if (results2[0]['@rif'] == 1) {
-                                res.send('Referential Intigrity Breached');
-                                res.end();
-                            }
-                        })
-                        connection.query('select @inv;', (err, results3) => {
-                            if (err) throw err;
-                            if (results3[0]['@inv'] == 1) {
-                                res.send('Invalid Attendance Input');
-                                res.end();
-                            }
-                        })
-
-                        console.log('course added');
+                        if(err) throw err;
+                        console.log(results)
+                        if(results[1][0]['@did']!=null){
+                            res.send('duplicate entry detected');
+                        }else if(results[2][0]['@rif']!=null){
+                            res.send('referential integrity breached');
+                        }else if(results[3][0]['@inv']!=null){
+                            res.send('Invalid attendance value.Please try again.')
+                        }else{
+                            console.log('Course addded : ',item)
+                        }
                     })
                 }
             })
             console.log('student added');
             res.redirect('/admin_home');
+        }
         })
     } else {
         res.redirect('/');
@@ -267,24 +355,24 @@ app.post('/add_student', (req, res) => {
 
 })
 
-app.get('/add_admin',(req,res)=>{
+app.get('/add_admin', (req, res) => {
     if (req.session.loggedin && req.session.user) {
         res.render('add_admin.ejs');
     } else {
         res.redirect('/admin_login');
-    } 
+    }
 })
 
-app.post('/add_admin',(req,res)=>{
-    var username=req.body.username;
-    var password=req.body.password;
-    var admin_id=req.body.admin_id;
-    var sql='call Insert_Admin(?,?,?,@duplicate_key)';
-    connection.query(sql,[admin_id,username,password],(err,results)=>{
-        if(err) throw err;
-        var sql1='select @duplicate_key';
-        connection.query(sql1,(err,results1)=>{
-            if(results1[0]['@duplicate_key']>0){
+app.post('/add_admin', (req, res) => {
+    var username = req.body.username;
+    var password = req.body.password;
+    var admin_id = req.body.admin_id;
+    var sql = 'call Insert_Admin(?,?,?,@duplicate_key)';
+    connection.query(sql, [admin_id, username, password], (err, results) => {
+        if (err) throw err;
+        var sql1 = 'select @duplicate_key';
+        connection.query(sql1, (err, results1) => {
+            if (results1[0]['@duplicate_key'] > 0) {
                 res.send('Username or Admin ID already taken');
                 res.end();
             }
@@ -321,7 +409,7 @@ app.post('/add_course', (req, res) => {
     var class_link = req.body.class_link;
     var credits = req.body.credits;
 
-    add_course(req,res,course_code,course_name,class_link,credits);
+    add_course(req, res, course_code, course_name, class_link, credits);
 })
 app.get('/add_prof', (req, res) => {
     if (req.session.loggedin && req.session.user) {
@@ -351,49 +439,35 @@ app.post('/add_prof', (req, res) => {
     arr.push(course4);
     arr.push(course5);
     var pass = req.body.password;
-    var sql = 'call Insert_Professor(?,?,?,?,?,?,@did,@rif)';
-    // var sql=`call Insert_Student(${Rno},'${name}','${prog}',${year},${Dep},'${user_id}','${pass}',@did,@rif)`;
+    var sql = 'call Insert_Professor(?,?,?,?,?,?,@did,@rif); select @did; select @rif';
     connection.query(sql, [empid, name, post, Dep, user_id, pass], (err, results2) => {
         if (err) throw err;
-        connection.query('select @did;', (err, results1) => {
-            if (err) throw err;
-            if (results1[0]['@did'] == 1) {
-                res.send('Duplicate Entry Detected');
-                res.end();
-            }
-        })
-        connection.query('select @rif;', (err, results3) => {
-            if (err) throw err;
-            if (results3[0]['@rif'] == 1) {
-                res.send('Referential Integrity Compromised.Please check the inputs');
-                res.end();
-            }
-        })
-
+        
+            console.log(results2);
+            if(results2[1][0]['@did']!=null){
+                res.send('duplicate entry detected');
+            }else if(results2[2][0]['@rif']!=null){
+                res.send('rif detected');
+            }else{
         arr.forEach((item) => {
             if (item != undefined) {
-                var sql = 'call Add_Professor_Course(?,?,@did,@rif)';
+                var sql = 'call Add_Professor_Course(?,?,@did,@rif); select @did; select @rif;';
                 connection.query(sql, [item, empid], (err, results) => {
-                    if (err) throw err;
-                    connection.query('select @did;', (err, results1) => {
-                        if (err) throw err;
-                        if (results1[0]['@did'] == 1) {
-                            res.send('Duplicate Entry Detected');
-                            res.end();
+                    if(err) throw err;
+                        console.log(results)
+                        if(results[1][0]['@did']!=null){
+                            res.send('duplicate entry detected');
+                        }else if(results[2][0]['@rif']!=null){
+                            res.send('referential integrity breached');
+                        }else{
+                            console.log('Course addded : ',item)
                         }
-                    })
-                    connection.query('select @rif;', (err, results2) => {
-                        if (err) throw err;
-                        if (results2[0]['@rif'] == 1) {
-                            res.send('Referential Intigrity Breached');
-                            res.end();
-                        }
-                    })
 
-                    console.log('course added');
+    
                 })
             }
         })
+    }
         console.log('Professor added');
         res.redirect('/admin_home');
     })
@@ -407,7 +481,7 @@ app.get('/teacher_home', (req, res) => {
     } else {
         res.redirect('/');
     }
-    res.send();
+    res.end();
 })
 
 app.get('/admin_home', (req, res) => {
@@ -476,9 +550,9 @@ async function add_dept(req, res, dept_id, dept_name) {
     var sql = 'call Insert_Dept(?,?,@did)';
     connection.query(sql, [dept_id, dept_name], (err, results) => {
         if (err) throw err;
-        var sql2='select @did';
-        connection.query(sql2,(err,results1)=>{
-            if(results1[0]['@did']>0){
+        var sql2 = 'select @did';
+        connection.query(sql2, (err, results1) => {
+            if (results1[0]['@did'] > 0) {
                 res.send('Duplicate Entry detected');
                 res.end();
             }
@@ -487,13 +561,13 @@ async function add_dept(req, res, dept_id, dept_name) {
         res.redirect('/admin_home');
     })
 }
-async function add_course(req, res, course_code, course_name,class_link,credits) {
+async function add_course(req, res, course_code, course_name, class_link, credits) {
     var sql = 'call Insert_Course(?,?,?,?,@did)';
-    connection.query(sql, [course_code,course_name,class_link,credits], (err, results) => {
+    connection.query(sql, [course_code, course_name, class_link, credits], (err, results) => {
         if (err) throw err;
-        var sql2='select @did';
-        connection.query(sql2,(err,results1)=>{
-            if(results1[0]['@did']>0){
+        var sql2 = 'select @did';
+        connection.query(sql2, (err, results1) => {
+            if (results1[0]['@did'] > 0) {
                 res.send('Duplicate Entry detected');
                 res.end();
             }
@@ -513,36 +587,30 @@ async function showAllStudents(req, res) {
 async function student_authenticate(username, password, res, req) {
     if (username && password) {
 
-        let sql = `call Retrieve_ID(?,?,@ID)`
+        let sql = `call Retrieve_ID(?,?,@ID,@t); select @ID; select @t;`
         connection.query(sql, [username, password], (err, result, fields) => {
-            if (err) res.redirect('/student_login');
-
-            connection.query('SELECT @ID', (err, results, fields) => {
-                if (err) throw err;
-                else if (results[0]['@ID'] == -1) {
-                    res.send('Wrong username/Password');
-                    res.end();
-                } else if (results[0]['@ID'] > 0) {
-                    console.log(results);
-                    var Rno = req.body.Rno;
-                    req.session.user = username;
-                    req.session.loggedin = true;
-                    req.session.username = username;
-                    var sql2 = 'delete from current_session';
-                    connection.query(sql2, (err, results) => {
-                        if (err) throw err;
-                        console.log('cache cleared');
-                    })
-                    var query2 = 'INSERT INTO current_session VALUES (?,?)';
-                    connection.query(query2, [req.sessionID, results[0]['@ID']], (err, results1) => {
-                        if (err) throw err;
-                        console.log(results[0]['@ID']);
-                        console.log('Instance created');
-                    })
-                    res.redirect('/student_home');
-                }
-                res.end();
-            })
+            if (err) throw err
+            if(result[1][0]['@ID']==-1 || result[2][0]['@t']!='Student'){
+                res.send('Wrong username/password');
+            }else{
+                console.log(result);
+                var Rno = req.body.Rno;
+                req.session.user = username;
+                req.session.loggedin = true;
+                req.session.username = username;
+                var sql2 = 'delete from current_session';
+                connection.query(sql2, (err, results) => {
+                    if (err) throw err;
+                    console.log('cache cleared');
+                })
+                var query2 = 'INSERT INTO current_session VALUES (?,?)';
+                connection.query(query2, [req.sessionID, result[1][0]['@ID']], (err, results1) => {
+                    if (err) throw err;
+                    console.log(result[1][0]['@ID']);
+                    console.log('Instance created');
+                })
+                res.redirect('/student_home');
+            }
         })
     } else {
         res.send('enter login credentials');
@@ -553,35 +621,30 @@ async function student_authenticate(username, password, res, req) {
 async function teacher_authenticate(username, password, res, req) {
     if (username && password) {
 
-        let sql = `call Retrieve_ID(?,?,@ID)`
+        let sql = `call Retrieve_ID(?,?,@ID,@t); select @ID; select @t;`
         connection.query(sql, [username, password], (err, result, fields) => {
-            if (err) res.redirect('/teacher_login');
-
-            connection.query('SELECT @ID', (err, results, fields) => {
-                if (err) throw err;
-                else if (results[0]['@ID'] == -1) {
-                    res.send('Wrong username/Password');
-                    res.end();
-                } else if (results[0]['@ID'] > 0) {
-                    console.log(results);
-                    var Rno = req.body.Rno;
-                    req.session.user = username;
-                    req.session.loggedin = true;
-                    req.session.username = username;
-                    var sql2 = 'delete from current_session';
-                    connection.query(sql2, (err, results) => {
-                        if (err) throw err;
-                        console.log('cache cleared');
-                    })
-                    var query2 = 'INSERT INTO current_session VALUES (?,?)';
-                    connection.query(query2, [req.sessionID, results[0]['@ID']], (err, results) => {
-                        if (err) throw err;
-                        console.log('Instance created');
-                    })
-                    res.redirect('/teacher_home');
-                }
-                res.end();
-            })
+            if (err) throw err
+            if(result[1][0]['@ID']==-1 || result[2][0]['@t']!='Professor'){
+                res.send('Wrong username/password');
+            }else{
+                console.log(result);
+                var Rno = req.body.Rno;
+                req.session.user = username;
+                req.session.loggedin = true;
+                req.session.username = username;
+                var sql2 = 'delete from current_session';
+                connection.query(sql2, (err, results) => {
+                    if (err) throw err;
+                    console.log('cache cleared');
+                })
+                var query2 = 'INSERT INTO current_session VALUES (?,?)';
+                connection.query(query2, [req.sessionID, result[1][0]['@ID']], (err, results1) => {
+                    if (err) throw err;
+                    console.log(result[1][0]['@ID']);
+                    console.log('Instance created');
+                })
+                res.redirect('/teacher_home');
+            }
         })
     } else {
         res.send('enter login credentials');
@@ -591,35 +654,30 @@ async function teacher_authenticate(username, password, res, req) {
 async function admin_authenticate(username, password, res, req) {
     if (username && password) {
 
-        let sql = `call Retrieve_ID(?,?,@ID)`
+        let sql = `call Retrieve_ID(?,?,@ID,@t); select @ID; select @t;`
         connection.query(sql, [username, password], (err, result, fields) => {
-            if (err) res.redirect('/admin_login');
-
-            connection.query('SELECT @ID', (err, results, fields) => {
-                if (err) throw err;
-                else if (results[0]['@ID'] == -1) {
-                    res.send('Wrong username/Password');
-                    res.end();
-                } else if (results[0]['@ID'] > 0) {
-                    console.log(results);
-                    var Rno = req.body.Rno;
-                    req.session.user = username;
-                    req.session.loggedin = true;
-                    req.session.username = username;
-                    var sql2 = 'delete from current_session';
-                    connection.query(sql2, (err, results) => {
-                        if (err) throw err;
-                        console.log('cache cleared');
-                    })
-                    var query2 = 'INSERT INTO current_session VALUES (?,?)';
-                    connection.query(query2, [req.sessionID, results[0]['@ID']], (err, results) => {
-                        if (err) throw err;
-                        console.log('Instance created');
-                    })
-                    res.redirect('/admin_home');
-                }
-                res.end();
-            })
+            if (err) throw err
+            if(result[1][0]['@ID']==-1 || result[2][0]['@t']!='Admin'){
+                res.send('Wrong username/password');
+            }else{
+                console.log(result);
+                var Rno = req.body.Rno;
+                req.session.user = username;
+                req.session.loggedin = true;
+                req.session.username = username;
+                var sql2 = 'delete from current_session';
+                connection.query(sql2, (err, results) => {
+                    if (err) throw err;
+                    console.log('cache cleared');
+                })
+                var query2 = 'INSERT INTO current_session VALUES (?,?)';
+                connection.query(query2, [req.sessionID, result[1][0]['@ID']], (err, results1) => {
+                    if (err) throw err;
+                    console.log(result[1][0]['@ID']);
+                    console.log('Instance created');
+                })
+                res.redirect('/admin_home');
+            }
         })
     } else {
         res.send('enter login credentials');
