@@ -46,10 +46,10 @@ delimiter //
 create procedure Retrieve_ID(
 in u varchar(30),
 in p varchar(30),
-out account_id varchar(15)
+out account_id varchar(15),
+out t varchar(15)
 )
 begin
-declare t varchar(15);
 select Type_ into t from Account where User_ID_=u and Password_=p;
 case
 	when t='Admin' then 
@@ -72,8 +72,9 @@ end case;
 end //
 delimiter ;
 /*Execute*/
-call Retrieve_ID('P1','a',@ID); /* User_ID, Password */
-select @ID;                    /* Duplicate User ID Check */
+call Retrieve_ID('P1','a',@ID,@t); /* User_ID, Password */
+select @ID;                        /* Duplicate User ID Check */
+select @t;                         /*Type*/
 /*End*/
 
 /*Change Password*/
@@ -864,7 +865,7 @@ create procedure Get_Student_Links(
 in rollno int
 )
 begin
-select b.Class_Link
+select b.Course_Code, b.Class_Link
 from Courses_Student_Relation as a inner join Courses as b
 on a.Course_Code=b.Course_Code
 where a.Roll_No=rollno;
@@ -880,7 +881,7 @@ create procedure Get_Professor_Links(
 in empid int
 )
 begin
-select b.Class_Link
+select b.Course_Code, b.Class_Link
 from Courses_Professor_Relation as a inner join Courses as b
 on a.Course_Code=b.Course_Code
 where a.Employee_ID=empid;
