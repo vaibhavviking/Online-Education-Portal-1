@@ -21,7 +21,7 @@ Relations used in database
 Stored Procedures stored in database
 1.  Insert_Admin (Admin_ID, User_ID, Password, @duplicate_key)
 2.  Delete_Admin (Admin_ID)
-3.  Retrieve_ID (User_ID, Password, @ID)
+3.  Retrieve_ID (User_ID, Password, @ID, @t)
 4.  Change_Password (User_ID, Current_Password, New_Password)
 5.  Insert_Dept (Dept_ID, Dept_Name, @did)
 6.  Delete_Dept (Dept_ID, @rif)
