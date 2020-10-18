@@ -1,17 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add course</title>
+    <title>Add Course</title>
+    <link rel="stylesheet" href="add_course.css">
 </head>
+
 <body>
-    <form method="post">
-        <input type="text" name="course_code" required="true" placeholder="Course Code">
-        <input type="text" name="course_name" required="true" placeholder="Course Name">
-        <input type="text" name="class_link" required="true" placeholder="Class Link">
-        <input type="text" name="credits" required="true" placeholder="course credits">
-        <button type="submit">Add Course</button>
-    </form>
+
+    <nav class="navbar">
+        <img class="logo" src="img/logo.png" alt="...">
+        <h3>भारतीय प्रौद्योगिकी संस्थान इंदौर <br> Indian Institute of Technology Indore</h3>
+    </nav>
+
+    <h1>Add Course</h1>
+    <h2>Welcome to Online Education Portal.</h2>
+
+    <div class="container">
+
+        <form method="post">
+
+            <div class="box">
+                <input type="text" name="course_code" required="true" placeholder="Course Code">
+            </div>
+
+            <div class="box">
+                <input type="text" name="course_name" required="true" placeholder="Course Name">
+            </div>
+
+            <div class="box">
+                <input type="text" name="class_link" required="true" placeholder="Class Link">
+            </div>
+            
+            <div class="box">
+                <input type="text" name="credits" required="true" placeholder="Course Credits">
+            </div>
+
+            <button type="submit">Add Course</button>
+            
+        </form>
+
+    </div>
+
 </body>
+
 </html>
