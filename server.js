@@ -129,6 +129,24 @@ app.get('/teacher_login', (req, res) => {
     res.render('teacher_login.ejs');
 })
 
+app.get('/check_attendance',(req,res)=>{
+    if (req.session.loggedin && req.session.user) {
+        res.render('check_attendance.ejs');
+    } else {
+        res.redirect('/');
+    }
+})
+
+app.post('/check_attendance',(req,res)=>{
+    var course=req.body.course;
+    var sql='call Check_Attendance(?)';
+    connection.query(sql,[course],(err,result)=>{
+        if(err) throw err;
+        console.log(result);
+        res.render('check_attendance.ejs', {data : result[0]});
+    })
+})
+
 app.get('/admin_login', (req, res) => {
     res.render('admin_login.ejs');
 })
@@ -139,6 +157,7 @@ app.post('/admin_login', (req, res) => {
 
     admin_authenticate(username, passsword, res, req);
 })
+
 app.get('/logout', (req, res) => {
     var query = 'DELETE FROM current_session';
     connection.query(query, (err, results) => {
@@ -152,6 +171,7 @@ app.get('/logout', (req, res) => {
     }
     res.redirect('/');
 })
+
 app.post('/teacher_login', (req, res) => {
     var username = req.body.username;
     var password = req.body.password;
@@ -403,6 +423,7 @@ app.post('/add_dept', (req, res) => {
     var dept_name = req.body.dept_name;
     add_dept(req, res, dept_id, dept_name);
 })
+
 app.post('/add_course', (req, res) => {
     var course_code = req.body.course_code;
     var course_name = req.body.course_name;
@@ -411,6 +432,7 @@ app.post('/add_course', (req, res) => {
 
     add_course(req, res, course_code, course_name, class_link, credits);
 })
+
 app.get('/add_prof', (req, res) => {
     if (req.session.loggedin && req.session.user) {
         // res.render('student_home.ejs');
@@ -419,6 +441,7 @@ app.get('/add_prof', (req, res) => {
         res.redirect('/');
     }
 })
+
 app.post('/add_prof', (req, res) => {
     var name = req.body.Name;
     var empid = req.body.empid;
@@ -472,9 +495,11 @@ app.post('/add_prof', (req, res) => {
         res.redirect('/admin_home');
     })
 })
+
 app.get('/student_courses', (req, res) => {
     get_student_courses(req, res,)
 })
+
 app.get('/teacher_home', (req, res) => {
     if (req.session.loggedin && req.session.user) {
         res.render('teacher_home.ejs');
@@ -522,6 +547,7 @@ app.get('/student_courses', (req, res) => {
         res.redirect('/');
     }
 })
+
 app.get('/prof_courses', (req, res) => {
     if (req.session.loggedin && req.session.user) {
         get_prof_courses(req, res);
@@ -529,6 +555,7 @@ app.get('/prof_courses', (req, res) => {
         res.redirect('/');
     }
 })
+
 app.listen(port, () => {
     console.log("application started successfully")
 })
@@ -541,6 +568,22 @@ app.get('/ongoing_classes', (req, res) => {
     }
 
 })
+
+app.get('/mark_attendance',(req,res)=>{
+    var course = req.query.course;
+    var time = req.query.time;
+    var sql='call Mark_Attendance(?,?,@did); select @did';
+    connection.query(sql,[course,time],(err,result)=>{
+        if(err) throw err
+        if(results[1]['@did']==1){
+            res.redirect('/student_home');
+            res.end();
+        }else{
+            res.render('ongoing_classes.ejs', {error : "attendance marked successfully"});
+        }
+    })
+})
+
 app.use(express.urlencoded({ extended: false }));
 
 // Parse JSON bodies (as sent by API clients)
@@ -756,17 +799,18 @@ let get_ongoing_courses = async function (req, res) {
         })
         if (count == 0) {
             console.log(count);
-            res.render("ongoing_classes.ejs", { error: 1, course1: null, time1: null });
+            res.render("ongoing_classes.ejs", { error: "No ongoing classes at this moment" });
             res.end();
         } else {
             console.log(count);
-            res.render("ongoing_classes.ejs", { error: null, course1: course, time1: time })
+            res.render("ongoing_classes.ejs", { course1: course, time1: time })
             res.end();
         }
 
         // res.render('ongoing_classes.ejs', { data: JSON.stringify(results[0]),  date: d});
     })
 }
+
 let prof_timetable = async function (req, res) {
     let id = await GET_ID();
     if (id < 0) {
@@ -789,6 +833,7 @@ let prof_timetable = async function (req, res) {
         res.render('Timetable.ejs', { data: results[0] });
     })
 }
+
 let student_timetable = async (req, res) => {
     console.log('here');
     let id = await GET_ID();
