@@ -1,16 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Department</title>
+    <link rel="stylesheet" href="add_course.css">
 </head>
+
 <body>
-    <form method="post">
-        <input type="text" name="dept_id" required="true" placeholder="Department ID">
-        <input type="text" name="dept_name" required="true" placeholder="Department Name">
-        <button type="submit">Add Department</button>
-    </form>
+
+    <nav class="navbar">
+        <img class="logo" src="img/logo.png" alt="...">
+        <h3>भारतीय प्रौद्योगिकी संस्थान इंदौर <br> Indian Institute of Technology Indore</h3>
+    </nav>
+
+    <h1>Add Department</h1>
+    <h2>Welcome to Online Education Portal.</h2>
+
+    <div class="container">
+
+        <form method="post">
+
+            <div class="box">
+                <input type="text" name="dept_id" required="true" placeholder="Department ID">
+            </div>
+
+            <div class="box">
+                <input type="text" name="dept_name" required="true" placeholder="Department Name">
+            </div>
+
+            <button type="submit">Add Department</button>
+
+        </form>
+
+    </div>
 
 </body>
+
 </html>
