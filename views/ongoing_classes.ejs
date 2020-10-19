@@ -10,9 +10,9 @@
         <h1><%=error%>.</h1>
         <!-- <p>i am here</p> -->
     <%}
-    if(typeof course1 != 'undefined'){
-         var link = '/mark_attendance/?course=' + course1+'&time=' + time1%>
-       <p id="temps"><%= link%> </p>
+    if(typeof course1 != 'undefined'){%>
+       <%  var link = '/mark_attendance/?course=' + course1+'&time=' + time1+'';%>
+       <p style="display: none;" id="temps"><%= link%> </p>
         <table>
             <tr>
                 <th>Time</th>

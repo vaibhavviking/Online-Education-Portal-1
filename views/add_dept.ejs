@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Department</title>
-    <link rel="stylesheet" href="add_course.css">
+    <link rel="stylesheet" href="./css/add_course.css">
 </head>
 
 <body>
 
     <nav class="navbar">
-        <img class="logo" src="img/logo.png" alt="...">
+        <img class="logo" src="./css/images/logo.png" alt="...">
         <h3>भारतीय प्रौद्योगिकी संस्थान इंदौर <br> Indian Institute of Technology Indore</h3>
     </nav>
 
@@ -33,7 +33,9 @@
             <button type="submit">Add Department</button>
 
         </form>
-
+        <%if( typeof error != 'undefined'){%>
+            <p><%=error%></p>
+            <%}%>
     </div>
 
 </body>

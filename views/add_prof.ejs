@@ -137,7 +137,7 @@ body {
 
 <body>
    <nav class="navbar">
-        <img class="logo" src="logo.png" alt="...">
+    <img class="logo" src="./css/images/logo.png" alt="...">
         <h3>Indian Institute of Technology Indore</h2>
     </nav>
 
@@ -176,12 +176,15 @@ body {
         </div>
 
  
-     
+        
         <div id="container">
           
             <p id="save" style="visibility: hidden;"></p>
          
         </div>
+        <%if( typeof error != 'undefined'){%>
+            <p><%=error%></p>
+            <%}%>
         <button class="btn" type="submit">Add Professor</button>
         <button class="btn1" onclick='add()'>Add Course</button>
     </form>

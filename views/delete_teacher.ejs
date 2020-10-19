@@ -119,7 +119,7 @@ body {
 
 <body>
    <nav class="navbar">
-        <img class="logo" src="logo.png" alt="...">
+    <img class="logo" src="./css/images/logo.png" alt="...">
         <h2>Indian Institute of Technology Indore</h2>
     </nav>
 
@@ -132,6 +132,9 @@ body {
  
          </div>
 <button class="btn" type="submit">delete teacher</button>
+<%if( typeof error != 'undefined'){%>
+    <p><%=error%></p>
+    <%}%>
     </form>
    
 </body>
