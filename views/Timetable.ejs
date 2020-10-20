@@ -18,7 +18,9 @@
         <th>Thursday</th>
         <th>Friday</th>
         <th>Saturday</th>
+       
       </tr>
+      <% var i =1%>
       <% data.forEach((item)=>{ %>
         <tr>
           <td><%= item.Time %></td>
@@ -28,9 +30,10 @@
           <td><%= item.Thursday %></td>
           <td><%= item.Friday %></td>
           <td><%= item.Saturday %></td>
-          <!-- <td><%= item.day %></td> -->
+          
+          
       </tr>
-      <% }) %>
+      <% i++}) %>
     </table>
 </body>
 

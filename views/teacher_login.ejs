@@ -28,7 +28,9 @@
       <div class="box">
         <i class="fa fa-key"></i>
         <input type="password" name="password" required="true" id="password" placeholder="Enter Your Password">
-
+        <%if( typeof error != 'undefined'){%>
+          <p><%=error%></p>
+          <%}%>
       </div>
       <button type="submit" class="btn">Sign In</button>
     </form>

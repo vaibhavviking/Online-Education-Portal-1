@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 
@@ -9,7 +10,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-<link rel="stylesheet" href="./student_home.css">
+<link rel="stylesheet" href="./css/student_home.css">
     <title>student home page</title>
     <style>
       .card-deck{ background: rgb(9,2,120);background: linear-gradient(117deg, rgba(9,2,120,1) 0%, rgba(9,175,243,1) 100%);}
@@ -23,26 +24,27 @@
     </h1>
     <h2>welcome to online education portol</h2>
   </header>
-  <nav id="navbar">
-    <div id="logo">
-        <img src="logo1.png" alt="">
-    </div>
-    <ul>
-        <li class="item"><a href="#">Home</a></li>
-        <li class="item"><a href="#">My Attendance</a></li>
-        <li class="item"><a href="/timetable">Time Table</a></li>
+    <nav id="navbar">
+        <div id="logo">
+            <img src="./css/images/logo.png" alt="">
+        </div>
+        <ul>
+
+           
+            <li class="item"><a href="#">Home</a></li>
+        <li class="item"><a href="/ongoing_classes">My Attendance</a></li>
+        <li class="item"><a href="/student_timetable">Time Table</a></li>
         <li class="item"><a href="/student_courses">Courses</a></li>
-        <li class="item"><a href="#">Study Material</a></li>
+        <li class="item"><a href="/study_material">Study Material</a></li>
         <li class="item"><a href="/logout">LogOut</a></li>
-       
+
+        </ul>
+        </div>
+    </nav>
 
 
-    </ul>
-    </div>
-</nav>
-
-
-  
+      
+    
 
     
         <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
@@ -150,9 +152,10 @@
           <h5 class="card-title">Special title treatment</h5>
           <a href="#" class="btn btn-primary">Go somewhere</a>
           <a href="/home_student" class="btn btn-primary">study material</a>
-          <a href="/home_student" class="btn btn-primary">my Attendance</a>
-          <a href="/home_student" class="btn btn-primary">courses</a>
-          <a href="/home_student" class="btn btn-primary">timeable</a>
+          <a href="/ongoing_classes" class="btn btn-primary">my Attendance</a>
+          <a href="/student_courses" class="btn btn-primary">courses</a>
+          <a href="/student_timetable" class="btn btn-primary">timeable</a>
+        
         
         </div>
         <div class="card-footer text-muted">

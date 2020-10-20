@@ -46,10 +46,10 @@ delimiter //
 create procedure Retrieve_ID(
 in u varchar(30),
 in p varchar(30),
-out account_id varchar(15)
+out account_id varchar(15),
+out t varchar(15)
 )
 begin
-declare t varchar(15);
 select Type_ into t from Account where User_ID_=u and Password_=p;
 case
 	when t='Admin' then 
@@ -72,7 +72,7 @@ end case;
 end //
 delimiter ;
 /*Execute*/
-call Retrieve_ID('P1','a',@ID); /* User_ID, Password */
+call Retrieve_ID('P1','a',@ID,@t); /* User_ID, Password */
 select @ID;                    /* Duplicate User ID Check */
 /*End*/
 
@@ -129,7 +129,6 @@ delimiter ;
 call Delete_Dept(1,@rif); /*ID*/
 select @rif;              /*Referential Integrity Failure*/
 /*End*/
-drop procedure Delete_Dept;
 
 /*Insert Student*/
 delimiter //
@@ -790,16 +789,24 @@ call Total_Days_Increment();
 delimiter //
 create procedure Mark_Attendance(
 in rollno int,
-in code varchar(7)
+in code varchar(7),
+in time varchar(5),
+out did int
 )
 begin
+declare exit handler for 1062
+begin
+set did=1;
+end;
+insert into Attendance_Marked values(rollno,time);
 update Courses_Student_Relation as a 
 set a.Days_Attended=a.Days_Attended+1
 where a.Roll_No=rollno and a.Course_Code=code;
 end //
 delimiter ;
 /*Execute*/
-call Mark_Attendance(1,'CS 207');
+call Mark_Attendance(1,'CS 207','17:00',@did);   /*Roll No, Course Code, Time */
+select @did;
 /*End*/
 
 /* Check Attendance (for Professor)*/
@@ -857,7 +864,7 @@ create procedure Get_Student_Links(
 in rollno int
 )
 begin
-select b.Course_Code, b.Class_Link
+select b.Class_Link
 from Courses_Student_Relation as a inner join Courses as b
 on a.Course_Code=b.Course_Code
 where a.Roll_No=rollno;
@@ -873,7 +880,7 @@ create procedure Get_Professor_Links(
 in empid int
 )
 begin
-select b.Course_Code, b.Class_Link
+select b.Class_Link
 from Courses_Professor_Relation as a inner join Courses as b
 on a.Course_Code=b.Course_Code
 where a.Employee_ID=empid;
@@ -883,4 +890,80 @@ delimiter ;
 call Get_Professor_Links(20);
 /*End*/
 
+/*Insert Session*/
+delimiter //
+create procedure Insert_Session(
+in SID varchar(50),
+in userid varchar(30),
+out rif int
+)
+begin
+declare exit handler for 1062
+begin
+delete from Session where Session.User_ID_=userid;
+insert into Session values(SID, userid);
+end;
+declare exit handler for 1452
+begin 
+set rif=1;
+end;
+insert into Session values(SID, userid);
+end //
+delimiter ;
+/*Execute*/
+call Insert_Session('123','1',@rif); /*Session_ID, User_ID*/
+select @rif;
+/*End*/
 
+/*Delete Session*/
+delimiter //
+create procedure Delete_Session(
+in userid varchar(30)
+)
+begin
+delete from Session where Session.User_ID_=userid;
+end //
+delimiter ;
+/*Execute*/
+call Delete_Session('1'); /*User_ID*/
+/*End*/
+
+/*Check Today's Attendance*/
+delimiter //
+create procedure Attendance_Today(
+in code varchar(7),
+in day varchar(20)
+)
+begin
+declare val int;
+select count(d.Time) into val from Courses_Time_Slots_Relation as d where d.Course_Code=code and d.Day=day;
+case 
+when val=1 then
+select c.Roll_No, c.S_Name from Student as c where c.Roll_No in
+(select b.Roll_No from Attendance_Marked as b where b.Time in
+(select a.Time from Courses_Time_Slots_Relation as a where a.Course_Code=code and a.Day=day));
+else 
+select c.Roll_No, c.S_Name from Student as c where c.Roll_No in
+(select b.Roll_No from Attendance_Marked as b where b.Time in
+(select a.Time from Courses_Time_Slots_Relation as a where a.Course_Code=code and a.Day=day));
+end case;
+end //
+delimiter ;
+/*Execute*/
+call Attendance_Today('CS 207','Monday'); /*Course Code, Day */
+/*End*/
+
+/*Retrieve Study Material*/
+delimiter //
+create procedure Retrieve_Study_Material(
+in rollno int
+)
+begin
+select a.Course_Code, a.Link
+from Study_Material as a
+where a.Course_Code in (select b.Course_Code from Courses_Student_Relation as b where b.Roll_No=rollno );
+end //
+delimiter ;
+/*Execute*/
+call Retrieve_Study_Material(1); /*Roll No.*/
+/*End*/

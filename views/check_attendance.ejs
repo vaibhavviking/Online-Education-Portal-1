@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Attendance</title>
+</head>
+<body>
+    <form action="" method="post">
+        <input type="text" name="course" placeholder="Course Code" required="true">
+        <button type="submit">Check</button>
+    </form>
+    <%if(typeof data!='undefined'){%>
+        <table>
+            <tr>
+                <th>Roll No.</th>
+                <th>Name</th>
+                <th>Days Attended</th>
+                <th>Total Classes</th>
+            </tr>
+            <% data.forEach((item)=>{%>
+                <tr>
+                    <td><%=item.Roll_No%></td>
+                    <td><%=item.S_Name%></td>
+                    <td><%=item.Days_Attended%></td>
+                    <td><%=item.Total_Days%></td>
+                </tr>
+           <% })%>
+        </table>
+   <% }%>
+</body>
+</html>
