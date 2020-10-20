@@ -6,8 +6,8 @@ const bodyParser = require('body-parser');
 const url = require('url');
 var mysql = require('mysql');
 const cookieParser = require('cookie-parser');
-const { promises, readdirSync, link } = require('fs');
-const { get } = require('http');
+// const { promises, readdirSync, link } = require('fs');
+// const { get } = require('http');
 // const passport = require('passport');
 // const Stratergy = require('passport-local').Stratergy;
 
