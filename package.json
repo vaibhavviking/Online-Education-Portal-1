@@ -1,0 +1,31 @@
+{
+  "name": "online-education-portal",
+  "version": "1.0.0",
+  "description": "Welcome to GitHub—where millions of developers work together on software. Ready to get started? Let’s learn how this all works by building and publishing your first GitHub Pages website!",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vaibhavviking/Online-Education-Portal.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vaibhavviking/Online-Education-Portal/issues"
+  },
+  "homepage": "https://github.com/vaibhavviking/Online-Education-Portal#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.5",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "mysql": "^2.18.1",
+    "node": "^14.11.0",
+    "node-schedule": "^1.3.2",
+    "schedule": "^0.5.0"
+  },
+  "devDependencies": {}
+}
