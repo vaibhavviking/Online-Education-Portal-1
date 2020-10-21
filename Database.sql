@@ -148,7 +148,7 @@ foreign key(Course_Code) references Courses(Course_Code) on delete cascade
 );
 /*drop table Study_Material*/
 
-create table Session(
+create table current_session(
 Session_ID varchar(50),
 User_ID_ varchar(30),
 primary key(User_ID_),
