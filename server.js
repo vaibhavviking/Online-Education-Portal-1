@@ -13,7 +13,7 @@ const cookieParser = require('cookie-parser');
 // const Stratergy = require('passport-local').Stratergy;
 
 
-var port = process.env.PORT || 3002;
+var port = process.env.PORT || 3000;
 
 var app = express();
 app.use(cookieParser());
