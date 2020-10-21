@@ -39,7 +39,7 @@ var connection = mysql.createConnection({
     multipleStatements: true,
     host: 'us-cdbr-east-02.cleardb.com',
     user: 'be25eca42b63ff',
-    password: '74074572 ',
+    password: '74074572',
     database: 'heroku_ba6bdaf56728c3e',
     // port: 3306
 });
