@@ -1,7 +1,7 @@
 
 const express = require('express');
 const ejs = require('ejs');
-var session = require('express-session');
+var session = require('cookie-session');
 var schedule = require('node-schedule');
 const bodyParser = require('body-parser');
 const url = require('url');
