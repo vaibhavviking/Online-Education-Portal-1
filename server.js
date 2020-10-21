@@ -37,11 +37,11 @@ app.use((req, res, next) => {
 
 var connection = mysql.createConnection({
     multipleStatements: true,
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'demo',
-    port: 3306
+    host: 'us-cdbr-east-02.cleardb.com',
+    user: 'be25eca42b63ff',
+    password: '74074572 ',
+    database: 'heroku_ba6bdaf56728c3e',
+    // port: 3306
 });
 
 connection.connect(function (err) {
@@ -788,10 +788,10 @@ let get_ongoing_courses = async function (req, res) {
             }
             hr += item.Time[1];
             var day2 = arr[day];
-            course = item[day2];
             console.log(course);
             // console.log(h, "and", hr);
-            if (h == parseInt(hr) && course != null) {
+            if (h == parseInt(hr)) {
+                course = item[day2];
                 count++;
                 console.log('here');
                 // course = item.Monday;
@@ -799,11 +799,11 @@ let get_ongoing_courses = async function (req, res) {
                 time = item.Time;
             }
         })
-        if (count == 0) {
+        if (count == 0 || course == null) {
             console.log(count);
             res.render("ongoing_classes.ejs", { error: "No ongoing classes at this moment" });
             res.end();
-        } else {
+        } else if(count > 0 || course != null) {
             console.log(count);
             res.render("ongoing_classes.ejs", { course1: course, time1: time })
             res.end();
@@ -886,6 +886,7 @@ let mark_attendance = async function(req,res) {
 
         }else{
             res.render('ongoing_classes.ejs', {error : "attendance marked successfully"});
+            res.end();
         }
     })
 }
