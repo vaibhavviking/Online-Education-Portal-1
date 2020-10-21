@@ -150,9 +150,7 @@ foreign key(Course_Code) references Courses(Course_Code) on delete cascade
 
 create table current_session(
 Session_ID varchar(50),
-User_ID varchar(30),
-primary key(User_ID),
-foreign key(User_ID) references Account(User_ID_) on delete cascade
+User_ID varchar(30) PRIMARY KEY
 );
 /*drop table Session*/
 
