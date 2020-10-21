@@ -179,9 +179,9 @@ app.get('/logout', (req, res) => {
         else console.log('session refreshed');
     })
     if (req.session.loggedin) {
-        req.session.destroy();
-        res.clearCookie('login');
-        res.clearCookie('user_id');
+        req.session=null
+        // res.clearCookie('login');
+        // res.clearCookie('user_id');
     }
     res.redirect('/');
 })
