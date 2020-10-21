@@ -13,7 +13,7 @@ const cookieParser = require('cookie-parser');
 // const Stratergy = require('passport-local').Stratergy;
 
 
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 6666;
 
 var app = express();
 app.use(cookieParser());
@@ -43,6 +43,16 @@ var connection = mysql.createConnection({
     database: 'heroku_ba6bdaf56728c3e',
     // port: 3306
 });
+
+// var connection = mysql.createConnection({
+//     multipleStatements: true,
+//     host: 'localhost',
+//     user: 'root',
+//     password: 'password',
+//     database: 'demo',
+//     port: 3306
+// });
+
 
 connection.connect(function (err) {
     if (err) {
