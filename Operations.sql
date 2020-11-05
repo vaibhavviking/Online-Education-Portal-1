@@ -394,19 +394,29 @@ delimiter //
 create procedure Insert_Study_Material(
 in link varchar(200),
 in code varchar(7),
-out rif int
+in empid int,
+out rif int,
+out inv int
 )
-begin
+x:begin
 declare exit handler for 1452
 begin
 set rif=1;
 end;
-insert into Study_Material(Link, Course_Code) values(link,code);
+case
+	when code not in (select a.Course_Code from Courses_Professor_Relation as a where a.Employee_ID=empid) then set inv=1;
+    else set inv=0;
+end case;
+case
+	when inv!=1 then insert into Study_Material(Link, Course_Code) values(link,code);
+    else leave x;
+end case;
 end //
 delimiter ;
 /*Execute*/
-call Insert_Study_Material('xyz.com','CS 207',@rif); /* Link, Course Code */
-select @rif;                                         /* Referential Integrity Failure(Course DNE)*/ 
+call Insert_Study_Material('xyz.com','CS 207',1,@rif,@inv); /* Link, Course Code, Employee_ID */
+select @rif;                                         /* Referential Integrity Failure(Course DNE)*/
+select @inv;                                         /* Professor not authorised */
 /*End*/
 
 /*Delete Study Material */
@@ -952,6 +962,10 @@ select c.Roll_No, c.S_Name from Student as c where c.Roll_No in
 (select b.Roll_No from Attendance_Marked as b where b.Time in
 (select a.Time from Courses_Time_Slots_Relation as a where a.Course_Code=code and a.Day=day));
 else 
+/*select c.Roll_No, c.S_Name, a.Time from Student as c where c.Roll_No in
+(select b.Roll_No from Attendance_Marked as b where b.Time in
+(select a.Time from Courses_Time_Slots_Relation as a where a.Course_Code=code and a.Day=day));
+*/
 select c.Roll_No, c.S_Name, a.Time 
 from Student as c join Attendance_Marked as b join Courses_Time_Slots_Relation as a
 on c.Roll_No=b.Roll_No and b.Time=a.Time
