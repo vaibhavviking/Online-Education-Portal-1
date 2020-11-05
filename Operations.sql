@@ -991,3 +991,17 @@ delimiter ;
 /*Execute*/
 call Retrieve_Study_Material(1); /*Employee ID*/
 /*End*/
+
+/*Update Department*/
+delimiter //
+create procedure Update_Department(
+in deptid int,
+in dname varchar(40)
+)
+begin
+update Department set D_Name=dname where Dept_ID=deptid;
+end //
+delimiter ;
+/*Execute*/
+call Update_Department(1, 'AI');
+/*End*/
