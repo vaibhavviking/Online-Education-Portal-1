@@ -449,16 +449,16 @@ delimiter //
 create procedure Unassign_Time_Slot(
 in code varchar(7),
 in day varchar(20),
-in time varchar(5)
+in t varchar(5)
 )
 begin
-delete from Courses_Time_Slots_Relation as a where a.Course_Code=code and a.Day=day and a.Time=time; 
+delete from Courses_Time_Slots_Relation as a where a.Course_Code=code and a.Day=day and a.Time=t; 
 end //
 delimiter ;
 /*Execute*/
 call Unassign_Time_Slot('CS 207','Monday','17:00');
 /*End*/
-
+drop procedure Unassign_Time_Slot;
 /* Get Student Time Table */
 delimiter //
 create procedure Student_Time_Table(
@@ -1003,5 +1003,72 @@ update Department set D_Name=dname where Dept_ID=deptid;
 end //
 delimiter ;
 /*Execute*/
-call Update_Department(1, 'AI');
+call Update_Department(1, 'AI');  /*Dept_Id, New Dept Name*/
 /*End*/
+
+/*Remove All Student Courses*/
+delimiter //
+create procedure Remove_All_Student_Courses(
+in rollno int
+)
+begin
+delete from Courses_Student_Relation as a where a.Roll_No=rollno; 
+end //
+delimiter ;
+/*Execute*/
+call Remove_All_Student_Courses(1); /*Roll No*/
+/*End*/
+
+/*Update Student*/
+delimiter //
+create procedure Update_Student(
+in rollno int,
+in name varchar(40),
+in prog varchar(10),
+in year int,
+in dept_id int,
+in cid varchar(7)
+)
+begin
+update Student set S_Name=name, Program_Enrolled=prog, Year_Of_Study=year, Department_ID=dept_id where Student.Roll_No=rollno;
+call Add_Student_Course(cid,rollno,1,1,@did,@rif,@inv);
+end //
+delimiter ;
+/*Execute*/
+call Update_Student(1,'A','B.Tech',2,1,'CS 207'); /*Roll No, Name, Program, year of study, dept id, course id*/
+/*End*/
+/*Execute Remove_All_Student_Courses() once and then execute Update_Student() for all the courses added*/
+
+/*Remove All Professor Courses*/
+delimiter //
+create procedure Remove_All_Professor_Courses(
+in empid int
+)
+begin
+delete from Courses_Professor_Relation as a where a.Employee_ID=empid; 
+end //
+delimiter ;
+/*Execute*/
+call Remove_All_Professor_Courses(1); /*Employee ID*/
+/*End*/
+
+/*Update Professor*/
+delimiter //
+create procedure Update_Professor(
+in empid int,
+in name varchar(40),
+in post varchar(30),
+in dept_id int,
+in cid varchar(7)
+)
+begin
+update Professor set P_Name=name, Post=post, Department_ID=dept_id where Professor.Roll_No=rollno;
+call Add_Professor_Course(cid,empid,@did,@rif);  
+end //
+delimiter ;
+/*Execute*/
+call Update_Professor(1,'A','B.Tech',2,1,'CS 207'); /*Employee ID, Name, Post, dept id, course id*/
+/*End*/
+/*Execute Remove_All_professor_Courses() once and then execute Update_Professor() for all the courses added*/
+
+
