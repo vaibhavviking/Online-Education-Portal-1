@@ -1027,7 +1027,7 @@ create procedure Remove_All_Student_Courses(
 in rollno int
 )
 begin
-delete from Courses_Student_Relation as a where a.Roll_No=rollno; 
+delete from Courses_Student_Relation where Roll_No=rollno; 
 end //
 delimiter ;
 /*Execute*/
@@ -1060,7 +1060,7 @@ create procedure Remove_All_Professor_Courses(
 in empid int
 )
 begin
-delete from Courses_Professor_Relation as a where a.Employee_ID=empid; 
+delete from Courses_Professor_Relation where Employee_ID=empid; 
 end //
 delimiter ;
 /*Execute*/
