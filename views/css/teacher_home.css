@@ -85,7 +85,7 @@ header h2{
     margin-top: 0px;
     text-align: center;
     padding-top: 20px;
-    font-size: 50px;
+    font-size: 30px;
     /*background-color: #e8e2b9;*/
     border-bottom: 2px solid black;}
 
@@ -93,11 +93,19 @@ header h2{
 
 h1{
     text-align: center;
-    font-size: 50px;
+    font-size: 40px;
     color: blue;
     font-family: cursive;
 }
 
 footer a{
-padding:5px;
+    padding: 8px;
+    color: blue;
+    font-size: 20px;
 }
+footer{
+    background-color: rgb(78, 12, 80);
+}
+ footer .card-body{
+     background-color: orange;
+ }
