@@ -55,3 +55,8 @@ Stored Procedures stored in database
 34. Retrieve_Student_Study_Material (Roll_No)
 35. Retrieve_Professor_Study_Material (Employee_ID)
 36. Update_Department(Department ID, Department Name)
+37. Remove_All_Student_Courses(Roll No.)
+38. Update_Student(Roll No, Name, Program, year of study, dept id, course id)
+39. Remove_All_Professor_Courses(Employee ID)
+40. Update_Professor(Employee ID, Name, Post, dept id, course id)
+41. Update_Courses(Course Code, Course Name, Class Link, Credits)
