@@ -1071,4 +1071,19 @@ call Update_Professor(1,'A','B.Tech',2,1,'CS 207'); /*Employee ID, Name, Post, d
 /*End*/
 /*Execute Remove_All_professor_Courses() once and then execute Update_Professor() for all the courses added*/
 
+/*Update Course*/
+delimiter //
+create procedure Update_Courses(
+in cid varchar(7),
+in name varchar(50),
+in link varchar(200),
+in credit varchar(5)
+)
+begin
+update Courses set Course_Name=name, Class_Link=link, Credits=credit where Courses.Course_Code=cid;
+end //
+delimiter ;
+/*Execute*/
+call Update_Courses('CS 207', 'DBMS', 'Mahismati.com', '4-0-0'); /*Course Code, Course Name, Class Link, Credits */
+/*End*/
 
