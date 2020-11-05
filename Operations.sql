@@ -462,7 +462,8 @@ in day varchar(20),
 in t varchar(5)
 )
 begin
-delete from Courses_Time_Slots_Relation as a where a.Course_Code=code and a.Day=day and a.Time=t; 
+delete from Courses_Time_Slots_Relation where Courses_Time_Slots_Relation.Course_Code=code and Courses_Time_Slots_Relation.Day=day 
+and Courses_Time_Slots_Relation.Time=t; 
 end //
 delimiter ;
 /*Execute*/
@@ -1027,7 +1028,7 @@ create procedure Remove_All_Student_Courses(
 in rollno int
 )
 begin
-delete from Courses_Student_Relation where Roll_No=rollno; 
+delete from Courses_Student_Relation as a where a.Roll_No=rollno; 
 end //
 delimiter ;
 /*Execute*/
@@ -1060,7 +1061,7 @@ create procedure Remove_All_Professor_Courses(
 in empid int
 )
 begin
-delete from Courses_Professor_Relation where Employee_ID=empid; 
+delete from Courses_Professor_Relation as a where a.Employee_ID=empid; 
 end //
 delimiter ;
 /*Execute*/
