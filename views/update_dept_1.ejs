@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter The Department ID</title>
+    <link rel="stylesheet" href="./css/add_course.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <img class="logo" src="./css/images/logo.png" alt="...">
+        <h3>भारतीय प्रौद्योगिकी संस्थान इंदौर <br> Indian Institute of Technology Indore</h3>
+    </nav>
+
+    <h1>Enter Department ID</h1>
+    <h2>Welcome to Online Education Portal.</h2>
+
+    <div class="container">
+
+        <form method="post">
+
+            <div class="box">
+                <input type="text" name="depid" required="true" placeholder="Department ID">
+            </div>
+
+            
+            <button type="submit">Update Details</button>
+
+        </form>
+        <%if( typeof error != 'undefined'){%>
+            <p><%=error%></p>
+            <%}%>
+    </div>
+
+</body>
+
+</html>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update_Student</title>
+    <title>Update Course</title>
     <script src="https://kit.fontawesome.com/63e2b2b603.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./css/update_student.css">
     <style>
@@ -148,7 +148,7 @@
         <h3>भारतीय प्रौद्योगिकी संस्थान इंदौर <br> Indian Institute of Technology Indore</h3>
     </nav>
 
-    <h1>Update Student Data</h1>
+    <h1>Update Course Data</h1>
     <h2>Welcome to Online Education Portal</h2>
 
     <table class="table">
@@ -158,27 +158,15 @@
         </tr>
         <tr>
             <td>Name</td>
-            <td><%= data1.S_Name%></td>
+            <td><%= data1.Course_Name%></td>
         </tr>
         <tr>
-            <td>Program</td>
-            <td><%= data1.Program_Enrolled%></td>
+            <td>Class Link</td>
+            <td><%= data1.Class_Link%></td>
         </tr>
         <tr>
-            <td>Year Of Study</td>
-            <td><%= data1.Year_Of_Study%></td>
-        </tr>
-        <tr>
-            <td>Department ID</td>
-            <td><%= data1.Department_ID%></td>
-        </tr>
-        <tr>
-            <td>Courses</td>
-            <td>
-                <% data2.forEach((item)=>{%>
-                <span style="display: inline-block;"><%=item.Course_Code%></span>
-                <%})%>
-            </td>
+            <td>Credits</td>
+            <td><%= data1.Credits%></td>
         </tr>
     </table>
 
@@ -188,26 +176,21 @@
         <form action="" method="POST">
             <div class="box">
                 <i class="fa fa-user"></i>
-                <input type="text" name="username" required="true" id="name" placeholder="Enter Name">
+                <input type="text" name="name" required="true" id="name" placeholder="Enter Course Name">
             </div>
             <div class="box">
                 <i class="fa fa-address-card"></i>
-                <input type="text" name="program" required="true" placeholder="Enter Program">
+                <input type="text" name="link" required="true" placeholder="Enter Class Link">
             </div>
             <div class="box">
                 <i class="fa fa-vcard-o"></i>
-                <input type="text" name="year" required="true" id="year" placeholder="Enter Year of study">
-            </div>
-            <div class="box">
-                <i class="fa fa-vcard-o"></i>
-                <input type="number" name="depid" required="true" id="depid" placeholder="Enter Department ID">
+                <input type="text" name="credits" required="true" id="depid" placeholder="Enter Course Credits">
             </div>
             <div id="container">
           
                 <p id="save" style="visibility: hidden;"></p>
                 
             </div>
-            <button  style="display: block;" class="btn" onclick="add()" >Add Course</button></br>
             <a href="/admin_home" type="submit" ><button class="btn">Update</button></a>
 
         </form>
