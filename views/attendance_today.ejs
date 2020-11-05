@@ -1,0 +1,173 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Course</title>
+    <script src="https://kit.fontawesome.com/63e2b2b603.js" crossorigin="anonymous"></script>
+    <style>
+.navbar {
+    background-color: rgba(180, 150, 150, 0.5);
+    display: flex;
+    align-items: center;
+}
+.box{
+    width: 100%;
+    border-bottom: 2px solid purple;
+    margin: 22px 0px;
+    
+}
+.box input{
+    background: none;
+    width: 75%;
+    outline:  none;
+    border: none;
+    color: red;
+    padding: 5px 10px;
+    font-size: 25px;
+    font-family: cursive;
+    font-weight: bold;
+    opacity: .6;
+}
+.box i{
+    width: 25px;
+    text-align: center;
+}
+.btn{
+    cursor: pointer;
+    outline: none;
+    width: 56%;
+    margin: 12px 0;
+    padding: 10px 21px;
+    color:black;
+    border-radius: 10px ;
+    border: 2px solid purple;
+    font-size: 18px;
+    background: none;
+    font-weight: bold;
+}
+.btn:hover{
+   color: rgb(228, 13, 13);
+   
+   background: white;
+}
+ h1 {
+    font-size: 40px;
+    color: black;
+   border-bottom: 5px solid purple;
+    display: inline-block;
+    margin-top: 60px;
+   /* padding: 25px 0px;*/
+    bottom: 0px;
+}
+.btn1{
+    cursor: pointer;
+    outline: none;
+    width: 25%;
+    margin: 12px 0;
+    padding: 10px 21px;
+    color:black;
+    border-radius: 10px ;
+    border: 2px solid purple;
+    font-size: 18px;
+    background: none;
+    font-weight: bold;
+}
+.btn1:hover{
+   color: rgb(228, 13, 13);
+   
+   background: white;
+}
+ form{
+    color:black;
+    position: absolute;
+    top: 45%;
+    left: 40%; 
+ }
+.logo {
+    height: 100px;
+    width: 100px;
+    margin: 10px;
+}
+h2 {
+    font-size: 2.5rem;
+    font-style: italic;
+    margin: 0px 10px;
+}
+body {
+    margin: 0px;
+    box-sizing: border-box;
+    text-align: center;
+    font-weight: 400;
+    line-height: 1.5;
+    background-color: #e2e2e296;
+}
+#h1 {
+    margin: 0px;
+    position: relative;
+    top: 20px;
+    text-align: center;
+    padding: 20px;
+    color: black;
+    background-color: transparent;
+    font-size: 3rem;
+}
+    </style>
+  
+</head>
+
+<body>
+   <nav class="navbar">
+    <img class="logo" src="./css/images/logo.png" alt="...">
+        <h2>Indian Institute of Technology Indore</h2>
+    </nav>
+
+        <h1 id="h1">Online Education Portal</h1>
+    <form id="form" action="" method="post">
+        <h1 class="uttam">Check Today's Attendance</h1>
+        <div class="box">
+             <i class="fa fa-user"></i>
+             <input placeholder="Course Code" name="course_code" type="text" required=true>
+         </div>
+      
+<button class="btn" type="submit">Today's Attendance</button>
+
+<%if( typeof error != 'undefined'){%>
+    <p><%=error%></p>
+    <%}%>
+    </form>
+   
+    <%if(typeof data != 'undefined'){
+      if(data.length > 0){%>
+      <table class="table">
+      
+        <tr>
+          <th>Sr. No.</th>
+          <th>Roll No.</th>
+          <th>Name</th>
+          <th>Time</th>
+          
+        </tr>
+        
+        <% var i =1%>
+        <% data.forEach((item)=>{ %>
+          <tr>
+            <td><%=i%></td>
+            <td><%= item.Roll_No %></td>
+            <td><%= item.S_Name %></td>
+            <td><%= item.Time %></td>
+        </tr>
+        <% i++}) %>
+        
+      </table>
+    <%}else{%>
+      <h3>No attendance registered today</h3>
+    <%}%>
+      <%}%>
+</body>
+
+</html>

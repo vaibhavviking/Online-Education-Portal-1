@@ -1,12 +1,54 @@
+
+
 <!DOCTYPE html>
-<html lang="en">
+
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Study Material</title>
-    <link rel="stylesheet" href="./css/Timetable.css">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Time-table</title>
+  <link rel="stylesheet" href="./css/Timetable.css">
 </head>
+
 <body>
+  <nav class="navbar">
+    <img class="logo" src="./css/images/logo.png" alt="...">
+    <h3>भारतीय प्रौद्योगिकी संस्थान इंदौर <br> Indian Institute of Technology Indore</h3>
+  </nav>
+
+  <h1> Time-table </h1>
+  <header>
+    <h2>Welcome to Online Education Portal.</h2>
+
+  </header>
+<!--   
+    <table class="table">
+    
+      <tr>
+        <th>Time</th>
+        <th>Monday</th>
+        <th>Tuesday</th>
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th>Friday</th>
+        <th>Saturday</th>
+      </tr>
+      
+      <% var i =1%>
+      <% data.forEach((item)=>{ %>
+        <tr>
+          <td><%= item.Time %></td>
+          <td><%= item.Monday %></td>
+          <td><%= item.Tuesday %></td>
+          <td><%= item.Wednesday %></td>
+          <td><%= item.Thursday %></td>
+          <td><%= item.Friday %></td>
+          <td><%= item.Saturday %></td> 
+      </tr>
+      <% i++}) %>
+      
+    </table> -->
+
     <%if(data.length >0){
         var i=1; %>
         <table class="table">
@@ -24,5 +66,7 @@
             <%i++})%>
         </table>
     <%} %>
+
 </body>
+
 </html>
