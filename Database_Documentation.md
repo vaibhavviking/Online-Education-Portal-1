@@ -22,7 +22,7 @@ Stored Procedures stored in database
 1.  Insert_Admin (Admin_ID, User_ID, Password, @duplicate_key)
 2.  Delete_Admin (Admin_ID)
 3.  Retrieve_ID (User_ID, Password, @ID, @t)
-4.  Change_Password (User_ID, Current_Password, New_Password)
+4.  Change_Password (User_ID, Current_Password, New_Password, @m)
 5.  Insert_Dept (Dept_ID, Dept_Name, @did)
 6.  Delete_Dept (Dept_ID, @rif)
 7.  Insert_Student (Roll_No, Student Name, Program, Year of Study, User_ID, Password, @did, @rif)
@@ -54,3 +54,4 @@ Stored Procedures stored in database
 33. Attendance_Today (Course_Code, Day)
 34. Retrieve_Student_Study_Material (Roll_No)
 35. Retrieve_Professor_Study_Material (Employee_ID)
+36. Update_Department(Department ID, Department Name)
