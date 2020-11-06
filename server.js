@@ -1,7 +1,7 @@
 
 const express = require('express');
 const ejs = require('ejs');
-var session = require('cookie-session');
+var session = require('express-session');
 var schedule = require('node-schedule');
 const bodyParser = require('body-parser');
 const url = require('url');
@@ -362,7 +362,7 @@ app.get('/logout', (req, res) => {
         else console.log('session refreshed');
     })
     if (req.session.loggedin) {
-        req.session = null
+        req.session = null;
         // res.clearCookie('login');
         // res.clearCookie('user_id');
     }
@@ -516,7 +516,6 @@ app.post('/update_student', (req, res) => {
     res.redirect('/admin_home');
 })
 
-
 app.get('/update_prof_1', (req, res) => {
     if (req.session.loggedin && req.session.user) {
         res.render('update_prof_1.ejs');
@@ -607,7 +606,6 @@ app.post('/update_dept', (req, res) => {
     })
     res.redirect('/admin_home');
 })
-
 
 app.get('/update_course_1', (req, res) => {
     if (req.session.loggedin && req.session.user) {
@@ -803,6 +801,18 @@ app.get('/add_course', (req, res) => {
     }
 })
 
+app.get('/prof_study_material',(req,res)=>{
+    if (req.session.loggedin && req.session.user) {
+        professor_study_material(req,res);
+    } else {
+        res.redirect('/');
+    }
+})
+
+app.post('/prof_study_material',(req,res)=>{
+    Prof_Insert_Study_Material(req,res);
+})
+
 app.post('/add_dept', (req, res) => {
     var dept_id = req.body.dept_id;
     var dept_name = req.body.dept_name;
@@ -820,10 +830,11 @@ app.get('/today_attendance', (req, res) => {
 app.post('/today_attendance', (req, res) => {
     let code = req.body.code;
     let sql = 'call Attendance_Today(?,?)';
-    var arr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    let date = new Date();
-    let day = arr[date.getDay()];
-    console.log(day);
+    const arr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const d = new Date();
+    let day0 = d.getDay();
+    const day = arr[day0];
+    console.log(code,day,day0);
     connection.query(sql, [code, day], (err, results) => {
         if (err) throw err;
         console.log(results);
@@ -837,6 +848,71 @@ app.get('/assign_time_slot', (req, res) => {
     } else {
         res.redirect('/');
     }
+})
+
+app.post('/assign_time_slot',(req,res)=>{
+    let code = req.body.code;
+    let time = req.body.time;
+    let oldcourse;
+    let day = req.body.day;
+    let sql ='select Course_Code from Courses_Time_Slots_Relation where Day=? and Time=?';
+    connection.query(sql,[day,time],(err,results)=>{
+        if(err) throw err;
+        console.log(results);
+        if(results.length > 0){
+        oldcourse=results[0].Course_Code;
+        }else{
+            oldcourse=undefined;
+        }
+
+
+        if(oldcourse != undefined){
+            let sql2='call Unassign_Time_Slot(?,?,?); call Assign_Time_Slot(?,?,?,@rif); select @rif';
+            connection.query(sql2,[oldcourse,day,time,code,day,time],(err2,results2)=>{
+                if(err2) throw err2;
+                console.log(results2);
+                if(results2[2][0]['@rif'] != null){
+                    res.render('assign_time_slot.ejs' , {error : "Referential Integrity Breached. Please Check Input"});
+                }else{
+                    console.log('Course Reassigned');
+                    res.redirect('/admin_home');
+                }
+            })
+        }else{
+            let sql2='call Assign_Time_Slot(?,?,?,@rif); select @rif;';
+            connection.query(sql2,[code,day,time],(err3,results3)=>{
+                if(err3) throw err3;
+                console.log(results3);
+                if(results3[1][0]['@rif'] != null){
+                    res.render('/assign_time_slot.ejs' , {error :  "Referential Integrity Breached. Please Check Input"})
+                }else{
+                console.log('Course assigned');
+                res.redirect('/admin_home');
+                }
+            })
+        }
+    })
+})
+
+app.get('/unassign_time_slot',(req,res)=>{
+    if (req.session.loggedin && req.session.user) {
+        res.render('unassign_time_slot.ejs');
+    } else {
+        res.redirect('/');
+    }
+})
+
+app.post('/unassign_time_slot',(req,res)=>{
+    let code = req.body.code;
+    let day = req.body.day;
+    let time = req.body.time;
+
+    let sql = 'call Unassign_time_slot(?,?,?)';
+    connection.query(sql,[code,day,time],(err,results)=>{
+        if(err) throw err;
+        console.log('Course Unassigned');
+        res.redirect('/admin_home');
+    })
 })
 
 app.post('/add_course', (req, res) => {
@@ -939,6 +1015,23 @@ app.get('/', (req, res) => {
         else console.log('session refreshed');
     })
     res.render('homepage.ejs');
+})
+
+app.get('/prof_study_selected',(req,res)=>{
+    if (req.session.loggedin && req.session.user) {
+        let data = req.query.data;
+        console.log(data);
+        data.forEach((item)=>{
+            let sql = 'call Delete_Study_Material(?)';
+            connection.query(sql,[item],(err,results)=>{
+                if(err) throw err;
+                console.log('Material Removed');
+            })
+        })
+        res.redirect('/prof_study_material');
+    } else {
+        res.redirect('/');
+    }
 })
 
 app.get('/prof_timetable', (req, res) => {
@@ -1273,7 +1366,7 @@ let student_timetable = async (req, res) => {
 }
 
 let Get_Student_Material = async function (req, res) {
-    var sql = 'select * from Study_Material where COurse_Code in (select Course_Code from Courses_Student_Relation where Roll_No = ?)';
+    var sql = 'select * from Study_Material where Course_Code in (select Course_Code from Courses_Student_Relation where Roll_No = ?)';
     let id = await GET_ID();
     connection.query(sql, [id], (err, results) => {
         if (err) throw err;
@@ -1327,6 +1420,15 @@ let change_password_stud = async function (req, res) {
     }
 }
 
+let professor_study_material = async function (req,res) {
+    let id = await GET_ID();
+    let sql = 'call Retrieve_Professor_Study_Material(?)';
+    connection.query(sql,[id],(err,results)=>{
+        if(err) throw err;
+        res.render('prof_study_material.ejs',{data : results[0]})
+    })
+}
+
 let change_password_prof = async function (req, res) {
     let newpass = req.body.new_password;
     let oldpass = req.body.old_password;
@@ -1373,6 +1475,24 @@ let change_password_admin = async function (req, res) {
                 console.log(result2, 'password changed');
                 res.redirect('/admin_home')
             })
+        }
+    })
+}
+
+let Prof_Insert_Study_Material = async function(req,res) {
+    let id = await GET_ID();
+    let code = req.body.code;
+    let link = req.body.link;
+    let sql = 'call Insert_Study_Material(?,?,?,@rif,@inv); select @rif; select @inv';
+    connection.query(sql,[link,code,id],(err,results)=>{
+        if(err) throw err;
+        if(results[1][0]['@rif'] != null){
+            res.send('Referential integrity breached');
+            
+        }else if(results[1][0]['@inv'] != null){
+            res.send('Entered Course is out of your domain');
+        }else{
+            res.redirect('/prof_study_material');
         }
     })
 }
