@@ -955,23 +955,11 @@ in code varchar(7),
 in day varchar(20)
 )
 begin
-declare val int;
-select count(d.Time) into val from Courses_Time_Slots_Relation as d where d.Course_Code=code and d.Day=day;
-case 
-when val=1 then
-select c.Roll_No, c.S_Name from Student as c where c.Roll_No in
-(select b.Roll_No from Attendance_Marked as b where b.Time in
-(select a.Time from Courses_Time_Slots_Relation as a where a.Course_Code=code and a.Day=day));
-else 
-/*select c.Roll_No, c.S_Name, a.Time from Student as c where c.Roll_No in
-(select b.Roll_No from Attendance_Marked as b where b.Time in
-(select a.Time from Courses_Time_Slots_Relation as a where a.Course_Code=code and a.Day=day));
-*/
 select c.Roll_No, c.S_Name, a.Time 
 from Student as c join Attendance_Marked as b join Courses_Time_Slots_Relation as a
 on c.Roll_No=b.Roll_No and b.Time=a.Time
-where a.Course_Code=code and a.Day=day;   
-end case;
+where a.Course_Code=code and a.Day=day
+order by a.Time;   
 end //
 delimiter ;
 /*Execute*/
