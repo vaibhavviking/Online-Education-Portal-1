@@ -37,7 +37,7 @@ Stored Procedures stored in database
 16. Remove_Professor_Course (Employee_ID, Course_Code)
 17. Insert_Time_Slot (Day, Time, @did)
 18. Insert_Study_Material (Link, Course_Code, Employee ID, @rif, @inv)
-19. Delete_Study_Material (Course_Code, Link)
+19. Delete_Study_Material (Material No)
 20. Assign_Time_Slot (Course_Code, Day, Time, @rif)
 21. Unassign_Time_Slot (Course_Code, Day, Time)
 22. Student_Time_Table (Roll_No)
