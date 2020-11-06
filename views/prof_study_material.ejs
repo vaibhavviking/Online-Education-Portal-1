@@ -56,6 +56,30 @@
             console.log(link);
             document.getElementById('link12').href = link;
         }
+        function searchName(){
+				var mess = document.getElementById('search').value;
+				if(mess!=''){
+					var i=0;
+					while(document.getElementsByClassName('code')[i]){
+						if(document.getElementsByClassName('code')[i].innerHTML.indexOf(mess)!=-1 || String(document.getElementsByClassName('mlink')[i].innerHTML).indexOf(mess)!=-1){
+							document.getElementsByClassName('material_details')[i].style.display = '';
+							
+						}
+						else{
+							document.getElementsByClassName('material_details')[i].style.display = 'none';
+						}
+						i=i+1;
+					}
+				}
+				else{
+					var i=0;
+					while(document.getElementsByClassName('code')[i]){
+						document.getElementsByClassName('material_details')[i].style.display = '';
+						
+						i=i+1;
+					}
+				}
+			}
     </script>
 </head>
 
@@ -83,6 +107,7 @@
        
 
 
+
     </ul>
     <form id="form" action="" method="post">
 
@@ -97,6 +122,11 @@
 
         <button class="btn" type="submit">Add Study Material</button>
     </form>
+
+
+    <span >Search: </span>
+</div><input type="text" name="search"id="search" onkeyup="searchName()" placeholder="Search for course or link">
+
     <%if(data.length >0){
         var count =0; 
         var sr = 1;%>
@@ -108,7 +138,7 @@
             <th>Material Link</th>
         </tr>
         <% data.forEach((item)=>{%>
-        <tr>
+        <tr class="material_details">
             <form method="post">
                 <td>
                     <p><input type="checkbox" style="opacity: 1; pointer-events: visible;" class="checkbox1"
@@ -116,8 +146,8 @@
                 </td>
             </form>
             <td><%= sr%></td>
-            <td><%=item.Course_Code%></td>
-            <td><%=item.Link%></td>
+            <td class="code"><%=item.Course_Code%></td>
+            <td class="mlink"><%=item.Link%></td>
         </tr>
         <%count++;sr++;})%>
     </table>
