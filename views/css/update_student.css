@@ -50,14 +50,8 @@
     .container{
         position: absolute;
         top: 45%;
-    }
-
-    #container1{
-        left: 20%; 
-    }
-
-    #container2{
-        right: 20%; 
+        right: 10%; 
+        margin: 0px 20px;
     }
 
     .container h1{
@@ -65,18 +59,18 @@
         border-bottom: 5px solid purple;
         display: inline-block;
         margin-bottom: 15px;
-        padding: 13px 0px;
+        padding: 10px 0px;
     }
 
     .box{
         width: 100%;
         border-bottom: 2px solid purple;
-        margin: 22px 0px;
+        margin: 20px 0px;
     }
 
     .box input{
         background: none;
-        width: 75%;
+        width: 85%;
         outline:  none;
         border: none;
         color: rgba(202, 43, 43, 0.589);
@@ -109,4 +103,21 @@
      .btn:hover{
         color: rgb(228, 13, 13);
         background: white;
+    }
+
+    
+    table {
+        position: absolute;
+        left: 10%;
+        margin: 40px 20px;
+        border: 2px solid black;
+        display: inline-block;
+    }
+
+    th,td {
+        font-weight: bold;
+        font-size: 25px;
+        border: 2px solid black;
+        height: 70px;
+        width: 350px;
     }
