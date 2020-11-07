@@ -136,6 +136,7 @@
             <th>Serial No.</th>
             <th>Couse Code</th>
             <th>Material Link</th>
+            <th>Remove</th>
         </tr>
         <% data.forEach((item)=>{%>
         <tr class="material_details">
@@ -147,7 +148,10 @@
             </form>
             <td><%= sr%></td>
             <td class="code"><%=item.Course_Code%></td>
-            <td class="mlink"><%=item.Link%></td>
+            <% let matlink = "//" + item.Link%>
+            <td class="mlink"><a target="_blank" href=<%=matlink%> ><%=item.Link%></a></td>
+            <% let link = "/prof_study_selected/?data[]="+item.Material_No %>
+            <td class="mlink"><a href= <%=link%> ><button>Remove</button></a></td>
         </tr>
         <%count++;sr++;})%>
     </table>
