@@ -1497,7 +1497,7 @@ let increment_days = async function(){
     h3+=':00';
     let day = d.getDay();
     var arr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    let day2 - arr[day];
+    let day2 =arr[day];
     let sql = 'select Course_Code from Courses_Time_Slots_Relation where Day= ? and Time = ?';
     connection.query(sql,[h3.day2],(err,results)=>{
         if(err) throw err;
