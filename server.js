@@ -35,22 +35,22 @@ app.use((req, res, next) => {
     next();
 });
 
-// var db_config = {
-//     multipleStatements: true,
-//     host: 'us-cdbr-east-02.cleardb.com',
-//     user: 'be25eca42b63ff',
-//     password: '74074572',
-//     database: 'heroku_ba6bdaf56728c3e',
-//     // port: 3306
-// };
 var db_config = {
     multipleStatements: true,
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'demo',
-    port: 3306
+    host: 'us-cdbr-east-02.cleardb.com',
+    user: 'be25eca42b63ff',
+    password: '74074572',
+    database: 'heroku_ba6bdaf56728c3e',
+    // port: 3306
 };
+// var db_config = {
+//     multipleStatements: true,
+//     host: 'localhost',
+//     user: 'root',
+//     password: 'password',
+//     database: 'demo',
+//     port: 3306
+// };
 
 // var connection = mysql.createConnection({
 //     multipleStatements: true,
@@ -104,6 +104,10 @@ app.set('view engine', 'ejs');
 schedule.scheduleJob({ hour: 0, minute: 0 }, () => {
     clear_Attendance();
 });
+
+schedule.scheduleJob({minute : 0},()=>{
+    increment_days();
+})
 
 app.use(express.static('views'));
 app.set('views', __dirname + '/views')
@@ -166,6 +170,7 @@ let get_id = new Promise((resolve, reject) => {
 
     // console.log('outside',id);
 })
+
 app.get('/student_login', (req, res) => {
     var query = 'DELETE FROM current_session';
     connection.query(query, (err, results) => {
@@ -698,26 +703,15 @@ app.get('/delete_admin', (req, res) => {
 
 app.post('/add_student', (req, res) => {
     if (req.session.loggedin && req.session.user) {
-        // res.render('student_home.ejs');
+       
         var name = req.body.Name;
         var Rno = req.body.Rno;
         var user_id = req.body.uid;
         var year = req.body.year;
         var Dep = req.body.Department;
         var prog = req.body.Program;
-        var course1 = req.body.course1;
-        var course2 = req.body.course2;
-        var course3 = req.body.course3;
-        var course4 = req.body.course4;
-        var course5 = req.body.course5;
         console.log(Dep);
-        // console.log(course1);
-        var arr = [];
-        arr.push(course1);
-        arr.push(course2);
-        arr.push(course3);
-        arr.push(course4);
-        arr.push(course5);
+        var arr = req.body['course[]'];
         var pass = req.body.password;
         var sql = 'call Insert_Student(?,?,?,?,?,?,?,@did,@rif); select @did; select @rif';
         connection.query(sql, [Rno, name, prog, year, Dep, user_id, pass], (err, results2) => {
@@ -727,7 +721,7 @@ app.post('/add_student', (req, res) => {
             if (results2[1][0]['@did'] != null) {
                 res.render('add_student.ejs', { error: 'Duplicate Entry detected' })
             } else if (results2[2][0]['@rif'] != null) {
-                res.render('add_student.ejs', { error: 'Duplicate Entry detected' })
+                res.render('add_student.ejs', { error: 'Refrential Integrity Detected' })
             } else {
                 arr.forEach((item) => {
                     if (item != undefined) {
@@ -737,7 +731,7 @@ app.post('/add_student', (req, res) => {
                             if (err) throw err;
                             console.log(results)
                             if (results[1][0]['@did'] != null) {
-                                res.render('add_student.ejs', { error: 'Duplicate Entry detected' })
+                                res.render('add_student.ejs', { error: 'Duplicate Entry' })
                             } else if (results[2][0]['@rif'] != null) {
                                 res.render('add_student.ejs', { error: 'referential integrity breached' })
                             } else if (results[3][0]['@inv'] != null) {
@@ -1402,19 +1396,15 @@ let change_password_stud = async function (req, res) {
         res.render('change_password.ejs', { error: "password do not match" });
     } else {
         let id = await GET_User_ID();
-        let sql = `select Password_ from Account where User_ID_= (?)`;
-        connection.query(sql, [id], (err, result1) => {
-            if (err) throw err;
-            console.log(result1);
-            if (result1[0]['Password_'] != oldpass) {
-                res.render('change_password', { error: "Old Password is wrong" });
-            } else {
-                let sql2 = 'call Change_Password(?,?,?)';
-                connection.query(sql2, [id, oldpass, newpass], (err2, result2) => {
-                    if (err2) throw err2;
-                    console.log(result2, 'password changed');
-                    res.redirect('/student_home')
-                })
+        let sql='call Change_Password(?,?,?,@m); select @m';
+        connection.query(sql,[id,oldpass,newpass],(err,results)=>{
+            if(err) throw err;
+            if(results[1][0]['@m'] != 1){
+                res.render('change_password.ejs',{error : "Old Password is incorrect"});
+            }else{
+                res.redirect('/student_home');
+                console.log('password Changed');
+                res.end();
             }
         })
     }
@@ -1435,23 +1425,20 @@ let change_password_prof = async function (req, res) {
     let connewpass = req.body.con_new_password;
     if (newpass != connewpass) {
         res.render('change_password.ejs', { error: "password do not match" });
+    } else {
+        let id = await GET_User_ID();
+        let sql='call Change_Password(?,?,?,@m); select @m';
+        connection.query(sql,[id,oldpass,newpass],(err,results)=>{
+            if(err) throw err;
+            if(results[1][0]['@m'] != 1){
+                res.render('change_password.ejs',{error : "Old Password is incorrect"});
+            }else{
+                res.redirect('/teacher_home');
+                console.log('password Changed');
+                res.end();
+            }
+        })
     }
-    let id = await GET_User_ID();
-    let sql = `select Password_ from Account where User_ID_= (?)`;
-    connection.query(sql, [id], (err, result1) => {
-        if (err) throw err;
-        console.log(result1);
-        if (result1[0]['Password_'] != oldpass) {
-            res.render('change_password', { error: "Old Password is wrong" });
-        } else {
-            let sql2 = 'call Change_Password(?,?,?)';
-            connection.query(sql2, [id, oldpass, newpass], (err2, result2) => {
-                if (err2) throw err2;
-                console.log(result2, 'password changed');
-                res.redirect('/teacher_home')
-            })
-        }
-    })
 }
 
 let change_password_admin = async function (req, res) {
@@ -1460,23 +1447,20 @@ let change_password_admin = async function (req, res) {
     let connewpass = req.body.con_new_password;
     if (newpass != connewpass) {
         res.render('change_password.ejs', { error: "password do not match" });
+    } else {
+        let id = await GET_User_ID();
+        let sql='call Change_Password(?,?,?,@m); select @m';
+        connection.query(sql,[id,oldpass,newpass],(err,results)=>{
+            if(err) throw err;
+            if(results[1][0]['@m'] != 1){
+                res.render('change_password.ejs',{error : "Old Password is incorrect"});
+            }else{
+                res.redirect('/admin_home');
+                console.log('password Changed');
+                res.end();
+            }
+        })
     }
-    let id = await GET_User_ID();
-    let sql = `select Password_ from Account where User_ID_= (?)`;
-    connection.query(sql, [id], (err, result1) => {
-        if (err) throw err;
-        console.log(result1);
-        if (result1[0]['Password_'] != oldpass) {
-            res.render('change_password', { error: "Old Password is wrong" });
-        } else {
-            let sql2 = 'call Change_Password(?,?,?)';
-            connection.query(sql2, [id, oldpass, newpass], (err2, result2) => {
-                if (err2) throw err2;
-                console.log(result2, 'password changed');
-                res.redirect('/admin_home')
-            })
-        }
-    })
 }
 
 let Prof_Insert_Study_Material = async function(req,res) {
@@ -1493,6 +1477,37 @@ let Prof_Insert_Study_Material = async function(req,res) {
             res.send('Entered Course is out of your domain');
         }else{
             res.redirect('/prof_study_material');
+        }
+    })
+}
+
+let increment_days = async function(){
+    let d = new Date();
+    let h = d.getHours();
+    let h2 = `${h}`;
+    let h3='';
+    console.log(h2.length);
+    if(h2.length===1){
+        h3+=0;
+        h3+=h2[0]
+    }else{
+        h3+=h2[0];
+        h3+=h2[1];
+    }
+    h3+=':00';
+    let day = d.getDay();
+    var arr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    let day2 - arr[day];
+    let sql = 'select Course_Code from Courses_Time_Slots_Relation where Day= ? and Time = ?';
+    connection.query(sql,[h3.day2],(err,results)=>{
+        if(err) throw err;
+        if(results.length > 0){
+            let course = results[0].Course_Code;
+            let sql2 = 'call Total_Days_Increment(?)';
+            connection.query(sql2,[course],(err2,results2)=>{
+                if(err2) throw err2;
+                console.log(course,': total classes incremented');
+            })
         }
     })
 }
