@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 
 <html>
@@ -9,7 +11,19 @@
 </head>
 
 <body>
+  <nav class="navbar">
+    <img class="logo" src="./css/images/logo.png" alt="...">
+    <h3>भारतीय प्रौद्योगिकी संस्थान इंदौर <br> Indian Institute of Technology Indore</h3>
+  </nav>
+
+  <h1> Time-table </h1>
+  <header>
+    <h2>Welcome to Online Education Portal.</h2>
+
+  </header>
+  
     <table class="table">
+    
       <tr>
         <th>Time</th>
         <th>Monday</th>
@@ -18,8 +32,8 @@
         <th>Thursday</th>
         <th>Friday</th>
         <th>Saturday</th>
-       
       </tr>
+      
       <% var i =1%>
       <% data.forEach((item)=>{ %>
         <tr>
@@ -29,11 +43,10 @@
           <td><%= item.Wednesday %></td>
           <td><%= item.Thursday %></td>
           <td><%= item.Friday %></td>
-          <td><%= item.Saturday %></td>
-          
-          
+          <td><%= item.Saturday %></td> 
       </tr>
       <% i++}) %>
+      
     </table>
 </body>
 

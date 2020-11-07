@@ -1,0 +1,123 @@
+
+    *{
+        box-sizing: border-box;
+    }
+    
+    body {
+        background-size: cover;
+        margin: 0px;
+        padding: 0px;
+        text-align: center;
+        font-weight: 600;
+        box-sizing: border-box;
+        background-color: #f8ecff;
+    }
+    
+    .navbar {
+        background-color: rgba(168, 185, 223, 0.6);
+        display: flex;
+        align-items: center;
+    }
+
+    .logo {
+        height: 100px;
+        width: 100px;
+        margin: 10px;
+    }
+  
+    h3 {
+        font-size: 2.5rem;
+        font-style: italic;
+        margin: 0px 10px;
+    }
+
+    h1 {
+        margin: 0px;
+        padding: 20px;
+        text-align: center;
+        background-color: transparent;
+        position: relative;
+        top: 20px;
+        font-size: 4em;
+    }
+
+    h2 {
+        font-size: 2em;
+        color: darkred;
+        margin: 10px;
+    }
+
+    .container{
+        position: absolute;
+        top: 45%;
+        right: 10%; 
+        margin: 0px 20px;
+    }
+
+    .container h1{
+        font-size: 40px;
+        border-bottom: 5px solid purple;
+        display: inline-block;
+        margin-bottom: 15px;
+        padding: 10px 0px;
+    }
+
+    .box{
+        width: 100%;
+        border-bottom: 2px solid purple;
+        margin: 20px 0px;
+    }
+
+    .box input{
+        background: none;
+        width: 85%;
+        outline:  none;
+        border: none;
+        color: rgba(202, 43, 43, 0.589);
+        padding: 5px 10px;
+        font-size: 25px;
+        font-family: cursive;
+        font-weight: bold;
+    }
+
+    .box i{
+        width: 25px;
+        text-align: center;
+    }
+
+     .btn{
+         position: absolute;
+         top: 100%;
+         cursor: pointer;
+         outline: none;
+         margin: 12px 0;
+         padding: 10px 21px;
+         color: black;
+         border-radius: 10px ;
+         border: 2px solid purple;
+         font-size: 18px;
+         background: none;
+         font-weight: bold;
+     }
+    
+     .btn:hover{
+        color: rgb(228, 13, 13);
+        background: white;
+    }
+
+    
+    table {
+        position: absolute;
+        left: 10%;
+        margin: 40px 20px;
+        border: 2px solid black;
+        display: inline-block;
+    }
+
+    th,td {
+        font-weight: bold;
+        font-size: 25px;
+        border: 2px solid black;
+        height: 70px;
+        width: 350px;
+    }

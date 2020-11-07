@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add student</title>
+    <title>Delete Course</title>
     <script src="https://kit.fontawesome.com/63e2b2b603.js" crossorigin="anonymous"></script>
     <style>
 .navbar {
@@ -53,7 +53,7 @@
    
    background: white;
 }
-.uttam h1 {
+ h1 {
     font-size: 40px;
     color: black;
    border-bottom: 5px solid purple;
@@ -91,7 +91,7 @@
     width: 100px;
     margin: 10px;
 }
-h3 {
+h2 {
     font-size: 2.5rem;
     font-style: italic;
     margin: 0px 10px;
@@ -115,25 +115,7 @@ body {
     font-size: 3rem;
 }
     </style>
-    <script>
-        function add() {
-            console.log('here');
-            var x = document.getElementById('container');
-            var p = document.getElementById('save');
-            var i = x.childElementCount;
-            // x.innerHTML += `<input type='text' required='true' placeholder='course${i}' name='course${i}'>`;
-            x.innerHTML += `<div class="box">
-            <i class="fa fa-key"></i>
-            <input  placeholder='course${i}' name='course[]' type="text" required=true>
-
-        </div>`;
-            // p.innerHTML +=1;
-            console.log(i+1);
-        }
-        function get_value(){
-           return document.getElementById('container').childElementCount +1;
-        }
-    </script>
+  
 </head>
 
 <body>
@@ -144,60 +126,21 @@ body {
 
         <h1 id="h1">Online Education Portal</h1>
     <form id="form" action="" method="post">
-        <h1 class="uttam">ADD STUDENT</h1>
+        <h1 class="uttam">DELETE Course</h1>
         <div class="box">
              <i class="fa fa-user"></i>
-             <input placeholder="name" name="Name" type="text" required=true>
+             <input placeholder="Course Code" name="code" type="text" required=true>
          </div>
-       <!-- <div class="box">
-             
-             <i class="fa fa-envelope"></i>
-             <input type="email" name="email" id="email" placeholder="Enter Your Email ID">
-         </div>-->
-         <div class="box">
-             <i class="fa fa-key"></i>
-             <input placeholder="password" name="password" type="text" required=true>
- 
+        <div class="box">
+             <i class="fa fa-user"></i>
+             <input placeholder="Material Link" name="link" type="text" required=true>
          </div>
-         <div class="box">
-            <i class="fa fa-key"></i>
-            <input placeholder="Roll Number" name="Rno" type="number" required=true>
+      
+<button class="btn" type="submit">Add Study Material</button>
 
-        </div>
-        <div class="box">
-            <i class="fa fa-key"></i>
-            <input placeholder="Program" name="Program" type="text" required=true>
-
-        </div>
-        <div class="box">
-            <i class="fa fa-table"></i>
-            <input placeholder="Year Of Admission" name="year" type="number" required=true>
-
-        </div>
-        <div class="box">
-            <i class="fa fa-key"></i>
-            <input placeholder="Branch" name="Department" type="number" required=true>
-
-        </div>
-        <div class="box">
-            <i class="fa fa-key"></i>
-            <input placeholder="User ID" name="uid" type="text" required=true>
-
-        </div>
-
- 
-     
-        <div id="container">
-          
-            <p id="save" style="visibility: hidden;"></p>
-            
-        </div>
-
-        <%if( typeof error != 'undefined'){%>
-            <p><%=error%></p>
-            <%}%>
-        <button class="btn" type="submit">Add student</button>
-        <button class="btn1" onclick='add()'>Add Course</button>
+<%if( typeof error != 'undefined'){%>
+    <p><%=error%></p>
+    <%}%>
     </form>
    
 </body>

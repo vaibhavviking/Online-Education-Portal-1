@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Time-table</title>
+    <link rel="stylesheet" href="./css/prof_study_material.css">
+    <script>
+        function select_all(){
+  				if(document.getElementById('remove_all').checked==true){
+  					console.log(document.getElementById('remove_all').checked);
+  					for(var i=0;i<Number(document.getElementById('count').innerHTML);i++){
+  						console.log(i)
+  					document.getElementsByClassName('checkbox1')[i].checked=true;}
+  				}else{
+  					console.log(document.getElementById('remove_all').checked);
+  					for(var i=0;i<Number(document.getElementById('count').innerHTML);i++){
+  						console.log(i);
+  					document.getElementsByClassName('checkbox1')[i].checked=false;}  				
+  				}
+  				add_data();
+  			}
+        function check_checkbox() {
+            var c = 1;
+            for (var i = 0; i < Number(document.getElementById('count').innerHTML); i++) {
+                if (document.getElementsByClassName('checkbox1')[i].checked == false) {
+                    document.getElementById('remove_all').checked = false;
+                    c = 0;
+                    break;
+                }
+            }
+            if (c == 1) {
+                document.getElementById('remove_all').checked = true;
+            }
+            add_data();
+        }
+        function add_data() {
+            var data = '';
+            console.log(document.getElementsByClassName('checkbox1')[1].checked);
+            document.getElementById('link12').style.display = 'none';
+            for (var i = 0; i < Number(document.getElementById('count').innerHTML); i++) {
+                if (document.getElementsByClassName('checkbox1')[i].checked == true) {
+                    document.getElementById('link12').removeAttribute('style');
+                    data += document.getElementsByClassName('checkbox1')[i].name + ',';
+                    console.log(document.getElementsByClassName('checkbox1')[i].name);
+                }
+            }
+            data = data.slice(0,data.length-1);
+				data = data.split(',');
+            var link = "/prof_study_selected/?";
+            for (i = 0; i < data.length; i++) {
+                link += 'data[]=' + data[i] + '&';
+            }
+            console.log(data);
+            console.log(link);
+            document.getElementById('link12').href = link;
+        }
+        function searchName(){
+				var mess = document.getElementById('search').value;
+				if(mess!=''){
+					var i=0;
+					while(document.getElementsByClassName('code')[i]){
+						if(document.getElementsByClassName('code')[i].innerHTML.indexOf(mess)!=-1 || String(document.getElementsByClassName('mlink')[i].innerHTML).indexOf(mess)!=-1){
+							document.getElementsByClassName('material_details')[i].style.display = '';
+							
+						}
+						else{
+							document.getElementsByClassName('material_details')[i].style.display = 'none';
+						}
+						i=i+1;
+					}
+				}
+				else{
+					var i=0;
+					while(document.getElementsByClassName('code')[i]){
+						document.getElementsByClassName('material_details')[i].style.display = '';
+						
+						i=i+1;
+					}
+				}
+			}
+    </script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <img class="logo" src="./css/images/logo.png" alt="...">
+        <h3>भारतीय प्रौद्योगिकी संस्थान इंदौर <br> Indian Institute of Technology Indore</h3>
+    </nav>
+
+    <h1> Study Material </h1>
+    <header>
+        <h2>Welcome to Online Education Portal.</h2>
+
+    </header>
+    <ul>
+        <li class="item"><a href="/teacher_home">Home</a></li>
+        <li class="item"><a href="/check_attendance">Check Attendance</a></li>
+        <li class="item"><a href="/today_attendance">Today's attendance</a></li>
+        <li class="item"><a href="/prof_timetable">Time Table</a></li>
+        <li class="item"><a href="/prof_courses">Courses</a></li>
+        <li class="item"><a href="/prof_study_material">Study Material</a></li>
+        <li class="item"><a href="/prof_change_password">Change Password</a></li>
+        
+        <li class="item"><a href="/logout">LogOut</a></li>
+       
+
+
+
+    </ul>
+    <form id="form" action="" method="post">
+
+        <div class="box">
+            <i class="fa fa-user"></i>
+            <input placeholder="Course Code" name="code" type="text" required=true>
+        </div>
+        <div class="box">
+            <i class="fa fa-user"></i>
+            <input placeholder="Material Link" name="link" type="text" required=true>
+        </div>
+
+        <button class="btn" type="submit">Add Study Material</button>
+    </form>
+
+
+    <span >Search: </span>
+</div><input type="text" name="search"id="search" onkeyup="searchName()" placeholder="Search for course or link">
+
+    <%if(data.length >0){
+        var count =0; 
+        var sr = 1;%>
+    <table class="table">
+        <tr>
+            <th>Select All<form method="post"><span><input type="checkbox" name="a" id="remove_all" style="opacity: 1; pointer-events: visible;" onclick='select_all()'></span></form></th>
+            <th>Serial No.</th>
+            <th>Couse Code</th>
+            <th>Material Link</th>
+            <th>Remove</th>
+        </tr>
+        <% data.forEach((item)=>{%>
+        <tr class="material_details">
+            <form method="post">
+                <td>
+                    <p><input type="checkbox" style="opacity: 1; pointer-events: visible;" class="checkbox1"
+                            onclick="check_checkbox()" name="<%=item.Material_No%>"></p>
+                </td>
+            </form>
+            <td><%= sr%></td>
+            <td class="code"><%=item.Course_Code%></td>
+            <% let matlink = "//" + item.Link%>
+            <td class="mlink"><a target="_blank" href=<%=matlink%> ><%=item.Link%></a></td>
+            <% let link = "/prof_study_selected/?data[]="+item.Material_No %>
+            <td class="mlink"><a href= <%=link%> >Remove</a></td>
+        </tr>
+        <%count++;sr++;})%>
+    </table>
+    <p id="count" style="display: none;"><%=count%></p>
+    <%} %>
+    <a id="link12" href="" style="display: none;"><button type="button" class="btn btn-info link12">Remove Selected Material</button></a>
+</body>
+
+</html>

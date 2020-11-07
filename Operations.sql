@@ -73,7 +73,8 @@ end //
 delimiter ;
 /*Execute*/
 call Retrieve_ID('P1','a',@ID,@t); /* User_ID, Password */
-select @ID;                    /* Duplicate User ID Check */
+select @ID;                        /* Duplicate User ID Check */
+select @t;                         /*Type*/
 /*End*/
 
 /*Change Password*/
@@ -81,14 +82,22 @@ delimiter //
 create procedure Change_Password(
 in userid varchar(30),
 in old_p varchar(30),
-in new_p varchar(30)
+in new_p varchar(30),
+out matched int
 )
 begin
+declare p varchar(30);
+select Account.Password_ into p from Account where User_ID_=userid;
+case
+	when p=old_p then set matched=1;
+    else set matched=0;
+end case;
 update Account set Password_=new_p where Account.User_ID_=userid and Account.Password_=old_p;
 end //
 delimiter ;
 /*Execute*/
-call Change_Password('A2','b1','b'); /* User_ID, Current Password, New Password */
+call Change_Password('A2','b1','b',@m); /* User_ID, Current Password, New Password */
+select @m;
 /*End*/
 
 /*Insert Department*/
@@ -385,19 +394,29 @@ delimiter //
 create procedure Insert_Study_Material(
 in link varchar(200),
 in code varchar(7),
-out rif int
+in empid int,
+out rif int,
+out inv int
 )
-begin
+x:begin
 declare exit handler for 1452
 begin
 set rif=1;
 end;
-insert into Study_Material(Link, Course_Code) values(link,code);
+case
+	when code not in (select a.Course_Code from Courses_Professor_Relation as a where a.Employee_ID=empid) then set inv=1;
+    else set inv=0;
+end case;
+case
+	when inv!=1 then insert into Study_Material(Link, Course_Code) values(link,code);
+    else leave x;
+end case;
 end //
 delimiter ;
 /*Execute*/
-call Insert_Study_Material('xyz.com','CS 207',@rif); /* Link, Course Code */
-select @rif;                                         /* Referential Integrity Failure(Course DNE)*/ 
+call Insert_Study_Material('xyz.com','CS 207',1,@rif,@inv); /* Link, Course Code, Employee_ID */
+select @rif;                                         /* Referential Integrity Failure(Course DNE)*/
+select @inv;                                         /* Professor not authorised */
 /*End*/
 
 /*Delete Study Material */
@@ -440,16 +459,17 @@ delimiter //
 create procedure Unassign_Time_Slot(
 in code varchar(7),
 in day varchar(20),
-in time varchar(5)
+in t varchar(5)
 )
 begin
-delete from Courses_Time_Slots_Relation as a where a.Course_Code=code and a.Day=day and a.Time=time; 
+delete from Courses_Time_Slots_Relation where Courses_Time_Slots_Relation.Course_Code=code and Courses_Time_Slots_Relation.Day=day 
+and Courses_Time_Slots_Relation.Time=t; 
 end //
 delimiter ;
 /*Execute*/
 call Unassign_Time_Slot('CS 207','Monday','17:00');
 /*End*/
-
+drop procedure Unassign_Time_Slot;
 /* Get Student Time Table */
 delimiter //
 create procedure Student_Time_Table(
@@ -775,10 +795,13 @@ call Professor_Time_Table(1); /* Employee ID */
 /* Mark Attendance will be executed for only those students who have pressed the button */
 /*Total Days Incrementer*/
 delimiter //
-create procedure Total_Days_Increment()
+create procedure Total_Days_Increment(
+    in course varchar(7)
+)
 begin
 update Courses_Student_Relation as a
-set a.Total_Days=a.Total_Days+1;
+set a.Total_Days=a.Total_Days+1
+where a.Course_Code=course;
 end //
 delimiter ;
 /*Execute*/
@@ -798,10 +821,10 @@ declare exit handler for 1062
 begin
 set did=1;
 end;
-insert into Attendance_Marked values(rollno,time);
 update Courses_Student_Relation as a 
 set a.Days_Attended=a.Days_Attended+1
 where a.Roll_No=rollno and a.Course_Code=code;
+insert into Attendance_Marked values(rollno,time);
 end //
 delimiter ;
 /*Execute*/
@@ -823,7 +846,7 @@ order by b.Total_Days DESC;
 end //
 delimiter ;
 /*Execute*/
-call Check_Attendance('CS 207');
+call Check_Attendance('CS 207'); /*Course Code*/
 /*End*/
 
 /* Get Student's Courses */
@@ -839,7 +862,7 @@ where a.Roll_No=rollno;
 end //
 delimiter ;
 /*Execute*/
-call Get_Student_Courses(1);
+call Get_Student_Courses(1); /*Roll_No*/
 /*End*/
 
 /* Get Professor's Courses */
@@ -855,7 +878,7 @@ where a.Employee_ID=empid;
 end //
 delimiter ;
 /*Execute*/
-call Get_Professor_Courses(20);
+call Get_Professor_Courses(20); /*Employee_ID*/
 /*End*/
 
 /* Get Student's Class links */
@@ -864,14 +887,14 @@ create procedure Get_Student_Links(
 in rollno int
 )
 begin
-select b.Class_Link
+select b.Course_Code, b.Class_Link
 from Courses_Student_Relation as a inner join Courses as b
 on a.Course_Code=b.Course_Code
 where a.Roll_No=rollno;
 end //
 delimiter ;
 /*Execute*/
-call Get_Student_Links(1);
+call Get_Student_Links(1); /*Roll_No*/
 /*End*/
 
 /* Get Professor's Class Links */
@@ -880,14 +903,14 @@ create procedure Get_Professor_Links(
 in empid int
 )
 begin
-select b.Class_Link
+select b.Course_Code, b.Class_Link
 from Courses_Professor_Relation as a inner join Courses as b
 on a.Course_Code=b.Course_Code
 where a.Employee_ID=empid;
 end //
 delimiter ;
 /*Execute*/
-call Get_Professor_Links(20);
+call Get_Professor_Links(20); /*Employee ID*/
 /*End*/
 
 /*Insert Session*/
@@ -935,27 +958,20 @@ in code varchar(7),
 in day varchar(20)
 )
 begin
-declare val int;
-select count(d.Time) into val from Courses_Time_Slots_Relation as d where d.Course_Code=code and d.Day=day;
-case 
-when val=1 then
-select c.Roll_No, c.S_Name from Student as c where c.Roll_No in
-(select b.Roll_No from Attendance_Marked as b where b.Time in
-(select a.Time from Courses_Time_Slots_Relation as a where a.Course_Code=code and a.Day=day));
-else 
-select c.Roll_No, c.S_Name from Student as c where c.Roll_No in
-(select b.Roll_No from Attendance_Marked as b where b.Time in
-(select a.Time from Courses_Time_Slots_Relation as a where a.Course_Code=code and a.Day=day));
-end case;
+select c.Roll_No, c.S_Name, a.Time 
+from Student as c join Attendance_Marked as b join Courses_Time_Slots_Relation as a
+on c.Roll_No=b.Roll_No and b.Time=a.Time
+where a.Course_Code=code and a.Day=day
+order by a.Time;   
 end //
 delimiter ;
 /*Execute*/
 call Attendance_Today('CS 207','Monday'); /*Course Code, Day */
 /*End*/
-
-/*Retrieve Study Material*/
+drop procedure Attendance_Today;
+/*Retrieve Student Study Material*/
 delimiter //
-create procedure Retrieve_Study_Material(
+create procedure Retrieve_Student_Study_Material(
 in rollno int
 )
 begin
@@ -967,3 +983,114 @@ delimiter ;
 /*Execute*/
 call Retrieve_Study_Material(1); /*Roll No.*/
 /*End*/
+
+/*Retrieve Professor Study Material*/
+delimiter //
+create procedure Retrieve_Professor_Study_Material(
+in empid int
+)
+begin
+select a.Material_No,a.Course_Code, a.Link
+from Study_Material as a
+where a.Course_Code in (select b.Course_Code from Courses_Professor_Relation as b where b.Employee_ID=empid );
+end //
+delimiter ;
+/*Execute*/
+call Retrieve_Study_Material(1); /*Employee ID*/
+/*End*/
+
+/*Update Department*/
+delimiter //
+create procedure Update_Department(
+in deptid int,
+in dname varchar(40)
+)
+begin
+update Department set D_Name=dname where Dept_ID=deptid;
+end //
+delimiter ;
+/*Execute*/
+call Update_Department(1, 'AI');  /*Dept_Id, New Dept Name*/
+/*End*/
+
+/*Remove All Student Courses*/
+delimiter //
+create procedure Remove_All_Student_Courses(
+in rollno int
+)
+begin
+delete from Courses_Student_Relation as a where a.Roll_No=rollno; 
+end //
+delimiter ;
+/*Execute*/
+call Remove_All_Student_Courses(1); /*Roll No*/
+/*End*/
+
+/*Update Student*/
+delimiter //
+create procedure Update_Student(
+in rollno int,
+in name varchar(40),
+in prog varchar(10),
+in year int,
+in dept_id int,
+in cid varchar(7)
+)
+begin
+update Student set S_Name=name, Program_Enrolled=prog, Year_Of_Study=year, Department_ID=dept_id where Student.Roll_No=rollno;
+call Add_Student_Course(cid,rollno,1,1,@did,@rif,@inv);
+end //
+delimiter ;
+/*Execute*/
+call Update_Student(1,'A','B.Tech',2,1,'CS 207'); /*Roll No, Name, Program, year of study, dept id, course id*/
+/*End*/
+/*Execute Remove_All_Student_Courses() once and then execute Update_Student() for all the courses added*/
+
+/*Remove All Professor Courses*/
+delimiter //
+create procedure Remove_All_Professor_Courses(
+in empid int
+)
+begin
+delete from Courses_Professor_Relation as a where a.Employee_ID=empid; 
+end //
+delimiter ;
+/*Execute*/
+call Remove_All_Professor_Courses(1); /*Employee ID*/
+/*End*/
+
+/*Update Professor*/
+delimiter //
+create procedure Update_Professor(
+in empid int,
+in name varchar(40),
+in post varchar(30),
+in dept_id int,
+in cid varchar(7)
+)
+begin
+update Professor set P_Name=name, Post=post, Department_ID=dept_id where Professor.Roll_No=rollno;
+call Add_Professor_Course(cid,empid,@did,@rif);  
+end //
+delimiter ;
+/*Execute*/
+call Update_Professor(1,'A','B.Tech',2,1,'CS 207'); /*Employee ID, Name, Post, dept id, course id*/
+/*End*/
+/*Execute Remove_All_professor_Courses() once and then execute Update_Professor() for all the courses added*/
+
+/*Update Course*/
+delimiter //
+create procedure Update_Courses(
+in cid varchar(7),
+in name varchar(50),
+in link varchar(200),
+in credit varchar(5)
+)
+begin
+update Courses set Course_Name=name, Class_Link=link, Credits=credit where Courses.Course_Code=cid;
+end //
+delimiter ;
+/*Execute*/
+call Update_Courses('CS 207', 'DBMS', 'Mahismati.com', '4-0-0'); /*Course Code, Course Name, Class Link, Credits */
+/*End*/
+

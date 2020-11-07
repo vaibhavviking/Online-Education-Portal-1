@@ -143,6 +143,7 @@ create table Study_Material(
 Material_No int auto_increment,
 Link varchar(200),
 Course_Code varchar(7),
+Description varchar(100),
 primary key(Material_No),
 foreign key(Course_Code) references Courses(Course_Code) on delete cascade
 );

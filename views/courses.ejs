@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 
 <html>
@@ -9,7 +11,22 @@
 </head>
 
 <body>
-    <table class="table">
+  <nav class="navbar">
+    <img class="logo" src="./css/images/logo.png" alt="...">
+    <h3>भारतीय प्रौद्योगिकी संस्थान इंदौर <br> Indian Institute of Technology Indore</h3>
+  </nav>
+
+  <h1> Time-table </h1>
+  <header>
+    <h2>Welcome to Online Education Portal.</h2>
+
+  </header>
+
+
+
+    <%if(data.length >0){
+        var i=1; %>
+          <table class="table">
       <tr>
         <th>Serial No.</th>
         <th>Course Code</th>
@@ -28,6 +45,8 @@
       </tr>
       <% i++}) %>
     </table>
+    <%} %>
+
 </body>
 
 </html>
