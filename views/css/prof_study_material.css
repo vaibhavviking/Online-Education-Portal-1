@@ -1,0 +1,161 @@
+
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    text-align: center;
+    font-weight: 600;
+    background-color: #e2e2e2;
+  }
+  
+  .navbar {
+    background-color: rgba(180, 150, 150, 0.5);
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo {
+    height: 100px;
+    width: 100px;
+    margin: 10px;
+  }
+  
+  h3 {
+    font-size: 2.5rem;
+    font-style: italic;
+    margin: 0px 10px;
+  }
+  
+  h1 {
+    margin: 0px;
+    padding: 20px;
+    text-align: center;
+    background-color: transparent;
+    position: relative;
+    top: 20px; 
+    font-size: 4em;
+  }
+  
+  h2 {
+    font-size: 2em;
+    color: darkred;
+    margin: 10px;
+  }
+    
+  table{
+    margin: 80px 20px;
+    border: 2px solid black;
+  }
+  
+  th,td{
+    width: 350px;
+    font-weight: bold;
+    font-size: 25px;
+    height: 70px;
+    border: 2px solid black;
+  }
+
+  ul {
+    display: flex;
+  }
+
+li {
+    list-style: none;
+    margin: 0px 10px;
+    font-size: 20px;
+}
+
+a:hover {
+    border: 1px solid black;
+    border-radius: 15px;
+    color: black;
+    background-color: #dbefea;
+}
+
+a:active {
+    background-color: #9fe4d3;
+}
+
+a {
+    text-decoration: none;
+    padding: 7px;
+    color: #072ff2;
+}
+
+.bar {
+    margin: 20px 0px 50px 0px;
+    position: sticky;
+    top: 10px;
+    border-radius: 15px;
+    display: flex;
+    z-index: 10;
+    opacity: 20;
+    background-color: rgba(190, 190, 240);
+}
+
+.box {
+    width: 100%;
+    border-bottom: 2px solid purple;
+    margin: 20px 0px;
+}
+
+.box input {
+    background: none;
+    width: 85%;
+    outline: none;
+    border: none;
+    color: rgba(202, 43, 43, 0.589);
+    padding: 5px 10px;
+    font-size: 25px;
+    font-family: cursive;
+    font-weight: bold;
+}
+
+.box i {
+    width: 25px;
+    text-align: center;
+}
+
+.btn {
+    cursor: pointer;
+    margin: 15px 10px;
+    padding: 10px 25px;
+    color: black;
+    border-radius: 10px;
+    border: 2px solid purple;
+    font-size: 18px;
+    background: none;
+    font-weight: bold;
+}
+
+.btn:hover {
+    color: rgb(228, 13, 13);
+    background: white;
+}
+
+.search {
+    margin: 20px;
+    font-size: 20px;
+}
+
+.search input {
+    background: aliceblue;
+    width: 50%;
+    border: none;
+    color: rgb(100, 150, 240);
+    padding: 5px 10px;
+    font-size: 25px;
+    font-family: auto;
+    font-weight: bold;
+}
+
+.container {
+    position: relative;
+    width: 50%;
+    margin: 10px auto;
+}
+  
