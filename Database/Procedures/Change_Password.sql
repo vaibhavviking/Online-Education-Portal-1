@@ -7,7 +7,7 @@ in new_p varchar(30),
 out matched int
 )
 begin
-declare p int;
+declare p varchar(30);
 select Account.Password_ into p from Account where User_ID_=userid;
 case
 	when p=old_p then set matched=1;
