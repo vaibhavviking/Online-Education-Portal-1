@@ -116,11 +116,7 @@ button:active{
     }
 
     h1 {
-        margin: 0px;
-        padding: 16px;
-        text-align: center;
-        background-color: transparent;
-        position: relative;
+      
         top: 16px;
         font-size: 3em;
     }
