@@ -4,13 +4,6 @@
 }
 
 body {
-    margin: 0px;
-    padding: 0px;
-    text-align: center;
-    font-weight: 600;
-    box-sizing: border-box;
-    background-color: #f8ecff;
-}
 
 form {
     display: flex;
