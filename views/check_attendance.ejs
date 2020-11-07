@@ -1,7 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>itute of Technology Indore</h3>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Attendance</title>
+    <link rel="stylesheet" href="./css/check_attendance.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <img class="logo" src="./css/images/logo.png" alt="...">
+        <h3>भारतीय प्रौद्योगिकी संस्थान इंदौर <br> Indian Institute of Technology Indore</h3>
+    </header>
+
+
+
+    <nav id="navbar">
+        <div id="logo">
+           <img src="./css/images/logo.png"  alt="">
+        </div>
+        <ul>
+            <li class="item"><a href="#">Home</a></li>
+            <li class="item"><a href="#">Check Attendance</a></li>
+            <li class="item"><a href="#">Time Table</a></li>
+            <li class="item"><a href="#">Courses</a></li>
+            
+            <li class="item"><a href="#">LogOut</a></li>
+           
+
+
+        </ul>
+        </div>
     </nav>
+
 
     <h1>Check Attendance</h1>
     <h2>Welcome to Online Education Portal.</h2>
@@ -18,7 +49,15 @@
                 <th>Days Attended</th>
                 <th>Total Classes</th>
             </tr>
-           
+            <% data.forEach((item)=>{%>
+                <tr>
+                    <td><%=item.Roll_No%></td>
+                    <td><%=item.S_Name%></td>
+                    <td><%=item.Days_Attended%></td>
+                    <td><%=item.Total_Days%></td>
+                </tr>
+           <% })%>
+        </table>
    <% }%>
 </body>
 </html>
