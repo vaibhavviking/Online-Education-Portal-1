@@ -53,9 +53,7 @@
     border: 2px solid black;
   }
 
-  ul {
-    display: flex;
-  }
+  
 
 li {
     list-style: none;
