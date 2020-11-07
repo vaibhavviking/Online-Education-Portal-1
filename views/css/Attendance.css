@@ -1,17 +1,7 @@
 
 @media (min-width: 770px) {
 
-    * {
-        box-sizing: border-box;
-    }
-
-    /* html::before {
-        content: "";
-        position: absolute;
-        background: url('img/bg4.jpg') no-repeat center center/cover;
-        height: 150%;
-        width: 100%;
-        opacity: 0.5;
+        
         z-index: -1;
     } */
 
