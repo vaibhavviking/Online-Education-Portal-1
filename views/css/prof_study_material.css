@@ -9,11 +9,11 @@
     box-sizing: border-box;
     text-align: center;
     font-weight: 600;
-    background-color: #e2e2e2;
+    background-color: #f8ecff;
   }
   
   .navbar {
-    background-color: rgba(180, 150, 150, 0.5);
+    background-color: rgba(168, 185, 223, 0.6);
     display: flex;
     align-items: center;
   }
@@ -31,19 +31,13 @@
   }
   
   h1 {
-    margin: 0px;
+    margin: 10px;
     padding: 20px;
     text-align: center;
     background-color: transparent;
     position: relative;
     top: 20px; 
     font-size: 4em;
-  }
-  
-  h2 {
-    font-size: 2em;
-    color: darkred;
-    margin: 10px;
   }
     
   table{
@@ -87,14 +81,14 @@ a {
 }
 
 .bar {
-    margin: 20px 0px 50px 0px;
+    margin: 20px 0px 10px 0px;
     position: sticky;
     top: 10px;
     border-radius: 15px;
     display: flex;
     z-index: 10;
     opacity: 20;
-    background-color: rgba(190, 190, 240);
+    background-color: rgb(87, 212, 225);
 }
 
 .box {
@@ -143,7 +137,7 @@ a {
 }
 
 .search input {
-    background: aliceblue;
+    background: white;
     width: 50%;
     border: none;
     color: rgb(100, 150, 240);
@@ -156,6 +150,6 @@ a {
 .container {
     position: relative;
     width: 50%;
-    margin: 10px auto;
+    margin: 30px auto;
 }
   
