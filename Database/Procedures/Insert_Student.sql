@@ -7,7 +7,7 @@ in prog varchar(10),
 in year int,
 in deptid int,
 in userid varchar(30),
-in password varchar(30),
+in password varchar(100),
 out did int,
 out rif int
 )
