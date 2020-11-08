@@ -2,8 +2,8 @@
 delimiter //
 create procedure Change_Password(
 in userid varchar(30),
-in old_p varchar(30),
-in new_p varchar(30),
+in old_p varchar(100),
+in new_p varchar(100),
 out matched int
 )
 begin
