@@ -8,7 +8,7 @@ in dept_id int,
 in cid varchar(7)
 )
 begin
-update Professor set P_Name=name, Post=post, Department_ID=dept_id where Professor.Roll_No=rollno;
+update Professor set P_Name=name, Post=post, Department_ID=dept_id where Professor.Employee_ID=empid;
 call Add_Professor_Course(cid,empid,@did,@rif);  
 end //
 delimiter ;
