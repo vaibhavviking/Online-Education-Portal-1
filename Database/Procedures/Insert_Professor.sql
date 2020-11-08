@@ -6,7 +6,7 @@ in name varchar(40),
 in post varchar(30),
 in deptid int,
 in userid varchar(30),
-in password varchar(30),
+in password varchar(100),
 out did int,
 out rif int
 )
