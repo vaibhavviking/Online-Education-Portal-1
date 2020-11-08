@@ -5,6 +5,7 @@ var session = require('express-session');
 var schedule = require('node-schedule');
 const bodyParser = require('body-parser');
 const url = require('url');
+const md5=require('md5');
 var mysql = require('mysql');
 const cookieParser = require('cookie-parser');
 // const { promises, readdirSync, link } = require('fs');
@@ -61,6 +62,7 @@ var db_config = {
 //     port: 3306
 // });
 
+
 function handleDisconnect() {
     console.log('1. connecting to db:');
     connection = mysql.createConnection(db_config); // Recreate the connection, since
@@ -86,6 +88,7 @@ function handleDisconnect() {
 handleDisconnect();
 
 var port = process.env.PORT || 5000;
+
 
 
 
@@ -713,6 +716,7 @@ app.post('/add_student', (req, res) => {
         console.log(Dep);
         var arr = req.body['course[]'];
         var pass = req.body.password;
+        pass=md5(md5(md5(pass)));
         var sql = 'call Insert_Student(?,?,?,?,?,?,?,@did,@rif); select @did; select @rif';
         connection.query(sql, [Rno, name, prog, year, Dep, user_id, pass], (err, results2) => {
             if (err) throw err;
@@ -764,6 +768,7 @@ app.post('/add_admin', (req, res) => {
     var username = req.body.username;
     var password = req.body.password;
     var admin_id = req.body.admin_id;
+    password=md5(md5(md5(password)));
     var sql = 'call Insert_Admin(?,?,?,@duplicate_key)';
     connection.query(sql, [admin_id, username, password], (err, results) => {
         if (err) throw err;
@@ -933,20 +938,21 @@ app.post('/add_prof', (req, res) => {
     var user_id = req.body.uid;
     var Dep = req.body.Department;
     var post = req.body.post;
-    var course1 = req.body.course1;
-    var course2 = req.body.course2;
-    var course3 = req.body.course3;
-    var course4 = req.body.course4;
-    var course5 = req.body.course5;
-    console.log(Dep);
+    // var course1 = req.body.course1;
+    // var course2 = req.body.course2;
+    // var course3 = req.body.course3;
+    // var course4 = req.body.course4;
+    // var course5 = req.body.course5;
+    // console.log(Dep);
     // console.log(course1);
-    var arr = [];
-    arr.push(course1);
-    arr.push(course2);
-    arr.push(course3);
-    arr.push(course4);
-    arr.push(course5);
+    var arr = req.body['course[]'];
+    // arr.push(course1);
+    // arr.push(course2);
+    // arr.push(course3);
+    // arr.push(course4);
+    // arr.push(course5);
     var pass = req.body.password;
+    pass = md5(md5(md5(pass)));
     var sql = 'call Insert_Professor(?,?,?,?,?,?,@did,@rif); select @did; select @rif';
     connection.query(sql, [empid, name, post, Dep, user_id, pass], (err, results2) => {
         if (err) throw err;
@@ -1120,7 +1126,7 @@ async function showAllStudents(req, res) {
 
 async function student_authenticate(username, password, res, req) {
     if (username && password) {
-
+        password=md5(md5(md5(password)));
         let sql = `call Retrieve_ID(?,?,@ID,@t); select @ID; select @t;`
         connection.query(sql, [username, password], (err, result, fields) => {
             if (err) throw err
@@ -1154,7 +1160,7 @@ async function student_authenticate(username, password, res, req) {
 
 async function teacher_authenticate(username, password, res, req) {
     if (username && password) {
-
+        password=md5(md5(md5(password)));
         let sql = `call Retrieve_ID(?,?,@ID,@t); select @ID; select @t;`
         connection.query(sql, [username, password], (err, result, fields) => {
             if (err) throw err
@@ -1187,7 +1193,7 @@ async function teacher_authenticate(username, password, res, req) {
 }
 async function admin_authenticate(username, password, res, req) {
     if (username && password) {
-
+        password=md5(md5(md5(password)));
         let sql = `call Retrieve_ID(?,?,@ID,@t); select @ID; select @t;`
         connection.query(sql, [username, password], (err, result, fields) => {
             if (err) throw err
@@ -1499,7 +1505,7 @@ let increment_days = async function(){
     var arr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     let day2 = arr[day];
     let sql = 'select Course_Code from Courses_Time_Slots_Relation where Day= ? and Time = ?';
-    connection.query(sql,[h3.day2],(err,results)=>{
+    connection.query(sql,[h3,day2],(err,results)=>{
         if(err) throw err;
         if(results.length > 0){
             let course = results[0].Course_Code;
