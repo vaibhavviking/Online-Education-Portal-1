@@ -3,7 +3,7 @@ delimiter //
 create procedure Insert_Admin(
 in Admin_ID int,
 in User_ID_ varchar(30),
-in Password_ varchar(30),
+in Password_ varchar(100),
 out duplicate_key int
 )
 begin
