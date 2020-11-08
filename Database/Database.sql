@@ -29,7 +29,7 @@ primary key(Admin_ID)
 
 create table Account(
 User_ID_ varchar(30),
-Password_ varchar(30) not null,
+Password_ varchar(100) not null,
 Type_ varchar(15) not null, 
 check( Type_='student' or Type_='professor' or Type_='admin' ),
 primary key(User_ID_)
