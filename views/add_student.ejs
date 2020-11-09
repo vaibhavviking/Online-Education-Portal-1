@@ -124,7 +124,7 @@ body {
             // x.innerHTML += `<input type='text' required='true' placeholder='course${i}' name='course${i}'>`;
             x.innerHTML += `<div class="box">
             <i class="fa fa-key"></i>
-            <input  placeholder='course${i}' name='course${i}' type="text" required=true>
+            <input  placeholder='course${i}' name='course[]' type="text">
 
         </div>`;
             // p.innerHTML +=1;
@@ -197,7 +197,7 @@ body {
             <p><%=error%></p>
             <%}%>
         <button class="btn" type="submit">Add student</button>
-        <button class="btn1" onclick='add()'>Add Course</button>
+        <button class="btn1" type="button" onclick='add()'>Add Course</button>
     </form>
    
 </body>
