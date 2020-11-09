@@ -45,12 +45,12 @@ call Delete_Admin(1000); /* Admin_ID */
 delimiter //
 create procedure Retrieve_ID(
 in u varchar(30),
-in p varchar(30),
+in p varchar(100),
 out account_id varchar(15),
 out t varchar(15)
 )
 begin
-select Type_ into t from Account where User_ID_=u and Password_=p;
+select Type_ into t from Account where Account.User_ID_=u and Account.Password_=p;
 case
 	when t='Admin' then 
     select Admin_ID into account_id from Account inner join Admin_Account_Relation 
@@ -81,8 +81,8 @@ select @t;                         /*Type*/
 delimiter //
 create procedure Change_Password(
 in userid varchar(30),
-in old_p varchar(30),
-in new_p varchar(30),
+in old_p varchar(100),
+in new_p varchar(100),
 out matched int
 )
 begin
@@ -1069,7 +1069,7 @@ in dept_id int,
 in cid varchar(7)
 )
 begin
-update Professor set P_Name=name, Post=post, Department_ID=dept_id where Professor.Roll_No=rollno;
+update Professor set P_Name=name, Post=post, Department_ID=dept_id where Professor.Employee_ID=empid;
 call Add_Professor_Course(cid,empid,@did,@rif);  
 end //
 delimiter ;

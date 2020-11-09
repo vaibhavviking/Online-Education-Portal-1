@@ -140,7 +140,7 @@
             // x.innerHTML += `<input type='text' required='true' placeholder='course${i}' name='course${i}'>`;
             x.innerHTML += `<div class="box">
             <i class="fa fa-key"></i>
-            <input  placeholder='course${i}' name='course${i}' type="text">
+            <input  placeholder='course${i}' name='course[]' type="text">
 
         </div>`;
             // p.innerHTML +=1;
@@ -218,6 +218,8 @@
                 <p id="save" style="visibility: hidden;"></p>
                 
             </div>
+            <% var roll = rollno%>
+            <input type="text" name="rollno" style="display: none;" value=<%=roll%> >
             <a href="/admin_home" type="submit" ><button class="btn">Update</button></a>
         </form>
             

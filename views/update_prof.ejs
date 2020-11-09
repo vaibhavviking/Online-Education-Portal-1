@@ -140,7 +140,7 @@
             // x.innerHTML += `<input type='text' required='true' placeholder='course${i}' name='course${i}'>`;
             x.innerHTML += `<div class="box">
             <i class="fa fa-key"></i>
-            <input  placeholder='course${i}' name='course${i}' type="text" required=true>
+            <input  placeholder='course${i}' name='course[]' type="text" required=true>
 
         </div>`;
             // p.innerHTML +=1;
@@ -210,6 +210,8 @@
                 <p id="save" style="visibility: hidden;"></p>
                 
             </div>
+            <% var emp = empid%>
+            <input type="text" name="empid" style="display: none;" value=<%=emp%> >
             <button  style="display: block;" class="btn" onclick="add()" >Add Course</button></br>
             <a href="/admin_home" type="submit" ><button class="btn">Update</button></a>
 

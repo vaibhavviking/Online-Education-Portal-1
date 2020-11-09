@@ -174,6 +174,18 @@ let get_id = new Promise((resolve, reject) => {
     // console.log('outside',id);
 })
 
+// let days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+// let timeslots=['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00',];
+// days.forEach((day)=>{
+//     timeslots.forEach((slot)=>{
+//         let sql = 'call Insert_Time_Slot(?,?,@did);'
+//         connection.query(sql,[day,slot],(err,results)=>{
+//             if(err) throw err;
+//             console.log(day,slot,'slot added');
+//         })
+//     })
+// })
+
 app.get('/student_login', (req, res) => {
     var query = 'DELETE FROM current_session';
     connection.query(query, (err, results) => {
@@ -469,63 +481,76 @@ app.post('/delete_dept', (req, res) => {
 })
 
 app.get('/update_student_1', (req, res) => {
+    let error;
     if (req.session.loggedin && req.session.user) {
-        res.render('update_student_1.ejs');
+        // if(req.query.error != undefined){
+        //     error = req.query.error;
+        //     res.render('update_student_1.ejs',{error : error});
+        // }else{
+            res.render('update_student_1.ejs');
+        
     } else {
         res.redirect('/');
     }
 })
 
 app.post('/update_student_1', (req, res) => {
-    let rollno = req.body.rollno;
-    res.redirect(`/update_student/?rollno=${rollno}`);
-    res.end();
-})
+    let rollno = req.body.Rollno;
+    if(rollno != undefined){
 
-app.get('/update_student', (req, res) => {
-    let rollno = req.query.rollno;
-    let sql = `select S_Name, Program_Enrolled, Year_Of_Study,Department_ID from Student where Roll_No=${rollno}; call Get_Student_Courses(${rollno});`;
-    connection.query(sql, (err, results) => {
-        if (err) throw err;
-        console.log(results[1]);
-        res.render('update_student.ejs', { data1: results[0][0], data2: results[1] });
-    })
-})
-
-app.post('/update_student', (req, res) => {
-    console.log(req.body);
-    let rollno = req.query.rollno;
-    let name = req.body.username;
-    let program = req.body.program;
-    let year = req.body.year;
-    let depid = req.body.depid;
-    let courses = [];
-    let i = 1;
-    while (i <= 10) {
-        courses.push(req.body[`course${i}`]);
-        i++;
+        let sql = `select S_Name, Program_Enrolled, Year_Of_Study,Department_ID from Student where Roll_No=${rollno}; call Get_Student_Courses(${rollno});`;
+        connection.query(sql, (err, results) => {
+            if (err) throw err;
+            console.log(results[1]);
+            if(results[0].length > 0 && results[0].length>0){
+                console.log(results[1]);
+                res.render('update_student.ejs', { data1: results[0][0], data2: results[1], rollno : rollno });
+            }else{
+                // window.alert('Invalid ID');
+                res.render('update_student_1.ejs',{error :"Invalid ID.Please try again"})
+                
+            }
+        })
+    }else{
+        console.log(req.body);
+        let rollno = req.body.rollno;
+        let name = req.body.username;
+        let program = req.body.program;
+        let year = req.body.year;
+        let depid = req.body.depid;
+        var course = req.body['course[]'];
+            let arr=[];
+            if(typeof course == 'object'){
+                arr=course;
+            }else{
+                arr[0]=course;
+            }
+        let sql = `call Remove_All_Student_Courses(${rollno})`;
+        connection.query(sql, (err, results) => {
+            if (err) throw err;
+            console.log('Courses Removed');
+        })
+    
+        let sql2 = 'call Update_Student(?,?,?,?,?,?)';
+        arr.forEach((item) => {
+            if (item !== undefined) {
+    
+                connection.query(sql2, [rollno, name, program, year, depid, item], (err, results) => {
+                    if (err) throw err;
+                    console.log('course updated');
+                })
+            }
+        })
+        res.redirect('/admin_home');
     }
-    let sql = `call Remove_All_Student_Courses(${rollno})`;
-    connection.query(sql, (err, results) => {
-        if (err) throw err;
-        console.log('Courses Removed');
-    })
-
-    let sql2 = 'call Update_Student(?,?,?,?,?,?)';
-    courses.forEach((item) => {
-        if (item !== undefined) {
-
-            connection.query(sql2, [rollno, name, program, year, depid, item], (err, results) => {
-                if (err) throw err;
-                console.log('course updated');
-            })
-        }
-    })
-    res.redirect('/admin_home');
 })
 
 app.get('/update_prof_1', (req, res) => {
+    let error;
     if (req.session.loggedin && req.session.user) {
+        // if(req.query.error != undefined){
+        //     error = req.query.error;
+        // }
         res.render('update_prof_1.ejs');
     } else {
         res.redirect('/');
@@ -533,50 +558,52 @@ app.get('/update_prof_1', (req, res) => {
 })
 
 app.post('/update_prof_1', (req, res) => {
-    let empid = req.body.empid;
-    res.redirect(`/update_prof/?empid=${empid}`);
-    res.end();
-})
-
-app.get('/update_prof', (req, res) => {
-    let empid = req.query.empid;
-    let sql = `select P_Name, Employee_ID, Post,Department_ID from Professor where Employee_ID=${empid}; call Get_Professor_Courses(${empid});`;
-    connection.query(sql, (err, results) => {
-        if (err) throw err;
-        console.log(results[1]);
-        res.render('update_prof.ejs', { data1: results[0][0], data2: results[1] });
-    })
-})
-
-app.post('/update_prof', (req, res) => {
-    console.log(req.body);
-    let empid = req.query.empid;
-    let name = req.body.username;
-    let post = req.body.post;
-    let depid = req.body.depid;
-    let courses = [];
-    let i = 1;
-    while (i <= 10) {
-        courses.push(req.body[`course${i}`]);
-        i++;
+    let empid = req.body.Empid;
+    if(empid != undefined){
+        let sql = `select P_Name, Employee_ID, Post,Department_ID from Professor where Employee_ID=${empid}; call Get_Professor_Courses(${empid});`;
+        connection.query(sql, (err, results) => {
+            if (err) throw err;
+            console.log(results);
+            if(results[0].length > 0 && results[0].length>0){
+                console.log(results[1]);
+                res.render('update_prof.ejs', { data1: results[0][0], data2: results[1], empid : empid });
+            }else{
+                // window.alert('Invalid ID');
+                res.render('update_prof_1.ejs',{error : "Invalid ID. Please try again"});
+            }
+        })
+    }else{
+        console.log(req.body);
+        let empid = req.body.empid;
+        let name = req.body.username;
+        let post = req.body.post;
+        let depid = req.body.depid;
+        var course = req.body['course[]'];
+            let arr=[];
+            if(typeof course == 'object'){
+                arr=course;
+            }else{
+                arr[0]=course;
+            }
+       
+        let sql = `call Remove_All_Professor_Courses(${empid})`;
+        connection.query(sql, (err, results) => {
+            if (err) throw err;
+            console.log('Courses Removed');
+        })
+    
+        let sql2 = 'call Update_Professor(?,?,?,?,?)';
+        arr.forEach((item) => {
+            if (item !== undefined) {
+    
+                connection.query(sql2, [empid, name, post, depid, item], (err, results) => {
+                    if (err) throw err;
+                    console.log('course updated');
+                })
+            }
+        })
+        res.redirect('/admin_home');
     }
-    let sql = `call Remove_All_Professor_Courses(${empid})`;
-    connection.query(sql, (err, results) => {
-        if (err) throw err;
-        console.log('Courses Removed');
-    })
-
-    let sql2 = 'call Update_Professor(?,?,?,?,?)';
-    courses.forEach((item) => {
-        if (item !== undefined) {
-
-            connection.query(sql2, [empid, name, post, depid, item], (err, results) => {
-                if (err) throw err;
-                console.log('course updated');
-            })
-        }
-    })
-    res.redirect('/admin_home');
 })
 
 app.get('/update_dept_1', (req, res) => {
@@ -588,24 +615,21 @@ app.get('/update_dept_1', (req, res) => {
 })
 
 app.post('/update_dept_1', (req, res) => {
+    let depid = req.body.Depid;
+    if(depid != undefined){
+        let sql = `select D_Name from Department where Dept_ID=${depid};`;
+        connection.query(sql, (err, results) => {
+            if (err) throw err;
+            console.log(results);
+            if(results.length > 0){
+                res.render('update_dept.ejs', { data1: results[0] , depid : depid });
+            }else{
+                res.render('update_dept_1.ejs',{error : "Invalid Department name. Please try again"});
+            }
+        })
+    }else{
+        console.log(req.body);
     let depid = req.body.depid;
-    res.redirect(`/update_dept/?depid=${depid}`);
-    res.end();
-})
-
-app.get('/update_dept', (req, res) => {
-    let depid = req.query.depid;
-    let sql = `select D_Name from Department where Dept_ID=${depid};`;
-    connection.query(sql, (err, results) => {
-        if (err) throw err;
-        console.log(results);
-        res.render('update_dept.ejs', { data1: results[0] });
-    })
-})
-
-app.post('/update_dept', (req, res) => {
-    console.log(req.body);
-    let depid = req.query.depid;
     let name = req.body.name;
     let sql2 = 'call Update_Department(?,?)';
     connection.query(sql2, [depid, name], (err, results) => {
@@ -613,6 +637,8 @@ app.post('/update_dept', (req, res) => {
         console.log('Department updated');
     })
     res.redirect('/admin_home');
+    }
+    
 })
 
 app.get('/update_course_1', (req, res) => {
@@ -624,33 +650,34 @@ app.get('/update_course_1', (req, res) => {
 })
 
 app.post('/update_course_1', (req, res) => {
-    let cid = req.body.cid;
-    res.redirect(`/update_course/?cid=${cid}`);
-    res.end();
-})
-
-app.get('/update_course', (req, res) => {
-    let cid = String(req.query.cid);
-    let sql = `select Course_Code, Class_Link, Credits from Courses where Course_Code=?;`;
-    connection.query(sql,[cid], (err, results) => {
-        if (err) throw err;
-        console.log(results);
-        res.render('update_course.ejs', { data1: results[0] });
-    })
-})
-
-app.post('/update_course', (req, res) => {
-    console.log(req.body);
-    let cid = req.query.cid;
-    let name = req.body.name;
-    let link = req.body.link;
-    let credits = req.body.credits;
-    let sql2 = 'call Update_Courses(?,?,?,?)';
-    connection.query(sql2, [cid,name,link,credits], (err, results) => {
-        if (err) throw err;
-        console.log('Course Updated');
-    })
-    res.redirect('/admin_home');
+    let cid = req.body.Cid;
+    // res.redirect(`/update_course/?cid=${cid}`);
+    if(cid != undefined){
+        let sql = `select Course_Name,Course_Code, Class_Link, Credits from Courses where Course_Code=?;`;
+        connection.query(sql,[cid], (err, results) => {
+            if (err) throw err;
+            console.log(results);
+            if(results.length > 0){
+                res.render('update_course.ejs', { data1: results[0], cid : cid});
+            }else{
+                res.render('update_course_1.ejs',{error : "Invalid Course. Please try again"});
+            }
+        })
+    }else{
+        console.log(req.body);
+        let cid = req.body.cid;
+        let name = req.body.name;
+        let link = req.body.link;
+        let credits = req.body.credits;
+        let sql2 = 'call Update_Courses(?,?,?,?)';
+        console.log(cid,name,link,credits);
+        connection.query(sql2, [cid,name,link,credits], (err, results) => {
+            if (err) throw err;
+            console.log('Course Updated');
+        })
+        res.redirect('/admin_home');
+    }
+    
 })
 
 app.post('/delete_admin', (req, res) => {
@@ -706,7 +733,7 @@ app.get('/delete_admin', (req, res) => {
 
 app.post('/add_student', (req, res) => {
     if (req.session.loggedin && req.session.user) {
-       
+       console.log(req.body);
         var name = req.body.Name;
         var Rno = req.body.Rno;
         var user_id = req.body.uid;
@@ -714,7 +741,13 @@ app.post('/add_student', (req, res) => {
         var Dep = req.body.Department;
         var prog = req.body.Program;
         console.log(Dep);
-        var arr = req.body['course[]'];
+        var course = req.body['course[]'];
+        let arr=[];
+        if(typeof course == 'object'){
+            arr=course;
+        }else{
+            arr[0]=course;
+        }
         var pass = req.body.password;
         pass=md5(md5(md5(pass)));
         var sql = 'call Insert_Student(?,?,?,?,?,?,?,@did,@rif); select @did; select @rif';
@@ -945,7 +978,13 @@ app.post('/add_prof', (req, res) => {
     // var course5 = req.body.course5;
     // console.log(Dep);
     // console.log(course1);
-    var arr = req.body['course[]'];
+    var course = req.body['course[]'];
+        let arr=[];
+        if(typeof course == 'object'){
+            arr=course;
+        }else{
+            arr[0]=course;
+        }
     // arr.push(course1);
     // arr.push(course2);
     // arr.push(course3);
@@ -1398,6 +1437,9 @@ let change_password_stud = async function (req, res) {
     let newpass = req.body.new_password;
     let oldpass = req.body.old_password;
     let connewpass = req.body.con_new_password;
+    newpass=md5(md5(md5(newpass)))
+    oldpass=md5(md5(md5(oldpass)))
+    connewpass=md5(md5(md5(connewpass)))
     if (newpass != connewpass) {
         res.render('change_password.ejs', { error: "password do not match" });
     } else {
@@ -1429,6 +1471,9 @@ let change_password_prof = async function (req, res) {
     let newpass = req.body.new_password;
     let oldpass = req.body.old_password;
     let connewpass = req.body.con_new_password;
+    newpass=md5(md5(md5(newpass)))
+    oldpass=md5(md5(md5(oldpass)))
+    connewpass=md5(md5(md5(connewpass)))
     if (newpass != connewpass) {
         res.render('change_password.ejs', { error: "password do not match" });
     } else {
@@ -1451,6 +1496,9 @@ let change_password_admin = async function (req, res) {
     let newpass = req.body.new_password;
     let oldpass = req.body.old_password;
     let connewpass = req.body.con_new_password;
+    newpass=md5(md5(md5(newpass)))
+    oldpass=md5(md5(md5(oldpass)))
+    connewpass=md5(md5(md5(connewpass)))
     if (newpass != connewpass) {
         res.render('change_password.ejs', { error: "password do not match" });
     } else {
