@@ -12,6 +12,14 @@ body {
     background-color: #f8ecff;
 }
 
+.bar{
+    margin: 0px;
+    position: sticky;
+    top: 10px;
+    display: flex;
+    background-color: rgb(170, 206, 240);
+}
+
 .navbar {
     background-color: rgba(168, 185, 223, 0.6);
     display: flex;
