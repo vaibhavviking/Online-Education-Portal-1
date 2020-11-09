@@ -9,8 +9,8 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-<link rel="stylesheet" href="stu.css">
-<link rel="stylesheet" href="./css/student_home.css">
+        <link rel="stylesheet" href="stu.css">
+        <link rel="stylesheet" href="./css/student_home.css">
     <title>student home page</title>
     <style>
       .card-deck{ background: rgb(9,2,120);background: linear-gradient(117deg, rgba(9,2,120,1) 0%, rgba(9,175,243,1) 100%);}
@@ -19,30 +19,34 @@
 </head>
 
 <body>
-  <header>
-    <h1>भारतीय प्रौद्योगिकी संस्थान इंदौर Indian Institute of Technology Indore
-    </h1>
-    <h2>welcome to online education portal</h2>
-  </header>
-    <nav id="navbar">
-        <div id="logo">
-            <img src="logo1.png" alt="">
+  <header class="head">
+    <img src="./css/images/logo.png" alt="">
+    <h3>भारतीय प्रौद्योगिकी संस्थान इंदौर <br> Indian Institute of Technology Indore</h3>
+   </header>
+  
+  
+  <h2>Welcome to Online Education Portal</h2>
+  
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">IITI</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+        
+          
+          <a class="nav-item nav-link" href="/ongoing_classes">My Attendance</a>
+        <a class="nav-item nav-link" href="/student_timetable">Time Table</a>
+          <a class="nav-item nav-link" href="/student_courses">Courses</a>
+          <a class="nav-item nav-link" href="/study_material">Study Material</a>
+          <a class="nav-item nav-link" href="/student_change_password">Change Password</a>
+          <a class="nav-item nav-link" href="/logout">LogOut</a>
+  
+          
         </div>
-        <ul>
-                        <li class="item"><a href="#">Home</a></li>
-        <li class="item"><a href="/ongoing_classes">My Attendance</a></li>
-        <li class="item"><a href="/student_timetable">Time Table</a></li>
-        <li class="item"><a href="/student_courses">Courses</a></li>
-        <li class="item"><a href="/study_material">Study Material</a></li>
-        <li class="item"><a href="/student_change_password">Change Password</a></li>
-        <li class="item"><a href="/logout">LogOut</a></li>
-
-        </ul>
-
-
-
-       
-        </div>
+      </div>
     </nav>
     
         <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
@@ -143,25 +147,27 @@
         <br>
         <br>
 </body>
-    <footer>
-      <div class="card text-center">
-        <div class="card-header">
-          Featured
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-        
-          <a href="/ongoing_classes">My Attendance</a>
-        <a href="/student_timetable">Time Table</a>
-        <a href="/student_courses">Courses</a>
-        <a href="/study_material">Study Material</a>
-        <a href="/student_change_password">Change Password</a>
-        <a href="/logout">LogOut</a>
-        </div>
-        <div class="card-footer text-muted">
-          2 days ago
-        </div>
-      </div>
-    </footer>
+<footer>
+  <div class="card text-center">
+    <div class="card-header">
+      Featured
+    </div>
+    <div class="card-body">
 
+
+      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+     
+      <a href="/ongoing_classes">My Attendance</a>
+      <a href="/student_timetable">Time Table</a>
+      <a href="/student_courses">Courses</a>
+      <a href="/study_material">Study Material</a>
+      <a href="/student_change_password">Change Password</a>
+      <a href="/logout">LogOut</a>
+    </div>
+    <div class="card-footer text-muted">
+      2 days ago
+    </div>
+  </div>
+</footer>
+</body>
 </html>
