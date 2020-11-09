@@ -8,25 +8,6 @@
     --navbar-height: 59px;
 }
 
-/*NAvigAation bar*/
-
-#navbar{
-    display: flex;
-    align-items: center;
-    position: static
-    ;
-    top: 0px;
-
-
-}
-    margin: 10px 34px;
-
-}
-#logo img{
-    height: 70px;
-    margin: 5px 7px;
-}
-
 /*navigation bar list styleing*/
 #navbar ul{
     display: flex;
