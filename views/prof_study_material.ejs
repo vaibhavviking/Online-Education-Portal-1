@@ -61,7 +61,7 @@
 				if(mess!=''){
 					var i=0;
 					while(document.getElementsByClassName('code')[i]){
-						if(document.getElementsByClassName('code')[i].innerHTML.indexOf(mess)!=-1 || String(document.getElementsByClassName('mlink')[i].innerHTML).indexOf(mess)!=-1){
+						if(document.getElementsByClassName('code')[i].innerHTML.indexOf(mess)!=-1 || String(document.getElementsByClassName('clink')[i].innerHTML).indexOf(mess)!=-1){
 							document.getElementsByClassName('material_details')[i].style.display = '';
 							
 						}
@@ -134,7 +134,7 @@
         <tr>
             <th>Select All<form method="post"><span><input type="checkbox" name="a" id="remove_all" style="opacity: 1; pointer-events: visible;" onclick='select_all()'></span></form></th>
             <th>Serial No.</th>
-            <th>Couse Code</th>
+            <th>Course Code</th>
             <th>Material Link</th>
             <th>Remove</th>
         </tr>
@@ -149,7 +149,7 @@
             <td><%= sr%></td>
             <td class="code"><%=item.Course_Code%></td>
             <% let matlink = "//" + item.Link%>
-            <td class="mlink"><a target="_blank" href=<%=matlink%> ><%=item.Link%></a></td>
+            <td class="clink"><a target="_blank" href=<%=matlink%> ><%=item.Link%></a></td>
             <% let link = "/prof_study_selected/?data[]="+item.Material_No %>
             <td class="mlink"><a href= <%=link%> >Remove</a></td>
         </tr>

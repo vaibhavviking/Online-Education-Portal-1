@@ -9,18 +9,32 @@ body {
     text-align: center;
     font-weight: 600;
     box-sizing: border-box;
-    background-color: #e2e2e2;
+    background-color: #f8ecff;
 }
 
 .navbar {
-    background-color: rgba(180, 150, 150, 0.5);
+    background-color:  rgba(168, 185, 223, 0.6);
     display: flex;
     align-items: center;
 }
 
 a{
     text-decoration: none;
+    padding: 7px;
+    color: #072ff2;
+}
+
+a:hover{
+    color: rgb(204, 0, 255);
+    text-decoration: underline;
+}
+
+li a:hover {
+    border: 1px solid black;
+    border-radius: 15px;
     color: black;
+    text-decoration: none;
+    background-color: #dbefea;
 }
 
 #button {
@@ -35,6 +49,25 @@ a{
 
 #button:active {
     background-color: rgb(113 113 202);
+}
+
+.bar{
+    margin: 20px 0px 10px 0px;
+    position: sticky;
+    display: flex;
+    background-color:rgb(87, 212, 225);
+    border-radius: 15px;
+    z-index: 10;
+}
+
+ul {
+    display: flex;
+}
+
+li {
+    list-style: none;
+    margin: 0px 10px;
+    font-size: 20px;
 }
 
 /* html::before {
@@ -85,11 +118,7 @@ a{
     }
 
     .bar{
-        margin: 0px;
-        position: sticky;
         top: 10px;
-        display: flex;
-        background-color: rgb(170, 206, 240);
     }
 
     .row {
@@ -157,11 +186,7 @@ a{
     }
 
     .bar{
-        margin: 0px;
-        position: sticky;
         top: 8px;
-        display: flex;
-        background-color: rgb(170, 206, 240);
     }
 
     .row {
@@ -229,13 +254,17 @@ a{
     }
 
     .bar{
-        margin: 0px;
-        position: sticky;
         top: 5px;
-        display: flex;
-        background-color: rgb(170, 206, 240);
     }
 
+    ul{
+        padding-inline-start: 10px;
+    }
+
+    li{
+        font-size: 14px;
+    }
+    
     .row {
         display: flex;
         flex-wrap: wrap;
