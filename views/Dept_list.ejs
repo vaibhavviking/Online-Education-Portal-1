@@ -1,25 +1,88 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Departments</title>
     <link rel="stylesheet" href="./css/Attendance.css">
+    <style>
+        .bar {
+            margin: 20px 0px 10px 0px;
+            position: sticky;
+            display: flex;
+            background-color: rgb(87, 212, 225);
+            border-radius: 15px;
+            z-index: 10;
+        }
+
+        ul {
+            display: flex;
+        }
+
+        li {
+            list-style: none;
+            margin: 0px 10px;
+            font-size: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            padding: 7px;
+            color: #072ff2;
+        }
+
+        li a:hover {
+            border: 1px solid black;
+            border-radius: 15px;
+            color: black;
+            text-decoration: none;
+            background-color: #dbefea;
+        }
+
+        @media (min-width: 385px) and (max-width: 510px) {
+            ul {
+                padding-inline-start: 10px;
+            }
+
+            li {
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 385px) {
+            ul {
+                padding-inline-start: 5px;
+            }
+
+            li {
+                font-size: 11px;
+                margin: 0px 2px;
+            }
+        }
+    </style>
 </head>
+
 <body>
     <nav class="navbar">
         <img class="logo" src="./css/images/logo.png" alt="...">
         <h3>भारतीय प्रौद्योगिकी संस्थान इंदौर <br> Indian Institute of Technology Indore</h3>
     </nav>
 
+    <div class="bar">
+        <ul>
+            <li><a href="/Home_page">Home</a></li>
+            <li><a href="/Admin_home">Admin Home</a></li>
+            <li><a href="/admin_change_password">Change Password</a></li>
+            <li><a href="/logout">Log Out</a></li>
+        </ul>
+    </div>
+
     <h1>Departments</h1>
-    <h2>Welcome to Online Education Portal.</h2>
 
     <div class="container" style="display: inline-block;">
         <table class="table">
-            <tr>
+            <tr style="color: rgb(151, 4, 156); background-color: chartreuse;">
                 <th>Serial No.</th>
                 <th>Name</th>
                 <th>Dept. ID</th>
@@ -31,17 +94,18 @@
                 var i=1;
                 data.forEach((inf)=>{ 
                     %>
-                    <tr>
-                        <td><%= i; %></td>
-                        <td><%= inf.D_Name %></td>
-                        <td><%= inf.Dept_ID %></td>
-                        
-                    </tr>
+            <tr>
+                <td><%= i; %></td>
+                <td><%= inf.D_Name %></td>
+                <td><%= inf.Dept_ID %></td>
+
+            </tr>
             <% i++;    })%>
             <% }else{ %>
-                <td colspan="7">No Data Found</td>
+            <td colspan="7">No Data Found</td>
             <% }%>
         </table>
     </div>
 </body>
+
 </html>

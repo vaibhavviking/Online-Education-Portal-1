@@ -1,53 +1,53 @@
- <!DOCTYPE html>
- <html lang="en">
- 
- <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Add Admin</title>
-     <script src="https://kit.fontawesome.com/63e2b2b603.js" crossorigin="anonymous"></script>
-     <link rel="stylesheet" href="./css/add_course.css">
- </head>
- 
- <body>
-     <nav class="navbar">
-         <img class="logo" src="./css/images/logo.png" alt="...">
-         <h3>भारतीय प्रौद्योगिकी संस्थान इंदौर <br> Indian Institute of Technology Indore</h3>
-     </nav>
- 
-     <div class="bar">
-         <ul>
-             <li><a href="/admin_home">Admin Home</a></li>
-             <li><a href="/admin_change_password">Change Password</a></li>
-             <li><a href="/logout">Log Out</a></li>
-         </ul>
-     </div>
- 
-     <h1>ADD ADMIN</h1>
- 
-     <div class="container">
- 
-         <form id="form" method="post">
-             <div class="box">
-                 <i class="fa fa-user"></i>
-                 <input placeholder="Admin_ID" name="admin_id" type="text" required=true>
-             </div>
-             <div class="box">
-                 <i class="fa fa-key"></i>
-                 <input placeholder="Password" name="password" type="text" required=true>
-             </div>
-             <div class="box">
-                 <i class="fa fa-key"></i>
-                 <input placeholder="User_ID" name="username" type="text" required=true>
-             </div>
-             <button class="btn" type="submit">Add admin</button>
-             <%if( typeof error != 'undefined'){%>
-             <p><%=error%></p>
-             <%}%>
-         </form>
- 
-     </div>
-    
- </body>
- 
- </html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Admin</title>
+    <script src="https://kit.fontawesome.com/63e2b2b603.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./css/add_course.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <img class="logo" src="./css/images/logo.png" alt="...">
+        <h3>भारतीय प्रौद्योगिकी संस्थान इंदौर <br> Indian Institute of Technology Indore</h3>
+    </nav>
+
+    <div class="bar">
+        <ul>
+            <li><a href="/Admin_home">Admin Home</a></li>
+            <li><a href="/admin_change_password">Change Password</a></li>
+            <li><a href="/logout">Log Out</a></li>
+        </ul>
+    </div>
+
+    <h1>ADD ADMIN</h1>
+
+    <div class="container">
+
+        <form id="form" method="post">
+            <div class="box">
+                <i class="fa fa-user"></i>
+                <input placeholder="Admin_ID" name="admin_id" type="text" required=true>
+            </div>
+            <div class="box">
+                <i class="fa fa-key"></i>
+                <input placeholder="Password" name="password" type="text" required=true>
+            </div>
+            <div class="box">
+                <i class="fa fa-key"></i>
+                <input placeholder="User_ID" name="username" type="text" required=true>
+            </div>
+            <button class="btn" type="submit">Add admin</button>
+            <%if( typeof error != 'undefined'){%>
+            <p><%=error%></p>
+            <%}%>
+        </form>
+
+    </div>
+   
+</body>
+
+</html>

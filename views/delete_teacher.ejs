@@ -4,139 +4,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add student</title>
+    <title>Delete Professor</title>
     <script src="https://kit.fontawesome.com/63e2b2b603.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./css/add_course.css">
     <style>
-.navbar {
-    background-color: rgba(180, 150, 150, 0.5);
-    display: flex;
-    align-items: center;
-}
-.box{
-    width: 100%;
-    border-bottom: 2px solid purple;
-    margin: 22px 0px;
-    
-}
-.box input{
-    background: none;
-    width: 75%;
-    outline:  none;
-    border: none;
-    color: red;
-    padding: 5px 10px;
-    font-size: 25px;
-    font-family: cursive;
-    font-weight: bold;
-    opacity: .6;
-}
-.box i{
-    width: 25px;
-    text-align: center;
-}
-.btn{
-    cursor: pointer;
-    outline: none;
-    width: 25%;
-    margin: 12px 0;
-    padding: 10px 21px;
-    color:black;
-    border-radius: 10px ;
-    border: 2px solid purple;
-    font-size: 18px;
-    background: none;
-    font-weight: bold;
-}
-.btn:hover{
-   color: rgb(228, 13, 13);
-   
-   background: white;
-}
- h1 {
-    font-size: 40px;
-    color: black;
-   border-bottom: 5px solid purple;
-    display: inline-block;
-    margin-top: 60px;
-   /* padding: 25px 0px;*/
-    bottom: 0px;
-}
-.btn1{
-    cursor: pointer;
-    outline: none;
-    width: 25%;
-    margin: 12px 0;
-    padding: 10px 21px;
-    color:black;
-    border-radius: 10px ;
-    border: 2px solid purple;
-    font-size: 18px;
-    background: none;
-    font-weight: bold;
-}
-.btn1:hover{
-   color: rgb(228, 13, 13);
-   
-   background: white;
-}
- form{
-    color:black;
-    position: absolute;
-    top: 45%;
-    left: 40%; 
- }
-.logo {
-    height: 100px;
-    width: 100px;
-    margin: 10px;
-}
-h2 {
-    font-size: 2.5rem;
-    font-style: italic;
-    margin: 0px 10px;
-}
-body {
-    margin: 0px;
-    box-sizing: border-box;
-    text-align: center;
-    font-weight: 400;
-    line-height: 1.5;
-    background-color: #e2e2e296;
-}
-#h1 {
-    margin: 0px;
-    position: relative;
-    top: 20px;
-    text-align: center;
-    padding: 20px;
-    color: black;
-    background-color: transparent;
-    font-size: 3rem;
-}
+        .bar {
+            margin: 20px 0px 10px 0px;
+            position: sticky;
+            display: flex;
+            background-color: rgb(87, 212, 225);
+            border-radius: 15px;
+            z-index: 10;
+        }
+
+        ul {
+            display: flex;
+        }
+
+        li {
+            list-style: none;
+            margin: 0px 10px;
+            font-size: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            padding: 7px;
+            color: #072ff2;
+        }
+
+        li a:hover {
+            border: 1px solid black;
+            border-radius: 15px;
+            color: black;
+            text-decoration: none;
+            background-color: #dbefea;
+        }
+
+        @media (min-width: 385px) and (max-width: 510px) {
+            ul {
+                padding-inline-start: 10px;
+            }
+
+            li {
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 385px) {
+            ul {
+                padding-inline-start: 5px;
+            }
+
+            li {
+                font-size: 11px;
+                margin: 0px 2px;
+            }
+        }
     </style>
-  
+
 </head>
 
 <body>
-   <nav class="navbar">
-    <img class="logo" src="./css/images/logo.png" alt="...">
-        <h2>Indian Institute of Technology Indore</h2>
+    <nav class="navbar">
+        <img class="logo" src="./css/images/logo.png" alt="...">
+        <h3>भारतीय प्रौद्योगिकी संस्थान इंदौर <br> Indian Institute of Technology Indore</h3>
     </nav>
 
-        <h1 id="h1">Online Education Portal</h1>
-    <form id="form" action="" method="post">
-        <h1 class="uttam">DELETE TEACHER</h1>
-         <div class="box">
-             <i class="fa fa-key"></i>
-             <input placeholder="Employee ID" name="emp_id" type="text" required=true>
- 
-         </div>
-<button class="btn" type="submit">delete teacher</button>
-<%if( typeof error != 'undefined'){%>
-    <p><%=error%></p>
-    <%}%>
+    <div class="bar">
+        <ul>
+            <li><a href="/Home_page">Home</a></li>
+            <li><a href="/Admin_home">Admin Home</a></li>
+            <li><a href="/admin_change_password">Change Password</a></li>
+            <li><a href="/logout">Log Out</a></li>
+        </ul>
+    </div>
+
+    <h1>Delete Professor</h1>
+
+    <div class="container">
+        <form id="form" action="" method="post">
+            <div class="box">
+                <i class="fa fa-key"></i>
+                <input placeholder="Employee ID" name="emp_id" type="text" required=true>
+
+            </div>
+            <button class="btn" type="submit">delete teacher</button>
+            <%if( typeof error != 'undefined'){%>
+            <p><%=error%></p>
+            <%}%>
     </form>
-   
+   </div>
 </body>
 
 </html>
