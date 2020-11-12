@@ -46,14 +46,14 @@ Stored Procedures stored in database
 23. Professor_Time_Table (Employee_ID)
 24. Total_Days_Increment ()
 25. Mark_Attendance (Roll_No, Course_Code, Time, @did)
-//26. Check_Attendance (Course_Code)
+26. Check_Attendance (Course_Code)*
 27. Get_Student_Courses (Roll_No)
 28. Get_Professor_Courses (Employee_ID)
 29. Get_Student_Links (Roll_No)
 30. Get_Professor_Links (Employee_ID)
 31. Insert_Session (Session_ID, USer_ID, @rif)
 32. Delete_Session (User_ID)
-//33. Attendance_Today (Course_Code, Day)
+33. Attendance_Today (Course_Code, Day)*
 34. Retrieve_Student_Study_Material (Roll_No)
 35. Retrieve_Professor_Study_Material (Employee_ID)
 36. Update_Department (Dept ID, Department Name)
@@ -68,3 +68,4 @@ Stored Procedures stored in database
 45. Delete_Program(Program Name, @rif) 
 
 ** DOB: Date of Birth in YYYY-MM-DD format
+* : In progress of updation
