@@ -6,6 +6,7 @@ var schedule = require('node-schedule');
 const bodyParser = require('body-parser');
 const url = require('url');
 const md5=require('md5');
+var keys = require('./keys.js')
 var mysql = require('mysql');
 const cookieParser = require('cookie-parser');
 // const { promises, readdirSync, link } = require('fs');
@@ -38,10 +39,10 @@ app.use((req, res, next) => {
 
 var db_config = {
     multipleStatements: true,
-    host: 'us-cdbr-east-02.cleardb.com',
-    user: 'be25eca42b63ff',
-    password: '74074572',
-    database: 'heroku_ba6bdaf56728c3e',
+    host: keys.db_host,
+    user: keys.db_user,
+    password: keys.db_password,
+    database: keys.db_name
     // port: 3306
 };
 // var db_config = {
