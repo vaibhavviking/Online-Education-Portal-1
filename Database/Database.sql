@@ -1,5 +1,5 @@
 create database demo;
-use demo;
+use heroku_ba6bdaf56728c3e;
 
 /*
 Entities
@@ -52,15 +52,29 @@ primary key(Dept_ID)
 );
 /*drop table Department;*/
 
+create table Programs(
+P_Name varchar(10),
+primary key(P_Name)
+);
+/*drop table Programs*/
+
+create table Posts(
+P_Name varchar(30),
+primary key(P_Name)
+);
+/*drop table Posts*/
+
 create table Student(
 Roll_No int,
 S_Name varchar(40),
+DOB date,
+Gender varchar(1),
 Program_Enrolled varchar(10),
 Year_Of_Study int,
 Department_ID int,
-check ( Program_Enrolled='B.Tech' or Program_Enrolled='M.Tech' or Program_Enrolled='PhD' or Program_Enrolled='MS' or Program_Enrolled='M.Sc'),
 primary key(Roll_No),
-foreign key(Department_ID) references Department(Dept_ID) 
+foreign key(Department_ID) references Department(Dept_ID),
+foreign key(Program_Enrolled) references Programs(P_Name)  
 );
 /*drop table Student*/
 
@@ -68,9 +82,12 @@ create table Professor(
 Employee_ID int,
 P_Name varchar(40) not null,
 Post varchar(30),
+DOB date,
+Gender varchar(1),
 Department_ID int,
 primary key(Employee_ID),
-foreign key(Department_ID) references Department(Dept_ID) 
+foreign key(Department_ID) references Department(Dept_ID),
+foreign key(Post) references Posts(P_Name) 
 );
 /*drop table Professor*/
 
@@ -158,8 +175,12 @@ primary key(User_ID)
 
 create table Attendance_Marked(
 Roll_No int,
-Time varchar(5),
+CID varchar(7),
+Time time,
+Date date,
 primary key(Roll_No, Time),
-foreign key(Roll_No) references Student(Roll_No) on delete cascade
+foreign key(Roll_No) references Student(Roll_No) on delete cascade,
+foreign key(CID) references Courses(Course_Code) on delete cascade
 );
 /*drop table Attendance_Marked*/
+
