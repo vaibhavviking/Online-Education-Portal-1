@@ -35,12 +35,31 @@ li {
     list-style: none;
     margin: 0px 10px;
     font-size: 20px;
+}
+
+a{
     text-decoration: none;
+    padding: 7px;
+    color: #072ff2;
+}
+
+li a:hover {
+    border: 1px solid black;
+    border-radius: 15px;
+    color: black;
+    text-decoration: none;
+    background-color: #dbefea;
 }
 
 .box{
+    width: 100%;
     border-bottom: 2px solid purple;
     margin: 20px 0px;
+}
+
+.box i {
+    width: 25px;
+    text-align: center;
 }
 
 .box input{
@@ -104,7 +123,6 @@ button:hover{
     }
 
     .box input{
-        width: 500px;
         padding: 5px 10px;
         font-size: 25px;
     }
@@ -157,7 +175,6 @@ button:hover{
     }
 
     .box input{
-        width: 440px;
         padding: 5px 10px;
         font-size: 23px;
     }
@@ -210,7 +227,6 @@ button:hover{
     }
 
     .box input{
-        width: 380px;
         padding: 5px 10px;
         font-size: 21px;
     }
@@ -257,13 +273,21 @@ button:hover{
         margin: 7px;
     }
 
+    ul{
+        padding-inline-start: 10px;
+    }
+
+    li{
+        font-size: 13px;
+    }
+
     .container{
         width: 320px;
         margin: 50px auto;
     }
 
     .box input{
-        width: 320px;
+        width: 260px;
         padding: 5px 10px;
         font-size: 19px;
     }
@@ -310,13 +334,22 @@ button:hover{
         margin: 4px;
     }
 
+    ul{
+        padding-inline-start: 5px;
+    }
+    
+    li{
+        font-size: 11px;
+        margin: 0px 2px;
+    }
+
     .container{
         width: 260px;
         margin: 50px auto;
     }
 
     .box input{
-        width: 260px;
+        width: 220px;
         padding: 5px 10px;
         font-size: 17px;
     }
