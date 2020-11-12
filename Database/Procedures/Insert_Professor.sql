@@ -3,14 +3,17 @@ delimiter //
 create procedure Insert_Professor(
 in empid int,
 in name varchar(40),
+in dob date,
+in gender varchar(1),
 in post varchar(30),
 in deptid int,
 in userid varchar(30),
 in password varchar(100),
 out did int,
-out rif int
+out rif int,
+out inv int
 )
-begin
+a:begin
 declare exit handler for 1062
 begin
 set did=1;
@@ -19,13 +22,22 @@ declare exit handler for 1452
 begin
 set rif=1;
 end;
+case
+	when name not regexp '^[A-Za-z]+$' then set inv=1;
+    when gender not regexp '[MF]' then set inv=2;
+    else set inv=0;
+end case;
+case when inv!=0 then leave a;
+else
 insert into Professor values(empid, name, post, deptid);
 insert into Account values(userid, password, 'Professor');
 insert into Professor_Account_Relation values(empid, userid);
+end case;
 end //
 delimiter ;
 /*Execute*/
-call Insert_Professor(30,'XW','Professor',3,'P3','c',@did,@rif); /*Emp ID, Name, Post, Dept ID, User ID, Password*/
+call Insert_Professor(30,'XW','1982-11-25','Professor',3,'P3','c',@did,@rif,@inv); /*Emp ID, Name, DOB, Gender Post, Dept ID, User ID, Password*/
 select @did;                                                                 /* Duplicate ID (atleast one of Username and Employee ID ) */
 select @rif;                                                                 /* Referential Integrity failure (Dept DNE) */
+select @inv;
 /*End*/
