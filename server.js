@@ -192,7 +192,7 @@ app.get('/student_login', (req, res) => {
         if (err) throw err;
         else console.log('session refreshed');
     })
-    res.render('teacher_login.ejs');
+    res.render('student_login.ejs');
 })
 
 app.get('/add_study_material', (req, res) => {
