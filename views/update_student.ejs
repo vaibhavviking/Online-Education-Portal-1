@@ -140,7 +140,8 @@
             // x.innerHTML += `<input type='text' required='true' placeholder='course${i}' name='course${i}'>`;
             x.innerHTML += `<div class="box">
             <i class="fa fa-key"></i>
-            <input  placeholder='course${i}' name='course[]' type="text">
+            <label for="course[]">Course</label>
+            <input name='course[]' type="text">
 
         </div>`;
             // p.innerHTML +=1;
@@ -192,33 +193,46 @@
             </td>
         </tr>
     </table>
-
+    
     <div class="container" id="container2">
 
         <h1>New Data</h1>
         <form action="" method="POST">
             <div class="box">
                 <i class="fa fa-user"></i>
-                <input type="text" name="username" required="true" id="name" placeholder="Enter Name">
+                <label for="username">Name:</label><br>
+                <input type="text" name="username" required="true" id="name" value='<%= data1.S_Name%>' >
             </div>
             <div class="box">
                 <i class="fa fa-address-card"></i>
-                <input type="text" name="program" required="true" placeholder="Enter Program">
+                <label for="Program">Program:</label>
+                <input type="text" name="program" required="true" value='<%= data1.Program_Enrolled%>' >
             </div>
             <div class="box">
                 <i class="fa fa-vcard-o"></i>
-                <input type="text" name="year" required="true" id="year" placeholder="Enter Year of study">
+                <label for="year">Year Of Study:</label>
+                <input type="text" name="year" required="true" id="year" value='<%= data1.Year_Of_Study%>' >
             </div>
             <div class="box">
                 <i class="fa fa-vcard-o"></i>
-                <input type="number" name="depid" required="true" id="depid" placeholder="Enter Department ID">
+                <label for="depid">Department ID:</label>
+                <input type="number" name="depid" required="true" id="depid" value='<%= data1.Department_ID%>'>
             </div>
+            <%var c=0;
+            for(c=0;c<clen;c++){%>
+                <div class="box">
+                    <i class="fa fa-key"></i>
+                    <label for="course[]">Course</label>
+                    <input name='course[]' value='<%=data2[c].Course_Code%>' type="text">
+        
+                </div>
+            
+            <% }var roll = rollno%>
             <div id="container">
           
                 <p id="save" style="visibility: hidden;"></p>
                 
             </div>
-            <% var roll = rollno%>
             <input type="text" name="rollno" style="display: none;" value=<%=roll%> >
             <a href="/admin_home" type="submit" ><button class="btn">Update</button></a>
             <button  style="display: block;" class="btn" type="button" onclick="add()" >Add Course</button></br>
@@ -226,7 +240,10 @@
             
 
     </div>
-
+    <p>
+        *Courses will get overwritten<br>
+        *Leave the course field empty to unassign
+    </p>
 
 </body>
 

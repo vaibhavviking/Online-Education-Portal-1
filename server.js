@@ -502,10 +502,11 @@ app.post('/update_student_1', (req, res) => {
         let sql = `select S_Name, Program_Enrolled, Year_Of_Study,Department_ID from Student where Roll_No=${rollno}; call Get_Student_Courses(${rollno});`;
         connection.query(sql, (err, results) => {
             if (err) throw err;
-            console.log(results[1]);
-            if(results[0].length > 0 && results[0].length>0){
+            // console.log(results[1]);
+            console.log(results[1].length);
+            if(results[0].length > 0){
                 console.log(results[1]);
-                res.render('update_student.ejs', { data1: results[0][0], data2: results[1], rollno : rollno });
+                res.render('update_student.ejs', { data1: results[0][0], data2: results[1], rollno : rollno , clen : results[1].length });
             }else{
                 // window.alert('Invalid ID');
                 res.render('update_student_1.ejs',{error :"Invalid ID.Please try again"})
@@ -567,7 +568,7 @@ app.post('/update_prof_1', (req, res) => {
             console.log(results);
             if(results[0].length > 0 && results[0].length>0){
                 console.log(results[1]);
-                res.render('update_prof.ejs', { data1: results[0][0], data2: results[1], empid : empid });
+                res.render('update_prof.ejs', { data1: results[0][0], data2: results[1], empid : empid, clen : results[1].length });
             }else{
                 // window.alert('Invalid ID');
                 res.render('update_prof_1.ejs',{error : "Invalid ID. Please try again"});
