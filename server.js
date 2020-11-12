@@ -1082,8 +1082,6 @@ app.get('/prof_timetable', (req, res) => {
 })
 
 app.get('/study_material', (req, res) => {
-
-
     Get_Student_Material(req, res);
 })
 
