@@ -69,7 +69,8 @@ Stored Procedures stored in database
 45. Delete_Program(Program Name, @rif) 
 46. Update_Student_In_Sem (Roll No, Name, DOB, Gender, Program, Year Of Study, Dept ID, Email, @did, @rif, @inv)
 47. Set_Sem_Dates (Starting Date, Ending Date, @inv)
-48. Attendance_In_Students(Roll_No, Course_Code)
+48. Attendance_In_Students (Roll_No, Course_Code)
+49. Retrieve_Email (User_ID, @email)
 
 ** DOB: Date of Birth in YYYY-MM-DD format
 
