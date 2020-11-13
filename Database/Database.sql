@@ -54,14 +54,14 @@ primary key(Dept_ID)
 /*drop table Department;*/
 
 create table Programs(
-P_Name varchar(10),
-primary key(P_Name)
+Prog_Name varchar(10),
+primary key(Prog_Name)
 );
 /*drop table Programs*/
 
 create table Posts(
-P_Name varchar(30),
-primary key(P_Name)
+Post_Name varchar(30),
+primary key(Post_Name)
 );
 /*drop table Posts*/
 
@@ -76,7 +76,7 @@ Department_ID int,
 Email varchar(100),
 primary key(Roll_No),
 foreign key(Department_ID) references Department(Dept_ID),
-foreign key(Program_Enrolled) references Programs(P_Name)  
+foreign key(Program_Enrolled) references Programs(Prog_Name)  
 );
 /*drop table Student*/
 
@@ -90,7 +90,7 @@ Department_ID int,
 Email varchar(100),
 primary key(Employee_ID),
 foreign key(Department_ID) references Department(Dept_ID),
-foreign key(Post) references Posts(P_Name) 
+foreign key(Post) references Posts(Post_Name) 
 );
 /*drop table Professor*/
 
