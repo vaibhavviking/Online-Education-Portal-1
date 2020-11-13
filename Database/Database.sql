@@ -23,6 +23,7 @@ Relationships
 
 create table Administration(
 Admin_ID int,
+Email varchar(100),
 primary key(Admin_ID)
 );
 /*drop table Administration*/
