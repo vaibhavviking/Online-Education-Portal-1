@@ -184,3 +184,9 @@ foreign key(CID) references Courses(Course_Code) on delete cascade
 );
 /*drop table Attendance_Marked*/
 
+create table Sem_Dates(
+Starting_Date date,
+Ending_Date date,
+primary key(Starting_Date, Ending_Date)
+);
+/*drop table Sem_Dates*/
