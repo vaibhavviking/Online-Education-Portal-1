@@ -54,7 +54,7 @@ Stored Procedures stored in database
 30. Get_Professor_Links (Employee_ID)
 31. Insert_Session (Session_ID, USer_ID, @rif)
 32. Delete_Session (User_ID)
-33. Attendance_Today (Course_Code, Day)*
+33. Attendance_In_Professor (Course_Code, Date)
 34. Retrieve_Student_Study_Material (Roll_No)
 35. Retrieve_Professor_Study_Material (Employee_ID)
 36. Update_Department (Dept ID, Department Name)
