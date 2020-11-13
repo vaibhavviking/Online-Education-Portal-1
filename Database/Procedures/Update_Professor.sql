@@ -7,6 +7,7 @@ in dob date,
 in gender varchar(1),
 in post varchar(30),
 in dept_id int,
+in email varchar(100),
 in cid varchar(7),
 out did int,
 out rif int,
@@ -28,15 +29,15 @@ case
 end case;
 case when inv!=0 then leave a;
 else
-update Professor set P_Name=name, DOB=dob, Gender=gender, Post=post, Department_ID=dept_id where Professor.Employee_ID=empid;
+update Professor set P_Name=name, DOB=dob, Gender=gender, Post=post, Department_ID=dept_id, Email=email where Professor.Employee_ID=empid;
 call Add_Professor_Course(cid,empid,@did,@rif);  
 end case;
 end //
 delimiter ;
 /*Execute*/
-call Update_Professor(1,'A','1982-11-25','F','Assistant Professor',1,'CS 207',@did,@rif,@inv); /*Employee ID, Name, DOB, Gender, Post, dept id, course id*/
+call Update_Professor(1,'A','1982-11-25','F','Assistant Professor',1,'A@iiti.ac.in','CS 207',@did,@rif,@inv); /*Employee ID, Name, DOB, Gender, Post, dept id, course id*/
 select @did;
 select @rif;
 select @inv;
 /*End*/
-drop procedure Update_Professor;
+
