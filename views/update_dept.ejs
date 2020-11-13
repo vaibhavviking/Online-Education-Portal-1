@@ -7,130 +7,6 @@
     <title>Update Department</title>
     <script src="https://kit.fontawesome.com/63e2b2b603.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./css/update_student.css">
-    <style>
-         *{
-        box-sizing: border-box;
-    }
-    
-    body {
-        background-size: cover;
-        margin: 0px;
-        padding: 0px;
-        text-align: center;
-        font-weight: 600;
-        box-sizing: border-box;
-        background-color: #e2e2e2;
-    }
-    
-    .navbar {
-        background-color: rgba(180, 150, 150, 0.5);
-        display: flex;
-        align-items: center;
-    }
-
-    .logo {
-        height: 100px;
-        width: 100px;
-        margin: 10px;
-    }
-  
-    h3 {
-        font-size: 2.5rem;
-        font-style: italic;
-        margin: 0px 10px;
-    }
-
-    h1 {
-        margin: 0px;
-        padding: 20px;
-        text-align: center;
-        background-color: transparent;
-        position: relative;
-        top: 20px;
-        font-size: 4em;
-    }
-
-    h2 {
-        font-size: 2em;
-        color: darkred;
-        margin: 10px;
-    }
-
-    .container{
-        position: absolute;
-        top: 45%;
-        right: 10%; 
-        margin: 0px 20px;
-    }
-
-    .container h1{
-        font-size: 40px;
-        border-bottom: 5px solid purple;
-        display: inline-block;
-        margin-bottom: 15px;
-        padding: 10px 0px;
-    }
-
-    .box{
-        width: 100%;
-        border-bottom: 2px solid purple;
-        margin: 20px 0px;
-    }
-
-    .box input{
-        background: none;
-        width: 85%;
-        outline:  none;
-        border: none;
-        color: rgba(202, 43, 43, 0.589);
-        padding: 5px 10px;
-        font-size: 25px;
-        font-family: cursive;
-        font-weight: bold;
-    }
-
-    .box i{
-        width: 25px;
-        text-align: center;
-    }
-
-     .btn{
-         position: absolute;
-         top: 100%;
-         cursor: pointer;
-         outline: none;
-         margin: 12px 0;
-         padding: 10px 21px;
-         color: black;
-         border-radius: 10px ;
-         border: 2px solid purple;
-         font-size: 18px;
-         background: none;
-         font-weight: bold;
-     }
-    
-     .btn:hover{
-        color: rgb(228, 13, 13);
-        background: white;
-    }
-
-    
-    table {
-        position: absolute;
-        left: 10%;
-        margin: 40px 20px;
-        border: 2px solid black;
-        display: inline-block;
-    }
-
-    th,td {
-        font-weight: bold;
-        font-size: 25px;
-        border: 2px solid black;
-        height: 70px;
-        width: 350px;
-    }
-    </style>
     <script>
         function add() {
             console.log('here');
@@ -160,20 +36,19 @@
     </nav>
 
     <h1>Update Department Data</h1>
-    <h2>Welcome to Online Education Portal</h2>
 
     <table class="table">
-        <tr>
+        <tr style="color: rgb(151, 4, 156); background-color: chartreuse;">
             <th>Field</th>
             <th>Old Value</th>
         </tr>
         <tr>
-            <td>Name</td>
+            <td style="background-color: rgb(161, 228, 255);">Name</td>
             <td><%= data1.D_Name%></td>
         </tr>
     </table>
 
-    <div class="container" id="container2">
+    <div class="container">
 
         <h1>New Data</h1>
         <form action="" method="POST">
@@ -186,12 +61,11 @@
                 <p id="save" style="visibility: hidden;"></p>
                 
             </div>
-            <a href="/admin_home" type="submit" ><button class="btn">Update</button></a>
+            <a href="/admin_home" type="submit" ><button class="btn" id="btn2">Update</button></a>
             <input type="text" name="depid" style="display: none;" value="<%=depid%>" >
         </form>
 
     </div>
-
 
 </body>
 
