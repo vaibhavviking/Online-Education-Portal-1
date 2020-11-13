@@ -5,8 +5,6 @@ in code varchar(7),
 in rollno int,
 in total int,
 in attend int,
-in enrol date,
-in unenrol date,
 out did int,
 out rif int,
 out inv int
@@ -24,12 +22,13 @@ declare exit handler for 3819
 begin
 set inv=1;
 end;
-insert into Courses_Student_Relation values(code,rollno,total,attend,enrol,unenrol);
+insert into Courses_Student_Relation values(code,rollno,total,attend);
 end //
 delimiter ;
 /* Execute */
-call Add_Student_Course('CS 207',1,100,98,'2020-06-15','2020-11-30',@did,@rif,@inv); /* Course Code, Roll No., Total class days, Classes attended, Enrollment Date, Unerollment Date */
+call Add_Student_Course('CS 207',1,100,98,@did,@rif,@inv); /* Course Code, Roll No., Total class days, Classes attended */
 select @did;                                                /* Duplicate ID problem */
 select @rif;                                                /* Referential Integrity Problem( Student or Course DNE ) */
 select @inv;                                                /* Invalid entry of attendance */
 /*End*/
+
