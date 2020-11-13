@@ -46,7 +46,7 @@ Stored Procedures stored in database
 22. Student_Time_Table (Roll_No)
 23. Professor_Time_Table (Employee_ID)
 24. Total_Days_Increment ()
-25. Mark_Attendance (Roll_No, Course_Code, Time, @did)
+25. Mark_Attendance (Roll_No, Course_Code, Time, Date, @did)
 26. Check_Attendance (Course_Code)*
 27. Get_Student_Courses (Roll_No)
 28. Get_Professor_Courses (Employee_ID)
@@ -69,6 +69,7 @@ Stored Procedures stored in database
 45. Delete_Program(Program Name, @rif) 
 46. Update_Student_In_Sem (Roll No, Name, DOB, Gender, Program, Year Of Study, Dept ID, @did, @rif, @inv)
 47. Set_Sem_Dates (Starting Date, Ending Date, @inv)
+48. Attendance_In_Students(Roll_No, Course_Code)
 
 ** DOB: Date of Birth in YYYY-MM-DD format
 
