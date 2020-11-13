@@ -54,6 +54,9 @@ while temp<=date(ed) do
 	end case;
     set temp=temp+1;
 end while;    
+drop table Attended_By_Students;
+drop table Classes_For_A_Course_In_A_Week;
+drop table Classes_For_A_Course;
 end //
 delimiter ;
 /*Execute*/
