@@ -1392,7 +1392,7 @@ let get_prof_courses = async function (req, res) {
         connection.query(sql, [id], (err, results) => {
             if (err) throw err;
             console.log(results);
-            res.render('courses.ejs', { data: results[0] });
+            res.render('prof_courses.ejs', { data: results[0] });
         })
     }
 }
@@ -1405,7 +1405,7 @@ let get_student_courses = async function (req, res) {
         connection.query(sql, [id], (err, results) => {
             if (err) throw err;
             console.log(results);
-            res.render('courses.ejs', { data: results[0] });
+            res.render('student_courses.ejs', { data: results[0] });
         })
     }
 }
