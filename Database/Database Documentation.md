@@ -58,7 +58,7 @@ Stored Procedures stored in database
 35. Retrieve_Professor_Study_Material (Employee_ID)
 36. Update_Department (Dept ID, Department Name)
 37. Remove_All_Student_Courses (Roll No)
-38. Update_Student (Roll No, Name, DOB, Gender, Program, Year Of Study, Dept ID, Course ID, @did, @rif, @inv)
+38. Update_Student_After_Sem (Roll No, Name, DOB, Gender, Program, Year Of Study, Dept ID, Course ID, @did, @rif, @inv)
 39. Remove_All_Professor_Courses (Employee ID)
 40. Update_Professor (Employee ID, Name, DOB, Gender, Post, Dept ID, Course ID, @did, @rif, @inv)
 41. Update_Courses (Course Code, Course Name, Class Link, Credits)
@@ -66,6 +66,7 @@ Stored Procedures stored in database
 43. Insert_Program(Program name, @did)
 44. Delete_Post(Post Name, @rif)
 45. Delete_Program(Program Name, @rif) 
+46. Update_Student_In_Sem (Roll No, Name, DOB, Gender, Program, Year Of Study, Dept ID, @did, @rif, @inv)
 
 ** DOB: Date of Birth in YYYY-MM-DD format
 
