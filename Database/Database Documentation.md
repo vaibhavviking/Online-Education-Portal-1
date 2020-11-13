@@ -11,6 +11,7 @@ Entities used in database
 10. Session
 11. Posts
 12. Programs
+13. Sem_Dates
 
 Relations used in database
 1.  Admin_Account_Relation
@@ -67,6 +68,7 @@ Stored Procedures stored in database
 44. Delete_Post(Post Name, @rif)
 45. Delete_Program(Program Name, @rif) 
 46. Update_Student_In_Sem (Roll No, Name, DOB, Gender, Program, Year Of Study, Dept ID, @did, @rif, @inv)
+47. Set_Sem_Dates (Starting Date, Ending Date, @inv)
 
 ** DOB: Date of Birth in YYYY-MM-DD format
 
