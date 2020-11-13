@@ -29,7 +29,7 @@ case
 end case;
 case when inv!=0 then leave a;
 else
-insert into Professor values(empid, name, post, deptid);
+insert into Professor values(empid, name, post, dob, gender, deptid);
 insert into Account values(userid, password, 'Professor');
 insert into Professor_Account_Relation values(empid, userid);
 end case;
