@@ -745,6 +745,8 @@ app.post('/add_student', (req, res) => {
         var year = req.body.year;
         var Dep = req.body.Department;
         var prog = req.body.Program;
+        var gender = req.body.gender;
+        var dob=req.body.dob;
         console.log(Dep);
         var course = req.body['course[]'];
         let arr=[];
@@ -754,16 +756,27 @@ app.post('/add_student', (req, res) => {
             arr[0]=course;
         }
         var pass = req.body.password;
+        console.log(arr);
         pass=md5(md5(md5(pass)));
-        var sql = 'call Insert_Student(?,?,?,?,?,?,?,@did,@rif); select @did; select @rif';
-        connection.query(sql, [Rno, name, prog, year, Dep, user_id, pass], (err, results2) => {
+        var sql = 'call Insert_Student(?,?,?,?,?,?,?,?,?,@did,@rif,@inv); select @did; select @rif; select @inv';
+        connection.query(sql, [Rno, name, dob, gender, prog, year, Dep, user_id, pass], (err, results2) => {
             if (err) throw err;
 
             console.log(results2);
             if (results2[1][0]['@did'] != null) {
                 res.render('add_student.ejs', { error: 'Duplicate Entry detected' })
             } else if (results2[2][0]['@rif'] != null) {
-                res.render('add_student.ejs', { error: 'Refrential Integrity Detected' })
+                res.render('add_student.ejs', { error: 'Refrential Integrity failure Detected' })
+            } else if(results2[3][0]['@inv'] != 0){
+                let error;
+                if(results2[3][0]['@inv'] == 1){
+                    error = 'Entered name is not valid';
+                }else if(results2[3][0]['@inv'] == 2){
+                    error = 'Entered gender is not valid';
+                }else if(results2[3][0]['@inv'] == 3){
+                    error = 'Entered Date of Birth is not valid';
+                }
+                res.render('add_student.ejs', {error : error});
             } else {
                 arr.forEach((item) => {
                     if (item != undefined) {
@@ -976,13 +989,8 @@ app.post('/add_prof', (req, res) => {
     var user_id = req.body.uid;
     var Dep = req.body.Department;
     var post = req.body.post;
-    // var course1 = req.body.course1;
-    // var course2 = req.body.course2;
-    // var course3 = req.body.course3;
-    // var course4 = req.body.course4;
-    // var course5 = req.body.course5;
-    // console.log(Dep);
-    // console.log(course1);
+    var dob = req.body.dob;
+    var gender = req.body.gender;
     var course = req.body['course[]'];
         let arr=[];
         if(typeof course == 'object'){
@@ -990,15 +998,10 @@ app.post('/add_prof', (req, res) => {
         }else{
             arr[0]=course;
         }
-    // arr.push(course1);
-    // arr.push(course2);
-    // arr.push(course3);
-    // arr.push(course4);
-    // arr.push(course5);
     var pass = req.body.password;
     pass = md5(md5(md5(pass)));
-    var sql = 'call Insert_Professor(?,?,?,?,?,?,@did,@rif); select @did; select @rif';
-    connection.query(sql, [empid, name, post, Dep, user_id, pass], (err, results2) => {
+    var sql = 'call Insert_Professor(?,?,?,?,?,?,?,?,@did,@rif,@inv); select @did; select @rif; select @inv';
+    connection.query(sql, [empid, name, dob, gender, post, Dep, user_id, pass], (err, results2) => {
         if (err) throw err;
 
         console.log(results2);
@@ -1006,7 +1009,17 @@ app.post('/add_prof', (req, res) => {
             res.render('add_prof.ejs', { error: 'Duplicate Entry detected' })
         } else if (results2[2][0]['@rif'] != null) {
             res.render('add_prof.ejs', { error: 'referential integrity breached' })
-        } else {
+        } else if(results2[3][0]['@inv'] != 0){
+            let error;
+                if(results2[3][0]['@inv'] == 1){
+                    error = 'Entered name is not valid';
+                }else if(results2[3][0]['@inv'] == 2){
+                    error = 'Entered gender is not valid';
+                }else if(results2[3][0]['@inv'] == 3){
+                    error = 'Entered Date of Birth is not valid';
+                }
+                res.render('add_prof.ejs', {error : error});
+        }else {
             arr.forEach((item) => {
                 if (item != undefined) {
                     var sql = 'call Add_Professor_Course(?,?,@did,@rif); select @did; select @rif;';
@@ -1129,6 +1142,94 @@ app.get('/add_student_excel',(req,res)=>{
     // } else {
     //     res.redirect('/');
     // }
+})
+
+app.get('/add_post',(req,res)=>{
+    if (req.session.loggedin && req.session.user) {
+        res.render('add_post.ejs');
+    } else {
+        res.redirect('/');
+    }
+})
+
+app.get('/delete_post',(req,res)=>{
+    if (req.session.loggedin && req.session.user) {
+        res.render('delete_post.ejs');
+    } else {
+        res.redirect('/');
+    }
+})
+
+app.get('/add_program',(req,res)=>{
+    if (req.session.loggedin && req.session.user) {
+        res.render('add_program.ejs');
+    } else {
+        res.redirect('/');
+    }
+})
+
+app.get('/delete_program',(req,res)=>{
+    if (req.session.loggedin && req.session.user) {
+        res.render('delete_program.ejs');
+    } else {
+        res.redirect('/');
+    }
+})
+
+app.post('/add_post',(req,res)=>{
+    let post = req.body.post;
+    let sql = 'call Insert_Post(?,@did); select @did';
+    connection.query(sql,[post],(err,result)=>{
+        if(err) throw err;
+        if(result[1][0]['@did']==1){
+            res.render('add_post.ejs',{error : "Post already exists"});
+        }else{
+            console.log(post," : post added");
+            res.redirect('/admin_home');
+        }
+    })
+})
+
+app.post('/delete_post',(req,res)=>{
+    let post = req.body.post;
+    let sql = 'call Delete_Post(?,@rif); select @rif';
+    connection.query(sql,[post],(err,result)=>{
+        if(err) throw err;
+        if(result[1][0]['@rif']==1){
+            res.render('delete_post.ejs',{error : "Entered Post doesn't exists"});
+        }else{
+            console.log(post," : post removed");
+            res.redirect('/admin_home');
+        }
+    })
+})
+
+app.post('/add_program',(req,res)=>{
+    let program = req.body.program;
+    let sql = 'call Insert_Program(?,@did); select @did';
+    connection.query(sql,[program],(err,result)=>{
+        if(err) throw err;
+        if(result[1][0]['@did']==1){
+            res.render('add_program.ejs',{error : "Program already exists"});
+        }else{
+            console.log(program," : program added");
+            res.redirect('/admin_home');
+        }
+    })
+})
+
+app.post('/delete_program',(req,res)=>{
+    let program = req.body.program;
+    let sql = 'call Delete_Program(?,@rif); select @rif';
+    connection.query(sql,[program],(err,result)=>{
+        if(err) throw err;
+        if(result[1][0]['@rif']==1){
+            res.render('delete_program.ejs',{error : "Entered Program doesn't exists"});
+        }else{
+            console.log(program," : program removed");
+            res.redirect('/admin_home');
+        }
+    })
 })
 
 app.use(express.urlencoded({ extended: false }));
@@ -1385,7 +1486,7 @@ let prof_timetable = async function (req, res) {
             if (element.Saturday == null) { element.Saturday = '-' }
             // console.log(element.Time);
         });
-        res.render('Timetable.ejs', { data: results[0] });
+        res.render('prof_timetable.ejs', { data: results[0] });
     })
 }
 
@@ -1411,7 +1512,7 @@ let student_timetable = async (req, res) => {
             if (element.Saturday == null) { element.Saturday = '-'; }
             // console.log(element.Time);
         });
-        res.render('Timetable.ejs', { data: results[0] });
+        res.render('student_timetable.ejs', { data: results[0] });
     });
 }
 

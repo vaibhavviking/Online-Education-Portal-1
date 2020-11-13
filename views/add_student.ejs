@@ -56,6 +56,11 @@
             </div>
             <div class="box">
                 <i class="fa fa-key"></i>
+                <input placeholder="User ID" name="uid" type="text" required=true>
+
+            </div>
+            <div class="box">
+                <i class="fa fa-key"></i>
                 <input placeholder="Roll Number" name="Rno" type="number" required=true>
 
             </div>
@@ -66,34 +71,44 @@
             </div>
             <div class="box">
                 <i class="fa fa-table"></i>
-                <input placeholder="Year Of Admission" name="year" type="number" required=true>
+                <input placeholder="Year Of Study" name="year" type="number" required=true>
 
             </div>
             <div class="box">
                 <i class="fa fa-key"></i>
-                <input placeholder="Branch" name="Department" type="number" required=true>
+                <input placeholder="Department ID" name="Department" type="number" required=true>
 
             </div>
             <div class="box">
                 <i class="fa fa-key"></i>
-                <input placeholder="User ID" name="uid" type="text" required=true>
+                <input placeholder="Date Of Birth" name="dob" type="date" required=true>
+
             </div>
+            <div class="box">
+                <i class="fa fa-key"></i>
+                <input type="radio" name="gender" id="male" value="M">
+                <label for="male">Male</label>
+                <input type="radio" name="gender" id="femmale" value="F">
+                <label for="female">Female</label>
+                <input type="radio" name="gender" id="others" value=null>
+                <label for="others">Others</label>
+            </div>
+
+
+            <div id="container">
+        
+                
+                <p id="save" style="visibility: hidden;"></p>
+            </div>
+            <%if( typeof error != 'undefined'){%>
+            <p><%=error%></p>
+            <%}%>
+                <button class="btn" type="submit">Add student</button>
+                <button class="btn1" type="button" onclick='add()'>Add Course</button>
+            </form>
     </div>
 
 
-
-    <div id="container">
-
-        <p id="save" style="visibility: hidden;"></p>
-
-    </div>
-
-    <%if( typeof error != 'undefined'){%>
-    <p><%=error%></p>
-    <%}%>
-        <button class="btn" type="submit">Add student</button>
-        <button class="btn1" type="button" onclick='add()'>Add Course</button>
-    </form>
    
 </body>
 
