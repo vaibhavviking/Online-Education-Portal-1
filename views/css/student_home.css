@@ -101,7 +101,7 @@ li {
         font-style: italic;
         margin: 0px 10px;
     }
-
+ 
     h1 {
         margin: 0px;
         padding: 20px;
@@ -126,7 +126,7 @@ li {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        margin-top: 20vh;
+        margin-top: 60vh;
     }
 
     .card {
@@ -152,6 +152,20 @@ li {
         width: 220px;
         background-color: transparent;
     }
+    th,td{
+        font-size: 12px;
+        height: 30px;
+        width: 200px;
+        top: 0px;
+    }
+    table {
+        position: absolute;
+        left: 10%;
+        margin: 20px 10px;
+        border: 2px solid black;
+        display: inline-block;
+    }
+    
 
 }
 
@@ -194,7 +208,7 @@ li {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        margin-top: 18vh;
+        margin-top: 100vh;
     }
 
     .card {
@@ -220,7 +234,22 @@ li {
         width: 220px;
         background-color: transparent;
     }
-
+    
+    
+    th,td{
+        font-size: 10px;
+        height: 20px;
+        width: 100px;
+        top: 0px;
+    }
+    table {
+        position: absolute;
+        left: 8%;
+        margin: 18px 9px;
+        border: 2px solid black;
+        display: inline-block;
+    }
+    
 }
 
 
@@ -270,7 +299,7 @@ li {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        margin-top: 10vh;
+        margin-top: 70vh;
     }
 
     .card {
@@ -303,5 +332,35 @@ li {
         height: 40px;
         width: 200px;
     }
+    th,td{
+        font-size: 10px;
+        height: 20px;
+        width: 100px;
+        top: 0px;
+    }
+    table {
+        position: absolute;
+        left: 10%;
+        margin: 15px 5px;
+        border: 2px solid black;
+        display: inline-block;
+    }
+    
+}
 
+table {
+    position: absolute;
+    left: 18%;
+    margin: 40px 20px;
+    border: 2px solid black;
+    display: inline-block;
+}
+
+th,td {
+    font-weight: bold;
+    font-size: 25px;
+    border: 2px solid black;
+    height: 70px;
+    width: 350px;
+    top: 0px;
 }
