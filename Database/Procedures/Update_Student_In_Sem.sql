@@ -1,4 +1,4 @@
-/*Update Student*/
+/*Update Student In Sem*/
 delimiter //
 create procedure Update_Student_In_Sem(
 in rollno int,
@@ -8,6 +8,7 @@ in gender varchar(1),
 in prog varchar(10),
 in year int,
 in dept_id int,
+in email varchar(100),
 out did int,
 out rif int,
 out inv int
@@ -29,12 +30,12 @@ case
 end case;
 case when inv!=0 then leave a;
 else
-update Student set S_Name=name, DOB=dob, Gender=gender, Program_Enrolled=prog, Year_Of_Study=year, Department_ID=dept_id where Student.Roll_No=rollno;
+update Student set S_Name=name, DOB=dob, Gender=gender, Program_Enrolled=prog, Year_Of_Study=year, Department_ID=dept_id, Email=email where Student.Roll_No=rollno;
 end case;
 end //
 delimiter ;
 /*Execute*/
-call Update_Student_In_Sem(1,'A','2002-02-28','M','B.Tech',2,1,@did,@rif,@inv); /*Roll No, Name, DOB, Gender, Program, year of study, dept id*/
+call Update_Student_In_Sem(1,'A','2002-02-28','M','B.Tech',2,1,'A@iiti.ac.in',@did,@rif,@inv); /*Roll No, Name, DOB, Gender, Program, year of study, dept id, Email*/
 select @did;
 select @rif;
 select @inv;
