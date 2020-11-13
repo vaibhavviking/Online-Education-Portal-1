@@ -37,7 +37,7 @@ end case;
 end //
 delimiter ;
 /*Execute*/
-call Insert_Professor(30,'XW','1982-11-25','Professor',3,'XW@iiti.ac.in','P3','c',@did,@rif,@inv); /*Emp ID, Name, DOB, Gender, Post, Dept ID, Email, User ID, Password*/
+call Insert_Professor(99,'uttam','2020-10-10','M','Professor',2,'XW@iiti.ac.in','P3','a5c1f56f8b914e6da0f86af7b0612186',@did,@rif,@inv); /*Emp ID, Name, DOB, Gender, Post, Dept ID, Email, User ID, Password*/
 select @did;                                                                 /* Duplicate ID (atleast one of Username and Employee ID ) */
 select @rif;                                                                 /* Referential Integrity failure (Dept DNE) */
 select @inv;
