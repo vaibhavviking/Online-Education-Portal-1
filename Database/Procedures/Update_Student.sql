@@ -9,8 +9,6 @@ in prog varchar(10),
 in year int,
 in dept_id int,
 in cid varchar(7),
-in enrol date,
-in unenrol date,
 out did int,
 out rif int,
 out inv int
@@ -33,7 +31,7 @@ end case;
 case when inv!=0 then leave a;
 else
 update Student set S_Name=name, DOB=dob, Gender=gender, Program_Enrolled=prog, Year_Of_Study=year, Department_ID=dept_id where Student.Roll_No=rollno;
-call Add_Student_Course(cid,rollno,1,1,enrol,unenrol,@did,@rif,@inv);
+call Add_Student_Course(cid,rollno,1,1,@did,@rif,@inv);
 end case;
 end //
 delimiter ;
