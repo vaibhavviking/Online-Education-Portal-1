@@ -256,8 +256,12 @@ h5 {
     margin: 10px 5px;
 }
 
-.dropdown{
+.box{
     border-bottom: 2px solid black;
+}
+
+.dropdown{
+    display: inline-block;
 }
 
 table{
