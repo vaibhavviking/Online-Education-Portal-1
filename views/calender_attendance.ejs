@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CalendarPickerJS</title>
     <link rel="stylesheet" href="./css/CalendarPicker.style.css">
+    <link rel="stylesheet" href="./css/add_course.css">
+    <link rel="stylesheet" href="./css/Attendance.css">
     <style>
         body {
             display: grid;
@@ -65,6 +67,7 @@
         }
 
         #myCalendarWrapper:before {
+            display: none;
             content: '#myCalendarWrapper';
             position: absolute;
             font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
@@ -257,7 +260,7 @@
         <pre>   console.log(`The current value of the calendar is: ${currentValue}`);</pre>
         <pre>});</pre>
     </code> -->
-    <p id="dlen"><%=data.length%></p>
+    <p style="display: none;" id="dlen"><%=data.length%></p>
             <table id="data" style="display: none;">
                 <tr>
                     <th>date</th>
@@ -270,7 +273,6 @@
                     </tr>
                  <%})%>
             </table>
-    <input type="checkbox" id="trigger">
     
 </body>
 
