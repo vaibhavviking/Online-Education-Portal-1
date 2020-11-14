@@ -91,10 +91,6 @@
                 <label for="depid">Department ID:</label>
                 <input type="number" name="depid" required="true" id="depid" value='<%= data1.Department_ID%>' placeholder="Enter Department ID">
             </div>
-            <p style="color: rgb(168, 160, 160);" id="p1">
-                *Courses will get overwritten<br>
-                *Leave the course field empty to unassign
-            </p>
         
             <%var c=0;
             for(c=0;c<clen;c++){%>
@@ -114,6 +110,10 @@
             <button type="button" class="btn" id="btn1" onclick="add()" >Add Course</button></br>
             <a href="/admin_home" type="submit" ><button class="btn" id="btn2">Update</button></a>
 
+            <p style="color: rgb(168, 160, 160);" id="p1">
+                *Courses will get overwritten<br>
+                *Leave the course field empty to unassign
+            </p>
         </form>
 
     </div>
