@@ -54,6 +54,10 @@
             </div>
             <div class="box">
                 <i class="fa fa-key"></i>
+                <input placeholder="Username" name="uid" type="text" required=true>
+            </div>
+            <div class="box">
+                <i class="fa fa-key"></i>
                 <input placeholder="Employee ID" name="empid" type="number" required=true>
             </div>
             <div class="box">
@@ -65,12 +69,18 @@
                 <input placeholder="Department" name="Department" type="number" required=true>
             </div>
             <div class="box">
-                <i class="fa fa-key"></i>
-                <input placeholder="Username" name="uid" type="text" required=true>
+                <i class="fa fa-table"></i>
+                <input placeholder="Date of Birth" name="dob" type="date" required=true>
             </div>
-
-
-
+            <div class="box">
+                <i class="fa fa-key"></i>
+                <input type="radio" name="gender" id="male" value="M">
+                <label for="male">Male</label>
+                <input type="radio" name="gender" id="femmale" value="F">
+                <label for="female">Female</label>
+                <input type="radio" name="gender" id="others" value=null>
+                <label for="others">Others</label>
+            </div>
             <div id="container">
 
                 <p id="save" style="visibility: hidden;"></p>
@@ -82,6 +92,7 @@
         <button class="btn" type="submit">Add Professor</button>
         <button class="btn1" type="button" onclick='add()'>Add Course</button>
     </form>
+    <a href="/add_teacher_excel"><button>Upload Excel File</button></a>
    </div>
 
 </body>

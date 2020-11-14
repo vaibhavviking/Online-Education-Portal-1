@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teacher Home_page</title>
-    <link rel="stylesheet" href="./css/teacher_home.css">
+    <link rel="stylesheet" href="/css/teacher_home.css">
 </head>
 
 <body>
 
     <nav class="navbar">
-        <img class="logo" src="./css/images/logo.png" alt="...">
+        <img class="logo" src="/css/images/logo.png" alt="...">
         <h3>भारतीय प्रौद्योगिकी संस्थान इंदौर <br> Indian Institute of Technology Indore</h3>
     </nav>
 
@@ -30,8 +30,22 @@
         </ul>
     </div>
 
-    <h1>TEACHER HOME-PAGE</h1>
-    <h2>Welcome to Online Education Portal</h2>
+    <div class="container">
+        <div class="box" id="box1" style="color: white; background-color: #979ffc;">Field</div>
+        <div class="box" id="box2" style="color: white; background-color: #979ffc;">Information</div>
+        <div class="box" id="box3" style="background-color: rgb(161, 228, 255);">Name</div>
+        <div class="box" id="box4" style="background-color: white;"><%=data.P_Name%></div>
+        <div class="box" id="box5" style="background-color: rgb(161, 228, 255);">Department</div>
+        <div class="box" id="box6" style="background-color: white;"><%=data.Department_ID%></div>
+        <div class="box" id="box9" style="background-color: rgb(161, 228, 255);">Post</div>
+        <div class="box" id="box10" style="background-color: white;"><%=data.Post%></div>
+        <div class="box" id="box9" style="background-color: rgb(161, 228, 255);">Email</div>
+        <div class="box" id="box10" style="background-color: white;"><%=data.Email%></div>
+        <div class="box" id="box9" style="background-color: rgb(161, 228, 255);">Gender</div>
+        <div class="box" id="box10" style="background-color: white;"><%=data.Gender%></div>
+        <div class="box" id="box9" style="background-color: rgb(161, 228, 255);">Date OF Birth</div>
+        <div class="box" id="box10" style="background-color: white;"><%=fdate%></div>
+    </div>
 
     <div class="row">
 

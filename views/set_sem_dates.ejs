@@ -4,12 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Admin</title>
-    <script src="https://kit.fontawesome.com/63e2b2b603.js" crossorigin="anonymous"></script>
+    <title>Set Sem Dates</title>
     <link rel="stylesheet" href="./css/add_course.css">
+    <script src="https://kit.fontawesome.com/63e2b2b603.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
+
     <nav class="navbar">
         <img class="logo" src="./css/images/logo.png" alt="...">
         <h3>भारतीय प्रौद्योगिकी संस्थान इंदौर <br> Indian Institute of Technology Indore</h3>
@@ -22,36 +23,28 @@
             <li><a href="/logout">Log Out</a></li>
         </ul>
     </div>
-
-    <h1>ADD ADMIN</h1>
+    <h1>Add Post</h1>
 
     <div class="container">
 
-        <form id="form" method="post">
+        <form method="post">
+
             <div class="box">
-                <i class="fa fa-user"></i>
-                <input placeholder="Admin_ID" name="admin_id" type="text" required=true>
+                <i class="fa fa-key"></i>
+                <input type="date" name="dates1" required="true" placeholder="Start Date">
             </div>
             <div class="box">
                 <i class="fa fa-key"></i>
-                <input placeholder="Password" name="password" type="text" required=true>
+                <input type="date" name="dates2" required="true" placeholder="End Date">
             </div>
-            <div class="box">
-                <i class="fa fa-key"></i>
-                <input placeholder="User_ID" name="username" type="text" required=true>
-            </div>
-            <div class="box">
-                <i class="fa fa-key"></i>
-                <input placeholder="Email" name="email" type="email" required=true>
-            </div>
-            <button class="btn" type="submit">Add admin</button>
-            <%if( typeof error != 'undefined'){%>
+            <button type="submit">Set Sem Dates</button>
+
+        </form>
+        <%if( typeof error != 'undefined'){%>
             <p><%=error%></p>
             <%}%>
-        </form>
-
     </div>
-   
+
 </body>
 
 </html>

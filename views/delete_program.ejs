@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Course</title>
+    <title>Remove Program</title>
     <link rel="stylesheet" href="./css/add_course.css">
     <script src="https://kit.fontawesome.com/63e2b2b603.js" crossorigin="anonymous"></script>
 </head>
@@ -24,34 +24,18 @@
         </ul>
     </div>
 
-    <h1>Add Course</h1>
+    <h1>Remove Program</h1>
 
     <div class="container">
 
         <form method="post">
 
             <div class="box">
-                <i class="fa fa-vcard-o"></i>
-                <input type="text" name="course_code" required="true" placeholder="Course Code">
+                <i class="fa fa-key"></i>
+                <input type="text" name="program" required="true" placeholder="Program Name">
             </div>
+            <button type="submit">Remove Program</button>
 
-            <div class="box">
-                <i class="fa fa-address-card"></i>
-                <input type="text" name="course_name" required="true" placeholder="Course Name">
-            </div>
-
-            <div class="box">
-                <i class="fa fa-link"></i>
-                <input type="text" name="class_link" required="true" placeholder="Class Link">
-            </div>
-                
-            <div class="box">
-                <i class="fa fa-vcard-o"></i>
-                <input type="text" name="credits" required="true" placeholder="Course Credits">
-            </div>
-
-            <button type="submit">Add Course</button>
-            
         </form>
         <%if( typeof error != 'undefined'){%>
             <p><%=error%></p>

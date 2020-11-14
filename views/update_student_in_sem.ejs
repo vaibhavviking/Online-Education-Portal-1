@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Professor</title>
+    <title>Update_Student</title>
     <script src="https://kit.fontawesome.com/63e2b2b603.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./css/update_student.css">
     <script>
@@ -42,7 +42,7 @@
     </script>
 </head>
 
-<body onload="check_gender()">
+<body onload="check_gender()"> 
 
     <nav class="navbar">
         <img class="logo" src="./css/images/logo.png" alt="...">
@@ -51,13 +51,13 @@
 
     <div class="bar">
         <ul>
-            <li><a href="/Admin_home">Admin Home</a></li>
+            <li><a href="/admin_home">Admin Home</a></li>
             <li><a href="/admin_change_password">Change Password</a></li>
             <li><a href="/logout">Log Out</a></li>
         </ul>
     </div>
 
-    <h1>Update Professor Data</h1>
+    <h1>Update Student Data</h1>
 
     <table class="table">
         <tr style="color: rgb(151, 4, 156); background-color: chartreuse;">
@@ -66,17 +66,20 @@
         </tr>
         <tr>
             <td style="background-color: rgb(161, 228, 255);">Name</td>
-            <td><%= data1.P_Name%></td>
+            <td><%= data1.S_Name%></td>
         </tr>
         <tr>
             <td style="background-color: rgb(161, 228, 255);">Program</td>
-            <td><%= data1.Post%></td>
+            <td><%= data1.Program_Enrolled%></td>
+        </tr>
+        <tr>
+            <td style="background-color: rgb(161, 228, 255);">Year Of Study</td>
+            <td><%= data1.Year_Of_Study%></td>
         </tr>
         <tr>
             <td style="background-color: rgb(161, 228, 255);">Department ID</td>
             <td><%= data1.Department_ID%></td>
         </tr>
-        <tr>
         <tr>
             <td style="background-color: rgb(161, 228, 255);">Gender</td>
             <td id="old_gender"><%= data1.Gender%></td>
@@ -85,12 +88,17 @@
             <td style="background-color: rgb(161, 228, 255);">Date of Birth</td>
             <td id="old_dob"><%= fdate%></td>
         </tr>
-        <td style="background-color: rgb(161, 228, 255);">Courses</td>
-        <td>
-            <% data2.forEach((item)=>{%>
-            <span style="display: inline-block;"><%=item.Course_Code%></span>
-            <%})%>
-        </td>
+        <tr>
+            <td style="background-color: rgb(161, 228, 255);">Email</td>
+            <td id="old_dob"><%= data1.Email%></td>
+        </tr>
+        <tr>
+            <td style="background-color: rgb(161, 228, 255);">Courses</td>
+            <td>
+                <% data2.forEach((item)=>{%>
+                <span style="display: inline-block;"><%=item.Course_Code%></span>
+                <%})%>
+            </td>
         </tr>
     </table>
 
@@ -101,19 +109,22 @@
             <div class="box">
                 <i class="fa fa-user"></i>
                 <label for="username">Name:</label>
-                <input type="text" name="username" required="true" id="name" value='<%= data1.P_Name%>'
-                    placeholder="Enter Name">
+                <input type="text" name="username" required="true" id="name" value='<%= data1.S_Name%>'>
             </div>
             <div class="box">
                 <i class="fa fa-address-card"></i>
-                <label for="post">Post:</label>
-                <input type="text" name="post" required="true" value='<%= data1.Post%>' placeholder="Enter Post">
+                <label for="Program">Program:</label>
+                <input type="text" name="program" required="true" value='<%= data1.Program_Enrolled%>'>
+            </div>
+            <div class="box">
+                <i class="fa fa-calendar"></i>
+                <label for="year">Year Of Study:</label>
+                <input type="text" name="year" required="true" id="year" value='<%= data1.Year_Of_Study%>'>
             </div>
             <div class="box">
                 <i class="fa fa-key"></i>
                 <label for="depid">Department ID:</label>
-                <input type="number" name="depid" required="true" id="depid" value='<%= data1.Department_ID%>'
-                    placeholder="Enter Department ID">
+                <input type="number" name="depid" required="true" id="depid" value='<%= data1.Department_ID%>'>
             </div>
             <div class="box">
                 <i class="fa fa-key"></i>
@@ -134,29 +145,28 @@
                 <input type="radio" name="gender" id="others" value=null>
                 <label for="others">Others</label>
             </div>
-        
-            <%var c=0;
+            <!-- <%var c=0;
             for(c=0;c<clen;c++){%>
             <div class="box">
                 <i class="fa fa-vcard-o"></i>
                 <label for="course[]">Course:</label>
                 <input name='course[]' value='<%=data2[c].Course_Code%>' type="text">
             </div>
-
-            <% }var emp = empid%>
+            <% }var roll = rollno%> -->
+            <% var roll = rollno%>
             <div id="container">
 
                 <p id="save" style="visibility: hidden;"></p>
 
             </div>
-            <input type="text" name="empid" style="display: none;" value=<%=emp%>>
-            <button type="button" class="btn" id="btn1" onclick="add()">Add Course</button></br>
+            <input type="text" name="rollno" style="display: none;" value=<%=roll%>>
+            <!-- <button class="btn" id="btn1" type="button" onclick="add()">Add Course</button></br> -->
             <a href="/admin_home" type="submit"><button class="btn" id="btn2">Update</button></a>
 
-            <p style="color: rgb(168, 160, 160);" id="p1">
+            <!-- <p style="color: rgb(168, 160, 160);" id="p1">
                 *Courses will get overwritten<br>
                 *Leave the course field empty to unassign
-            </p>
+            </p> -->
         </form>
 
     </div>

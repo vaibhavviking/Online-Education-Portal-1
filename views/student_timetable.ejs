@@ -1,12 +1,10 @@
-
-
 <!DOCTYPE html>
 
 <html>
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Study Material</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Time-table</title>
     <link rel="stylesheet" href="./css/Attendance.css">
     <style>
         .bar {
@@ -41,32 +39,11 @@
             text-decoration: none;
             background-color: #dbefea;
         }
-
-        @media (min-width: 385px) and (max-width: 510px) {
-            ul {
-                padding-inline-start: 10px;
-            }
-
-            li {
-                font-size: 13px;
-            }
-        }
-
-        @media (max-width: 385px) {
-            ul {
-                padding-inline-start: 5px;
-            }
-
-            li {
-                font-size: 11px;
-                margin: 0px 2px;
-            }
-        }
     </style>
 </head>
 
 <body>
-  <nav class="navbar">
+    <nav class="navbar">
         <img class="logo" src="./css/images/logo.png" alt="...">
         <h3>भारतीय प्रौद्योगिकी संस्थान इंदौर <br> Indian Institute of Technology Indore</h3>
     </nav>
@@ -75,7 +52,7 @@
         <ul>
             <!-- <li><a href="/Home_page">Home</a></li> -->
             
-            <li>  <a  href="/student_home">Home</a></li>
+            <li>  <a  href="#">Home</a></li>
             <li> <a  href="/ongoing_classes">Mark Attendance</a></li>
             <li><a  href="/student_timetable">Time Table</a></li>
             <li> <a href="/student_courses">Courses</a></li>
@@ -86,26 +63,34 @@
         </ul>
     </div>
 
-  <h1> Study Material </h1>
-  
-    <%if(data.length >0){
-        var i=1; %>
-        <table class="table">
-            <tr style="color: rgb(151, 4, 156); background-color: chartreuse;">
-                <th>Serial No.</th>
-                <th>Couse Code</th>
-                <th>Material Link</th>
-            </tr>
-           <% data.forEach((item)=>{%>
-                <tr>
-                    <td><%= i%></td>
-                    <td><%=item.Course_Code%></td>
-                    <td><%=item.Link%></td>
-                </tr>
-            <%i++})%>
-        </table>
-    <%} %>
+    <h1> Time-table </h1>
 
+    <table class="table">
+
+        <tr style="color: rgb(151, 4, 156); background-color: chartreuse;">
+            <th>Time</th>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+            <th>Saturday</th>
+        </tr>
+
+        <% var i =1%>
+        <% data.forEach((item)=>{ %>
+        <tr>
+            <td><%= item.Time %></td>
+            <td><%= item.Monday %></td>
+            <td><%= item.Tuesday %></td>
+            <td><%= item.Wednesday %></td>
+            <td><%= item.Thursday %></td>
+            <td><%= item.Friday %></td>
+            <td><%= item.Saturday %></td>
+        </tr>
+        <% i++}) %>
+
+    </table>
 </body>
 
 </html>

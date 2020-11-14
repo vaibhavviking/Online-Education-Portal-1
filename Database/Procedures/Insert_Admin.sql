@@ -18,7 +18,7 @@ insert into Admin_Account_Relation values(Admin_ID,User_ID_);
 end //
 delimiter ;
 /*Execute*/ 
-call Insert_Admin (  100,'A1' ,'a5c1f56f8b914e6da0f86af7b0612186', 'Admin1@iiti.ac.in', @duplicate_key);  /*Enter Admin_ID, User_ID, Password, Email */
+call Insert_Admin (  200,'A2' ,'b', 'Admin2@iiti.ac.in', @duplicate_key);  /*Enter Admin_ID, User_ID, Password, Email */
 select @duplicate_key;
 /*End*/
 
