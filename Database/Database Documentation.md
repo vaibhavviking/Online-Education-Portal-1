@@ -12,6 +12,7 @@ Entities used in database
 11. Posts
 12. Programs
 13. Sem_Dates
+14. Requested_Courses
 
 Relations used in database
 1.  Admin_Account_Relation
@@ -47,7 +48,7 @@ Stored Procedures stored in database
 23. Professor_Time_Table (Employee_ID)
 24. Total_Days_Increment ()
 25. Mark_Attendance (Roll_No, Course_Code, Time, Date, @did)
-26. Check_Attendance (Course_Code)*
+26. Check_Attendance (Course_Code)
 27. Get_Student_Courses (Roll_No)
 28. Get_Professor_Courses (Employee_ID)
 29. Get_Student_Links (Roll_No)
@@ -71,7 +72,8 @@ Stored Procedures stored in database
 47. Set_Sem_Dates (Starting Date, Ending Date, @inv)
 48. Attendance_In_Students (Roll_No, Course_Code)
 49. Retrieve_Email (User_ID, @email)
+50. Request_Course (Roll No, Course Code)
+51. Request_Course_List (Roll No)
 
 ** DOB: Date of Birth in YYYY-MM-DD format
 
-*: In progress of updation
