@@ -140,8 +140,8 @@
             // x.innerHTML += `<input type='text' required='true' placeholder='course${i}' name='course${i}'>`;
             x.innerHTML += `<div class="box">
             <i class="fa fa-key"></i>
-            <input  placeholder='course${i}' name='course[]' type="text" required=true>
-
+            <label for="course[]">Course</label>
+            <input name='course[]' type="text">
         </div>`;
             // p.innerHTML +=1;
             console.log(i + 1);
@@ -195,22 +195,35 @@
         <form action="" method="POST">
             <div class="box">
                 <i class="fa fa-user"></i>
-                <input type="text" name="username" required="true" id="name" placeholder="Enter Name">
+                <label for="username">Name:</label><br>
+                <input type="text" name="username" required="true" id="name" value='<%= data1.P_Name%>' placeholder="Enter Name">
             </div>
             <div class="box">
                 <i class="fa fa-address-card"></i>
-                <input type="text" name="post" required="true" placeholder="Enter Post">
+                <label for="post">Post:</label><br>
+                <input type="text" name="post" required="true" value='<%= data1.Post%>' placeholder="Enter Post">
             </div>
             <div class="box">
                 <i class="fa fa-vcard-o"></i>
-                <input type="number" name="depid" required="true" id="depid" placeholder="Enter Department ID">
+                <label for="depid">Department ID</label>
+                <input type="number" name="depid" required="true" id="depid" value='<%= data1.Department_ID%>' placeholder="Enter Department ID">
             </div>
+            
+            <%var c=0;
+            for(c=0;c<clen;c++){%>
+                <div class="box">
+                    <i class="fa fa-key"></i>
+                    <label for="course[]">Course</label>
+                    <input name='course[]' value='<%=data2[c].Course_Code%>' type="text">
+        
+                </div>
+            
+            <% }var emp = empid%>
             <div id="container">
           
                 <p id="save" style="visibility: hidden;"></p>
                 
             </div>
-            <% var emp = empid%>
             <input type="text" name="empid" style="display: none;" value=<%=emp%> >
             <button  style="display: block;" type="button" class="btn" onclick="add()" >Add Course</button></br>
             <a href="/admin_home" type="submit" ><button class="btn">Update</button></a>
@@ -218,7 +231,10 @@
         </form>
 
     </div>
-
+    <p>
+        *Courses will get overwritten<br>
+        *Leave the course field empty to unassign
+    </p>
 
 </body>
 

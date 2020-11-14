@@ -8,6 +8,7 @@ in gender varchar(1),
 in prog varchar(10),
 in year int,
 in deptid int,
+in email varchar(100),
 in userid varchar(30),
 in password varchar(100),
 out did int,
@@ -31,16 +32,16 @@ case
 end case;
 case when inv!=0 then leave a;
 else
-insert into Student values(rollno, name, dob, gender, prog, year, deptid);
+insert into Student values(rollno, name, dob, gender, prog, year, deptid, email);
 insert into Account values(userid, password, 'Student');
 insert into Student_Account_Relation values(rollno, userid);
 end case;
 end //
 delimiter ;
 /*Execute*/
-call Insert_Student(100,'Test1','2000-01-15','M','123',3,2,'S2','b',@did,@rif,@inv); /*Roll no, Name, DOB(Y-M-D), Gender, Program, Year of study, Dept ID, User ID, Password*/
+call Insert_Student(100,'Test','2000-01-15','M','123',3,2,'Test@iiti.ac.in','S2','b',@did,@rif,@inv); /*Roll no, Name, DOB(Y-M-D), Gender, Program, Year of study, Dept ID, Email, User ID, Password*/
 select @did;                                                 /* Duplicate ID (atleast one of Username and Roll no. ) */
 select @rif;                                                 /* Referential Integrity failure (Dept DNE) */
 select @inv;                                                 /* Invalid entry */
 /*End*/
-
+drop procedure Insert_Student;

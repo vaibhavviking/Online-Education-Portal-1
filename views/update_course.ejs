@@ -187,15 +187,18 @@
         <form action="" method="POST">
             <div class="box">
                 <i class="fa fa-user"></i>
-                <input type="text" name="name" required="true" id="name" placeholder="Enter Course Name">
+                <label for="name">Course Name</label>
+                <input type="text" name="name" required="true" id="name" value='<%= data1.Course_Name%>'>
             </div>
             <div class="box">
                 <i class="fa fa-address-card"></i>
-                <input type="text" name="link" required="true" placeholder="Enter Class Link">
+                <label for="link">Class Link</label>
+                <input type="text" name="link" required="true" value='<%= data1.Class_Link%>'>
             </div>
             <div class="box">
                 <i class="fa fa-vcard-o"></i>
-                <input type="text" name="credits" required="true" id="depid" placeholder="Enter Course Credits">
+                <label for="credits">Credits</label>
+                <input type="text" name="credits" required="true" id="depid" value='<%= data1.Credits%>'>
             </div>
             <div id="container">
           

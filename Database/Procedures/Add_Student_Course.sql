@@ -31,3 +31,4 @@ select @did;                                                /* Duplicate ID prob
 select @rif;                                                /* Referential Integrity Problem( Student or Course DNE ) */
 select @inv;                                                /* Invalid entry of attendance */
 /*End*/
+
