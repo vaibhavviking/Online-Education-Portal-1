@@ -6,13 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Home_page</title>
     <link rel="stylesheet" href="stu.css">
-    <link rel="stylesheet" href="./css/student_home.css">
+    <link rel="stylesheet" href="/css/student_home.css">
 </head>
-
 <body>
 
     <nav class="navbar">
-        <img class="logo" src="./css/images/logo.png" alt="...">
+        <img class="logo" src="/css/images/logo.png" alt="...">
         <h3>भारतीय प्रौद्योगिकी संस्थान इंदौर <br> Indian Institute of Technology Indore</h3>
     </nav>
 
@@ -30,25 +29,33 @@
     </div>
 
     <table class="table">
-        <tr>
+        <tr style="color: rgb(151, 4, 156); background-color: chartreuse;">
             <th>Field</th>
             <th>information</th>
         </tr>
         <tr>
-            <td>Name</td>
-            <td></td>
+            <td style="background-color: rgb(161, 228, 255);">Name</td>
+            <td><%=data.S_Name%></td>
         </tr>
         <tr>
-            <td>Roll-NO</td>
-            <td></td>
+            <td style="background-color: rgb(161, 228, 255);">Roll-Number</td>
+            <td><%=data.Roll_No%></td>
         </tr>
         <tr>
-            <td>Branch</td>
-            <td></td>
+            <td style="background-color: rgb(161, 228, 255);">Branch</td>
+            <td><%=data.Program_Enrolled%></td>
         </tr>
         <tr>
-            <td>  Batch Year</td>
-            <td></td>
+            <td style="background-color: rgb(161, 228, 255);">Year Of Study</td>
+            <td><%=data.Year_Of_Study%></td>
+        </tr>
+        <tr>
+            <td style="background-color: rgb(161, 228, 255);">Gender</td>
+            <td><%=data.Gender%></td>
+        </tr>
+        <tr>
+            <td style="background-color: rgb(161, 228, 255);">Date Of Birth</td>
+            <td><%=fdate%></td>
         </tr>
 </table>
 

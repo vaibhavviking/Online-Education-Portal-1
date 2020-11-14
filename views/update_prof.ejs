@@ -25,10 +25,24 @@
         function get_value() {
             return document.getElementById('container').childElementCount + 1;
         }
+        function check_gender(){
+            // document.getElementById('dob').defaultValue="2020-22-1";
+            let old_gender = document.getElementById('old_gender').innerHTML;
+            if(old_gender == 'M'){
+                document.getElementById('old_gender').innerHTML="Male";
+                document.getElementById('male').checked="true";
+            }else if(old_gender == 'F'){
+                document.getElementById('old_gender').innerHTML="Female";
+                document.getElementById('female').checked="true";
+            }else{
+                document.getElementById('old_gender').innerHTML="Others";
+                document.getElementById('others').checked="true";
+            }
+        }
     </script>
 </head>
 
-<body>
+<body onload="check_gender()">
 
     <nav class="navbar">
         <img class="logo" src="./css/images/logo.png" alt="...">
@@ -42,7 +56,7 @@
             <li><a href="/logout">Log Out</a></li>
         </ul>
     </div>
-    
+
     <h1>Update Professor Data</h1>
 
     <table class="table">
@@ -63,12 +77,20 @@
             <td><%= data1.Department_ID%></td>
         </tr>
         <tr>
-            <td style="background-color: rgb(161, 228, 255);">Courses</td>
-            <td>
-                <% data2.forEach((item)=>{%>
-                <span style="display: inline-block;"><%=item.Course_Code%></span>
-                <%})%>
-            </td>
+        <tr>
+            <td style="background-color: rgb(161, 228, 255);">Gender</td>
+            <td id="old_gender"><%= data1.Gender%></td>
+        </tr>
+        <tr>
+            <td style="background-color: rgb(161, 228, 255);">Date of Birth</td>
+            <td id="old_dob"><%= fdate%></td>
+        </tr>
+        <td style="background-color: rgb(161, 228, 255);">Courses</td>
+        <td>
+            <% data2.forEach((item)=>{%>
+            <span style="display: inline-block;"><%=item.Course_Code%></span>
+            <%})%>
+        </td>
         </tr>
     </table>
 
@@ -79,7 +101,8 @@
             <div class="box">
                 <i class="fa fa-user"></i>
                 <label for="username">Name:</label>
-                <input type="text" name="username" required="true" id="name" value='<%= data1.P_Name%>' placeholder="Enter Name">
+                <input type="text" name="username" required="true" id="name" value='<%= data1.P_Name%>'
+                    placeholder="Enter Name">
             </div>
             <div class="box">
                 <i class="fa fa-address-card"></i>
@@ -89,35 +112,50 @@
             <div class="box">
                 <i class="fa fa-key"></i>
                 <label for="depid">Department ID:</label>
-                <input type="number" name="depid" required="true" id="depid" value='<%= data1.Department_ID%>' placeholder="Enter Department ID">
+                <input type="number" name="depid" required="true" id="depid" value='<%= data1.Department_ID%>'
+                    placeholder="Enter Department ID">
+            </div>
+            <div class="box">
+                <i class="fa fa-key"></i>
+                <label for="dob">Date of Birth:</label>
+                <input type="date" name="dob" required="true" id="dob" value=<%=rdate%>>>
+            </div>
+            <div class="box">
+                <i class="fa fa-key"></i>
+                <input type="radio" name="gender" id="male" value="M">
+                <label for="male">Male</label>
+                <input type="radio" name="gender" id="femmale" value="F">
+                <label for="female">Female</label>
+                <input type="radio" name="gender" id="others" value=null>
+                <label for="others">Others</label>
             </div>
             <p style="color: rgb(168, 160, 160);" id="p1">
                 *Courses will get overwritten<br>
                 *Leave the course field empty to unassign
             </p>
-        
+
             <%var c=0;
             for(c=0;c<clen;c++){%>
-                <div class="box">
-                    <i class="fa fa-vcard-o"></i>
-                    <label for="course[]">Course:</label>
-                    <input name='course[]' value='<%=data2[c].Course_Code%>' type="text">
-                </div>
-            
+            <div class="box">
+                <i class="fa fa-vcard-o"></i>
+                <label for="course[]">Course:</label>
+                <input name='course[]' value='<%=data2[c].Course_Code%>' type="text">
+            </div>
+
             <% }var emp = empid%>
             <div id="container">
-          
+
                 <p id="save" style="visibility: hidden;"></p>
-                
+
             </div>
-            <input type="text" name="empid" style="display: none;" value=<%=emp%> >
-            <button type="button" class="btn" id="btn1" onclick="add()" >Add Course</button></br>
-            <a href="/admin_home" type="submit" ><button class="btn" id="btn2">Update</button></a>
+            <input type="text" name="empid" style="display: none;" value=<%=emp%>>
+            <button type="button" class="btn" id="btn1" onclick="add()">Add Course</button></br>
+            <a href="/admin_home" type="submit"><button class="btn" id="btn2">Update</button></a>
 
         </form>
 
     </div>
-    
+
 </body>
 
 </html>
