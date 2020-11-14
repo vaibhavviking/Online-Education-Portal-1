@@ -193,3 +193,12 @@ Ending_Date date,
 primary key(Starting_Date, Ending_Date)
 );
 /*drop table Sem_Dates*/
+
+create table Requested_Courses(
+Roll_No int,
+Course_Code varchar(7),
+primary key(Roll_No, Course_Code),
+foreign key(Roll_No) references Student(Roll_No),
+foreign key(Course_Code) references Courses(Course_Code)
+);
+/*drop table Requested_Courses*/
