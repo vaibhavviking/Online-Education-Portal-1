@@ -2,7 +2,7 @@
 delimiter //
 create procedure Retrieve_ID(
 in u varchar(30),
-in p varchar(30),
+in p varchar(100),
 out account_id varchar(15),
 out t varchar(15)
 )

@@ -23,6 +23,7 @@ Relationships
 
 create table Administration(
 Admin_ID int,
+Email varchar(100),
 primary key(Admin_ID)
 );
 /*drop table Administration*/
@@ -53,14 +54,14 @@ primary key(Dept_ID)
 /*drop table Department;*/
 
 create table Programs(
-P_Name varchar(10),
-primary key(P_Name)
+Prog_Name varchar(10),
+primary key(Prog_Name)
 );
 /*drop table Programs*/
 
 create table Posts(
-P_Name varchar(30),
-primary key(P_Name)
+Post_Name varchar(30),
+primary key(Post_Name)
 );
 /*drop table Posts*/
 
@@ -72,9 +73,10 @@ Gender varchar(1),
 Program_Enrolled varchar(10),
 Year_Of_Study int,
 Department_ID int,
+Email varchar(100),
 primary key(Roll_No),
 foreign key(Department_ID) references Department(Dept_ID),
-foreign key(Program_Enrolled) references Programs(P_Name)  
+foreign key(Program_Enrolled) references Programs(Prog_Name)  
 );
 /*drop table Student*/
 
@@ -85,9 +87,10 @@ Post varchar(30),
 DOB date,
 Gender varchar(1),
 Department_ID int,
+Email varchar(100),
 primary key(Employee_ID),
 foreign key(Department_ID) references Department(Dept_ID),
-foreign key(Post) references Posts(P_Name) 
+foreign key(Post) references Posts(Post_Name) 
 );
 /*drop table Professor*/
 
@@ -184,3 +187,9 @@ foreign key(CID) references Courses(Course_Code) on delete cascade
 );
 /*drop table Attendance_Marked*/
 
+create table Sem_Dates(
+Starting_Date date,
+Ending_Date date,
+primary key(Starting_Date, Ending_Date)
+);
+/*drop table Sem_Dates*/

@@ -1370,14 +1370,14 @@ app.post('/reset_password',(req,res)=>{
     let connewpass=req.body.con_new_password;
     console.log('reset kar rhe hai',newpass,connewpass,token,id);
     if(newpass!=connewpass){
-        res.redirect('/reset_password/?s='+token);
+        res.send('password do not match');
     }else{
         newpass=md5(md5(md5(newpass)));
         let sql='update Account set Password_=? where Account.User_ID_=?';
         connection.query(sql,[newpass,id],(err,results)=>{
             if(err) throw err;
             console.log(results);
-            res.redirect('/');
+            res.send('password is reset.you can close this window');
         })
     }
 })

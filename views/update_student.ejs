@@ -122,24 +122,7 @@
                 <label for="depid">Department ID:</label>
                 <input type="number" name="depid" required="true" id="depid" value='<%= data1.Department_ID%>'>
             </div>
-            <div class="box">
-                <i class="fa fa-key"></i>
-                <label for="dob">Date of Birth:</label>
-                <input type="date" name="dob" required="true" id="dob" value=<%=rdate%>>>
-            </div>
-            <div class="box">
-                <i class="fa fa-key"></i>
-                <input type="radio" name="gender" id="male" value="M">
-                <label for="male">Male</label>
-                <input type="radio" name="gender" id="femmale" value="F">
-                <label for="female">Female</label>
-                <input type="radio" name="gender" id="others" value=null>
-                <label for="others">Others</label>
-            </div>
-            <p style="color: rgb(168, 160, 160);" id="p1">
-                *Courses will get overwritten<br>
-                *Leave the course field empty to unassign
-            </p>
+            
             <%var c=0;
             for(c=0;c<clen;c++){%>
             <div class="box">
@@ -147,7 +130,6 @@
                 <label for="course[]">Course:</label>
                 <input name='course[]' value='<%=data2[c].Course_Code%>' type="text">
             </div>
-
             <% }var roll = rollno%>
             <div id="container">
 
@@ -157,6 +139,11 @@
             <input type="text" name="rollno" style="display: none;" value=<%=roll%>>
             <button class="btn" id="btn1" type="button" onclick="add()">Add Course</button></br>
             <a href="/admin_home" type="submit"><button class="btn" id="btn2">Update</button></a>
+
+            <p style="color: rgb(168, 160, 160);" id="p1">
+                *Courses will get overwritten<br>
+                *Leave the course field empty to unassign
+            </p>
         </form>
 
     </div>
