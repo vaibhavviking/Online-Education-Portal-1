@@ -936,21 +936,45 @@ app.post('/add_admin', (req, res) => {
     var username = req.body.username;
     var password = req.body.password;
     var admin_id = req.body.admin_id;
+    var email = req.body.email;
     password = md5(md5(md5(password)));
-    var sql = 'call Insert_Admin(?,?,?,@duplicate_key)';
-    connection.query(sql, [admin_id, username, password], (err, results) => {
+    var sql = 'call Insert_Admin(?,?,?,?,@duplicate_key)';
+    connection.query(sql, [admin_id, username, password, email], (err, results) => {
         if (err) throw err;
         var sql1 = 'select @duplicate_key';
         connection.query(sql1, (err, results1) => {
             if (results1[0]['@duplicate_key'] > 0) {
                 res.render('add_admin.ejs', { error: 'Username or Admin ID already taken' })
-                res.end();
             }
         })
         console.log('admin added');
         res.redirect('/admin_home');
     })
 })
+
+app.get('/admin_change_email',(req,res)=>{
+    if (req.session.loggedin && req.session.user) {
+        res.render('admin_change_email.ejs');
+    } else {
+        res.redirect('/');
+    }
+})
+
+app.post('/admin_change_email',(req,res)=>{
+    let email = req.body.Email;
+    admin_change_email(req,res,email);
+})
+
+let admin_change_email = async function (req,res,email){
+    let id = await GET_ID();
+    console.log(email);
+    let sql='Update Administration set Email = ? where Admin_ID=?';
+    connection.query(sql,[email,id],(err,results)=>{
+        if(err) throw err;
+        console.log('Details Updated');
+        res.redirect('/admin_home');
+    })
+}
 
 app.get('/add_dept', (req, res) => {
     if (req.session.loggedin && req.session.user) {
