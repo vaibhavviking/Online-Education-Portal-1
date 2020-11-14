@@ -1441,9 +1441,9 @@ app.post('/reset_password', (req, res) => {
         res.redirect('/reset_password/?token='+token+'&id='+id+'&error='+error);
     } else {
         let sql1 = 'select * from Reset_Token where Token = ?';
-        connection.query(sql, [token], (err, result) => {
+        connection.query(sql1, [token], (err, result) => {
             if (err) throw err
-            if (result[0].length > 0) {
+            if (result.length > 0) {
                 newpass = md5(md5(md5(newpass)));
                 let sql = 'update Account set Password_=? where Account.User_ID_=?';
                 connection.query(sql, [newpass, id], (err2, results) => {
@@ -1578,7 +1578,7 @@ let student_attendance = async function (req,res,code){
     let id = await GET_ID();
     connection.query(sql,[id,code],(err,results)=>{
         if(err) throw err;
-        console.log(results);
+        res.render('calender_attendance.ejs', { data : results[0]});
     })
 }
 
@@ -2308,8 +2308,8 @@ let forgot_password = async function (req, res, email, id) {
         // text: 'http://' + req.headers.host + '/reset_password/?s=' + token + '&id='+id+'\n\n' ,
         // html: '<p>Click the link given below to reset your password</p><a href="'+link+'">Click here</a>'
         // html: '<p>Click the link given below to reset your password</p><a href='"+link+'">Click here</a>';
-        // html: "To reset your password, click this <a href='" + "http://localhost:5000/reset_password/?s=" + token + "&id=" + id + "'><span>link</span></a>.<br>This is a <b>test</b> email."
-        html: "To reset your password, click this <a href='" + "https://mysterious-beyond-20244.herokuapp.com//reset_password/?s=" + token + "&id=" + id + "'><span>link</span></a>.<br>This is a <b>test</b> email."
+        html: "To reset your password, click this <a href='" + "http://localhost:5000/reset_password/?s=" + token + "&id=" + id + "'><span>link</span></a>.<br>This is a <b>test</b> email."
+        // html: "To reset your password, click this <a href='" + "https://mysterious-beyond-20244.herokuapp.com/reset_password/?s=" + token + "&id=" + id + "'><span>link</span></a>.<br>This is a <b>test</b> email."
 
         // html: `<p>Click the link given below to reset your password</p><a href="">Click here</a>`
     };
