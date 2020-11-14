@@ -13,6 +13,7 @@ const nodemailer = require('nodemailer');
 var keys = require('./keys.js')
 var mysql = require('mysql');
 const cookieParser = require('cookie-parser');
+const e = require('express');
 // const { promises, readdirSync, link } = require('fs');
 // const { get } = require('http');
 // const passport = require('passport');
@@ -257,7 +258,7 @@ app.get('/students_list', (req, res) => {
         connection.query(sql, (err, results) => {
             if (err) throw err;
             console.log(results);
-            res.render('student_list.ejs', { data: results });
+            res.render('student_list.ejs', { data: results});
         })
     } else {
         res.redirect('/');
@@ -374,6 +375,7 @@ app.get('/student_home', (req, res) => {
             month < 10 ? month = '0' + month : month = month;
             day < 10 ? day = '0' + day : day = day;
             let fdate = day + '-' + month + '-' + year;
+            console.log(fdate);
             let rdate = year + '-' + month + '-' + day;
             res.render('student_home.ejs', { data: result[0], fdate: fdate });
         })
@@ -537,13 +539,15 @@ app.get('/update_student_1', (req, res) => {
 app.post('/update_student_1', (req, res) => {
     let rollno = req.body.Rollno;
     if (rollno != undefined) {
-
-        let sql = `select * from Student where Roll_No=${rollno}; call Get_Student_Courses(${rollno});`;
+        let tdate = new Date();
+        let sql = `select * from Student where Roll_No=${rollno}; call Get_Student_Courses(${rollno}); select * from Sem_Dates;`;
         connection.query(sql, (err, results) => {
             if (err) throw err;
-            // console.log(results[1]);
+            console.log(results);
             console.log(results[1].length);
             if (results[0].length > 0) {
+                let sdate = results[3][0].Starting_Date;
+                let edate = results[3][0].Ending_Date;
                 console.log(results[0]);
                 let idate = results[0][0].DOB;
                 console.log(idate);
@@ -556,7 +560,12 @@ app.post('/update_student_1', (req, res) => {
                 let fdate = day + '-' + month + '-' + year;
                 let rdate = year + '-' + month + '-' + day;
                 // console.log(fdate,rdate);
-                res.render('update_student.ejs', { data1: results[0][0], data2: results[1], rollno: rollno, clen: results[1].length, fdate: fdate, rdate: rdate });
+                if (tdate < sdate || tdate > edate) {
+                    console.log('after sem');
+                    res.render('update_student_after_sem.ejs', { data1: results[0][0], data2: results[1], rollno: rollno, clen: results[1].length, fdate: fdate, rdate: rdate });
+                } else {
+                    res.render('update_student_in_sem.ejs', { data1: results[0][0], data2: results[1], rollno: rollno, clen: results[1].length, fdate: fdate, rdate: rdate })
+                }
             } else {
                 // window.alert('Invalid ID');
                 res.render('update_student_1.ejs', { error: "Invalid ID.Please try again" })
@@ -568,6 +577,9 @@ app.post('/update_student_1', (req, res) => {
         let rollno = req.body.rollno;
         let name = req.body.username;
         let program = req.body.program;
+        let gender = req.body.gender;
+        let email = req.body.email;
+        let dob = req.body.dob;
         let year = req.body.year;
         let depid = req.body.depid;
         var course = req.body['course[]'];
@@ -578,22 +590,55 @@ app.post('/update_student_1', (req, res) => {
             arr[0] = course;
         }
         let sql = `call Remove_All_Student_Courses(${rollno})`;
-        connection.query(sql, (err, results) => {
+
+        connection.query('select * from Sem_Dates', (err, results) => {
             if (err) throw err;
-            console.log('Courses Removed');
-        })
-
-        let sql2 = 'call Update_Student(?,?,?,?,?,?)';
-        arr.forEach((item) => {
-            if (item !== undefined) {
-
-                connection.query(sql2, [rollno, name, program, year, depid, item], (err, results) => {
+            let sdate = results[0].Starting_Date;
+            let edate = results[0].Ending_Date;
+            let tdate = new Date();
+            if (tdate < sdate || tdate > edate) {
+                connection.query(sql, (err, results) => {
                     if (err) throw err;
-                    console.log('course updated');
+                    console.log('Courses Removed');
+                });
+                let sql2 = 'call Update_Student_After_Sem(?,?,?,?,?,?,?,?,?,@did,@rif,@inv); select @did,@rif,@inv';
+                arr.forEach((item) => {
+                    if (item !== undefined) {
+
+                        connection.query(sql2, [rollno, name, dob, gender, program, year, depid, email, item], (err, results) => {
+                            if (err) throw err;
+                            if (results[1][0]['@did'] != null) {
+                                res.render('update_student_1.ejs', { error: "duplicate entry detected" })
+                            } else if (results[1][0]['@rif'] != null) {
+                                res.render('update_student_1.ejs', { error: "Referential integrity breached. Please Check Input." })
+                            } else if (results[1][0]['@inv'] != null) {
+                                res.render('update_student_1.ejs', { error: "Invalid entries detected." })
+                            } else {
+                                console.log('course updated after sems');
+                            }
+                        })
+                    }
+                })
+                res.redirect('/admin_home');
+            } else {
+                let sql2 = 'call Update_Student_In_Sem(?,?,?,?,?,?,?,?,@did,@rif,@inv); select @did,@rif,@inv;';
+                connection.query(sql2, [rollno, name, dob, gender, program, year, depid, email], (err, results) => {
+                    if (err) throw err;
+                    if (results[1][0]['@did'] != null) {
+                        res.render('update_student_1.ejs', { error: "duplicate entry detected" })
+                    } else if (results[1][0]['@rif'] != null) {
+                        res.render('update_student_1.ejs', { error: "Referential integrity breached. Please Check Input." })
+                    } else if (results[1][0]['@inv'] != null) {
+                        res.render('update_student_1.ejs', { error: "Invalid entries detected." })
+                    } else {
+                        console.log('data updated in sems');
+                        res.redirect('/admin_home');
+                    }
                 })
             }
         })
-        res.redirect('/admin_home');
+
+
     }
 })
 
@@ -756,7 +801,17 @@ app.post('/delete_admin', (req, res) => {
 
 app.get('/add_student', (req, res) => {
     if (req.session.loggedin && req.session.user) {
-        res.render('add_student.ejs');
+        connection.query('select * from Sem_Dates',(err,results)=>{
+            if(err) throw err;
+            let sdate = results[0].Starting_Date;
+            let edate = results[0].Ending_Date;
+            let tdate = new Date();
+            if(tdate < sdate || tdate > edate){
+                res.render('add_student.ejs');
+            }else{
+                res.render('add_student_error.ejs',{ error : "Students cannot be added during a semester"});
+            }
+        })
     } else {
         res.redirect('/');
     }
@@ -801,7 +856,7 @@ app.post('/add_student', (req, res) => {
         var name = req.body.Name;
         var Rno = req.body.Rno;
         var user_id = req.body.uid;
-        var email=req.body.email;
+        var email = req.body.email;
         var year = req.body.year;
         var Dep = req.body.Department;
         var prog = req.body.Program;
@@ -819,7 +874,7 @@ app.post('/add_student', (req, res) => {
         console.log(arr);
         pass = md5(md5(md5(pass)));
         var sql = 'call Insert_Student(?,?,?,?,?,?,?,?,?,?,@did,@rif,@inv); select @did; select @rif; select @inv';
-        connection.query(sql, [Rno, name, dob, gender, prog, year, Dep, email,user_id, pass], (err, results2) => {
+        connection.query(sql, [Rno, name, dob, gender, prog, year, Dep, email, user_id, pass], (err, results2) => {
             if (err) throw err;
             console.log(results2);
             if (results2[1][0]['@did'] != null) {
@@ -1302,7 +1357,7 @@ app.post('/add_program', (req, res) => {
     })
 })
 
-app.get('/set_sem_dates',(req,res)=>{
+app.get('/set_sem_dates', (req, res) => {
     if (req.session.loggedin && req.session.user) {
         res.render('set_sem_dates.ejs');
     } else {
@@ -1310,15 +1365,15 @@ app.get('/set_sem_dates',(req,res)=>{
     }
 })
 
-app.post('/set_sem_dates',(req,res)=>{
+app.post('/set_sem_dates', (req, res) => {
     let date1 = req.body.dates1;
     let date2 = req.body.dates2;
     let sql = 'call Set_Sem_Dates(?,?,@inv); select @inv';
-    connection.query(sql,[date1,date2],(err,result)=>{
-        if(err) throw err;
-        if(result[1][0]['@inv']==1){
-            res.render('set_sem_dates.ejs',{error : "Invalid Dates"});
-        }else{
+    connection.query(sql, [date1, date2], (err, result) => {
+        if (err) throw err;
+        if (result[1][0]['@inv'] == 1) {
+            res.render('set_sem_dates.ejs', { error: "Invalid Dates" });
+        } else {
             res.redirect('/admin_home');
         }
     })
@@ -1338,44 +1393,44 @@ app.post('/delete_program', (req, res) => {
     })
 })
 
-app.get('/forgot_password',(req,res)=>{
+app.get('/forgot_password', (req, res) => {
     res.render('forgot_password.ejs');
 })
 
-app.post('/forgot_password',(req,res)=>{
+app.post('/forgot_password', (req, res) => {
     let id = req.body.id;
-    let sql='call Retrieve_Email(?,@email);select @email';
-    connection.query(sql,[id],(err,results)=>{
-        if(err) throw err;
+    let sql = 'call Retrieve_Email(?,@email);select @email';
+    connection.query(sql, [id], (err, results) => {
+        if (err) throw err;
         console.log(results);
-        if(results.length >0){
-            let email=results[1][0]['@email'];
-            forgot_password(req,res,email,id);
-        }else{
-            res.render('forgot_password.ejs',{error : "Entered ID is invalid"});
+        if (results.length > 0) {
+            let email = results[1][0]['@email'];
+            forgot_password(req, res, email, id);
+        } else {
+            res.render('forgot_password.ejs', { error: "Entered ID is invalid" });
         }
     })
 })
 
-app.get('/reset_password',(req,res)=>{
+app.get('/reset_password', (req, res) => {
     let id = req.query.id;
     let token = req.query.token;
-    res.render('reset_password.ejs',{token : token, id : id});
+    res.render('reset_password.ejs', { token: token, id: id });
 })
 
-app.post('/reset_password',(req,res)=>{
-    let token=req.body.token;
-    let id =req.body.id;
-    let newpass=req.body.new_password;
-    let connewpass=req.body.con_new_password;
-    console.log('reset kar rhe hai',newpass,connewpass,token,id);
-    if(newpass!=connewpass){
+app.post('/reset_password', (req, res) => {
+    let token = req.body.token;
+    let id = req.body.id;
+    let newpass = req.body.new_password;
+    let connewpass = req.body.con_new_password;
+    console.log('reset kar rhe hai', newpass, connewpass, token, id);
+    if (newpass != connewpass) {
         res.send('password do not match');
-    }else{
-        newpass=md5(md5(md5(newpass)));
-        let sql='update Account set Password_=? where Account.User_ID_=?';
-        connection.query(sql,[newpass,id],(err,results)=>{
-            if(err) throw err;
+    } else {
+        newpass = md5(md5(md5(newpass)));
+        let sql = 'update Account set Password_=? where Account.User_ID_=?';
+        connection.query(sql, [newpass, id], (err, results) => {
+            if (err) throw err;
             console.log(results);
             res.send('password is reset.you can close this window');
         })
@@ -1560,7 +1615,6 @@ let get_student_courses = async function (req, res) {
         })
     }
 }
-
 
 let get_ongoing_courses = async function (req, res) {
     let id = await GET_ID();
@@ -1857,12 +1911,94 @@ app.post('/add_student_excel', (req, res) => {
                     return res.render('add_student_excel', { error: "There was a problem while converting the file" });
                     // return res.json({error_code:1,err_desc:err,data: null});
                 }
-                res.json({ error_code: 0, err_desc: null, data: result });
+                // res.json({ error_code: 0, err_desc: null, data: result });
                 console.log(result);
+                // res.json({error_code:0,err_desc:null,data:result});
+                let failed = [];
+                result.forEach((item) => {
+                    var name = item.name;
+                    var rno = item.rollno;
+                    var user_id = item.userid;
+                    var Dep = item.depid;
+                    var year = item.year;
+                    var prog = item.program;
+                    var dob = item.dob;
+                    var gender = item.gender;
+                    var email = item.email;
+                    gender == "Male" ? gender = "M" : gender = "F";
+                    var arr = item.courses.split(',');
+                    // let arr=[];
+                    // if(typeof course == 'object'){
+                    //     arr=course;
+                    // }else{
+                    //     arr[0]=course;
+                    // }
+                    var pass = item.password;
+                    console.log(rno, name, dob, gender, prog, year, Dep, email, user_id, pass);
+                    pass = md5(md5(md5(pass)));
+                    var sql = 'call Insert_Student(?,?,?,?,?,?,?,?,?,?,@did,@rif,@inv); select @did; select @rif; select @inv';
+                    connection.query(sql, [rno, name, dob, gender, prog, year, Dep, email, user_id, pass], (err, results2) => {
+                        if (err) throw err;
+
+                        console.log(results2);
+                        if (results2[1][0]['@did'] != null) {
+                            // res.render('add_prof.ejs', { error: 'Duplicate Entry detected' })
+                            failed.push(name);
+                            console.log('error 1');
+                        } else if (results2[2][0]['@rif'] != null) {
+                            // res.render('add_prof.ejs', { error: 'referential integrity breached' })
+                            failed.push(name);
+                            console.log('error 2');
+                        } else if (results2[3][0]['@inv'] != 0) {
+                            let error;
+                            if (results2[3][0]['@inv'] == 1) {
+                                error = 'Entered name is not valid';
+                            } else if (results2[3][0]['@inv'] == 2) {
+                                error = 'Entered gender is not valid';
+                            } else if (results2[3][0]['@inv'] == 3) {
+                                error = 'Entered Date of Birth is not valid';
+                            }
+                            // res.render('add_prof.ejs', {error : error});
+                            failed.push(name);
+                            console.log('error 3');
+                        } else {
+                            arr.forEach((item) => {
+                                if (item != undefined) {
+                                    var sql = 'call Add_Student_Course(?,?,0,0,@did,@rif,@inv); select @did; select @rif; select @inv';
+                                    connection.query(sql, [item, rno], (err, results) => {
+                                        if (err) throw err;
+                                        console.log(results)
+                                        if (results[1][0]['@did'] != null) {
+                                            console.log('error 3');
+                                            // res.render('add_prof.ejs', { error: 'Duplicate Entry detected' })
+                                            failed.push(name);
+                                        } else if (results[2][0]['@rif'] != null) {
+                                            console.log('error 4');
+                                            // res.render('add_prof.ejs', { error: 'referential integrity breached' })
+                                            failed.push(name);
+                                        } else if (results[3][0]['@inv'] != null) {
+                                            console.log('error 5');
+                                            failed.push(name);
+                                        } else {
+                                            console.log('Course addded : ', item)
+                                        }
+
+
+                                    })
+                                }
+                            })
+                        }
+                    })
+                })
+                console.log('added');
+                res.redirect('/admin_home');
+                // res.send('check console');
+                console.log(result);
+                console.log(failed);
+                // console.log(result[1].courses.split(','));
             });
         } catch (e) {
             res.render('add_student_excel', { error: "Corrupted excel file" });
-            // res.json({error_code:1,err_desc:"Corrupted excel file"});
         }
     })
 });
@@ -1905,7 +2041,7 @@ app.post('/add_teacher_excel', (req, res) => {
                     var post = item.post;
                     var dob = item.dob;
                     var gender = item.gender;
-                    var email=item.email;
+                    var email = item.email;
                     gender == "Male" ? gender = "M" : gender = "F";
                     var arr = item.courses.split(',');
                     // let arr=[];
@@ -1915,10 +2051,10 @@ app.post('/add_teacher_excel', (req, res) => {
                     //     arr[0]=course;
                     // }
                     var pass = item.password;
-                    console.log(empid,name,dob,gender,post,Dep,email,user_id,pass);
+                    console.log(empid, name, dob, gender, post, Dep, email, user_id, pass);
                     pass = md5(md5(md5(pass)));
                     var sql = 'call Insert_Professor(?,?,?,?,?,?,?,?,?,@did,@rif,@inv); select @did; select @rif; select @inv';
-                    connection.query(sql, [empid, name, dob, gender, post, Dep, email,user_id, pass], (err, results2) => {
+                    connection.query(sql, [empid, name, dob, gender, post, Dep, email, user_id, pass], (err, results2) => {
                         if (err) throw err;
 
                         console.log(results2);
@@ -1983,13 +2119,13 @@ app.post('/add_teacher_excel', (req, res) => {
 });
 
 
-let forgot_password = async function (req,res,email,id) {
+let forgot_password = async function (req, res, email, id) {
     let chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     let token = '';
     for (var i = 20; i > 0; --i) {
         token += chars[Math.round(Math.random() * (chars.length - 1))];
     }
-    await insert_token(token,id);
+    await insert_token(token, id);
     var transporter = nodemailer.createTransport({
         // host: "smtp.mailtrap.io",
         // port: 2525,
@@ -2004,7 +2140,7 @@ let forgot_password = async function (req,res,email,id) {
         },
         // enable_starttls_auto: true
     });
-    let link='localhost:5000/reset_password/?s='+token+'&id='+id;
+    let link = 'localhost:5000/reset_password/?s=' + token + '&id=' + id;
     var mailOptions = {
         from: 'no-reply@gmail.com',
         to: email,
@@ -2012,8 +2148,8 @@ let forgot_password = async function (req,res,email,id) {
         // text: 'http://' + req.headers.host + '/reset_password/?s=' + token + '&id='+id+'\n\n' ,
         // html: '<p>Click the link given below to reset your password</p><a href="'+link+'">Click here</a>'
         // html: '<p>Click the link given below to reset your password</p><a href='"+link+'">Click here</a>';
-        html: "To reset your password, click this <a href='" + "http://localhost:5000/reset_password/?s=" +token+"&id="+id+ "'><span>link</span></a>.<br>This is a <b>test</b> email."
-        
+        html: "To reset your password, click this <a href='" + "http://localhost:5000/reset_password/?s=" + token + "&id=" + id + "'><span>link</span></a>.<br>This is a <b>test</b> email."
+
         // html: `<p>Click the link given below to reset your password</p><a href="">Click here</a>`
     };
 
@@ -2022,15 +2158,15 @@ let forgot_password = async function (req,res,email,id) {
         else {
             console.log("email sent:" + info.response);
             //   res.redirect('/');
-            res.render('forgot_password.ejs',{error : "Password reset mail has been sent to your email."});
+            res.render('forgot_password.ejs', { error: "Password reset mail has been sent to your email." });
         }
     })
 }
 
-let insert_token = async function(token,id){
+let insert_token = async function (token, id) {
     let sql = 'insert into Reset_Token values (?,?)';
-    connection.query(sql,[id,token],(err,result)=>{
-        if(err) throw err;
+    connection.query(sql, [id, token], (err, result) => {
+        if (err) throw err;
         console.log('token inserted');
     })
 }

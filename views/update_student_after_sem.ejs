@@ -89,6 +89,10 @@
             <td id="old_dob"><%= fdate%></td>
         </tr>
         <tr>
+            <td style="background-color: rgb(161, 228, 255);">Email</td>
+            <td id="old_dob"><%= data1.Email%></td>
+        </tr>
+        <tr>
             <td style="background-color: rgb(161, 228, 255);">Courses</td>
             <td>
                 <% data2.forEach((item)=>{%>
@@ -122,7 +126,25 @@
                 <label for="depid">Department ID:</label>
                 <input type="number" name="depid" required="true" id="depid" value='<%= data1.Department_ID%>'>
             </div>
-            
+            <div class="box">
+                <i class="fa fa-key"></i>
+                <label for="depid">Email:</label>
+                <input type="email" name="email" required="true" id="email" value='<%= data1.Email%>'>
+            </div>
+            <div class="box">
+                <i class="fa fa-key"></i>
+                <label for="dob">Date of Birth:</label>
+                <input type="date" name="dob" required="true" id="dob" value=<%=rdate%>>
+            </div>
+            <div class="box">
+                <i class="fa fa-key"></i>
+                <input type="radio" name="gender" id="male" value="M">
+                <label for="male">Male</label>
+                <input type="radio" name="gender" id="femmale" value="F">
+                <label for="female">Female</label>
+                <input type="radio" name="gender" id="others" value=null>
+                <label for="others">Others</label>
+            </div>
             <%var c=0;
             for(c=0;c<clen;c++){%>
             <div class="box">
