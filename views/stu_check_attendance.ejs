@@ -1,162 +1,263 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Check Attendance</title>
-    <link rel="stylesheet" href="./css/stu_check_attendance.css">
+
+ <link rel="stylesheet" href="./css/calender.css">
+  <link rel="stylesheet" href="./css/stu_check_attendance.css">
+<script src="./calender.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+
+<script>
+
+	$(document).ready(function() {
+	    var date = new Date();
+		var d = date.getDate();
+		var m = date.getMonth();
+		var y = date.getFullYear();
+		
+		/*  className colors
+		
+		className: default(transparent), important(red), chill(pink), success(green), info(blue)
+		
+		*/		
+		
+		  
+		/* initialize the external events
+		-----------------------------------------------------------------*/
+	
+		$('#external-events div.external-event').each(function() {
+		
+			// create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+			// it doesn't need to have a start or end
+			var eventObject = {
+				title: $.trim($(this).text()) // use the element's text as the event title
+			};
+			
+			// store the Event Object in the DOM element so we can get to it later
+			$(this).data('eventObject', eventObject);
+			
+			// make the event draggable using jQuery UI
+			$(this).draggable({
+				zIndex: 999,
+				revert: true,      // will cause the event to go back to its
+				revertDuration: 0  //  original position after the drag
+			});
+			
+		});
+	
+	
+		/* initialize the calendar
+		-----------------------------------------------------------------*/
+		
+		var calendar =  $('#calendar').fullCalendar({
+			header: {
+				left: 'title',
+				center: 'agendaDay,agendaWeek,month',
+				right: 'prev,next today'
+			},
+			editable: true,
+			firstDay: 1, //  1(Monday) this can be changed to 0(Sunday) for the USA system
+			selectable: true,
+			defaultView: 'month',
+			
+			axisFormat: 'h:mm',
+			columnFormat: {
+                month: 'ddd',    // Mon
+                week: 'ddd d', // Mon 7
+                day: 'dddd M/d',  // Monday 9/7
+                agendaDay: 'dddd d'
+            },
+            titleFormat: {
+                month: 'MMMM yyyy', // September 2009
+                week: "MMMM yyyy", // September 2009
+                day: 'MMMM yyyy'                  // Tuesday, Sep 8, 2009
+            },
+			allDaySlot: false,
+			selectHelper: true,
+			select: function(start, end, allDay) {
+				var title = prompt('Event Title:');
+				if (title) {
+					calendar.fullCalendar('renderEvent',
+						{
+							title: title,
+							start: start,
+							end: end,
+							allDay: allDay
+						},
+						true // make the event "stick"
+					);
+				}
+				calendar.fullCalendar('unselect');
+			},
+			droppable: true, // this allows things to be dropped onto the calendar !!!
+			drop: function(date, allDay) { // this function is called when something is dropped
+			
+				// retrieve the dropped element's stored Event Object
+				var originalEventObject = $(this).data('eventObject');
+				
+				// we need to copy it, so that multiple events don't have a reference to the same object
+				var copiedEventObject = $.extend({}, originalEventObject);
+				
+				// assign it the date that was reported
+				copiedEventObject.start = date;
+				copiedEventObject.allDay = allDay;
+				
+				// render the event on the calendar
+				// the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+				$('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+				
+				// is the "remove after drop" checkbox checked?
+				if ($('#drop-remove').is(':checked')) {
+					// if so, remove the element from the "Draggable Events" list
+					$(this).remove();
+				}
+				
+			},
+			
+			events: [
+				{
+					title: 'All Day Event',
+					start: new Date(y, m, 1)
+				},
+				{
+					id: 999,
+					title: 'Repeating Event',
+					start: new Date(y, m, d-3, 16, 0),
+					allDay: false,
+					className: 'info'
+				},
+				{
+					id: 999,
+					title: 'Repeating Event',
+					start: new Date(y, m, d+4, 16, 0),
+					allDay: false,
+					className: 'info'
+				},
+				{
+					title: 'Meeting',
+					start: new Date(y, m, d, 10, 30),
+					allDay: false,
+					className: 'important'
+				},
+				{
+					title: 'Lunch',
+					start: new Date(y, m, d, 12, 0),
+					end: new Date(y, m, d, 14, 0),
+					allDay: false,
+					className: 'important'
+				},
+				{
+					title: 'Birthday Party',
+					start: new Date(y, m, d+1, 19, 0),
+					end: new Date(y, m, d+1, 22, 30),
+					allDay: false,
+				},
+				{
+					title: 'Click for Google',
+					start: new Date(y, m, 28),
+					end: new Date(y, m, 29),
+					url: 'https://ccp.cloudaccess.net/aff.php?aff=5188',
+					className: 'success'
+				}
+			],			
+		});
+		
+		
+	});
+
+</script>
+<style>
+
+	
+	#wrap {
+		width: 300px;
+		margin: 0 auto;
+		}
+		
+	#external-events {
+		float: left;
+		width: 150px;
+		padding: 0 10px;
+		text-align: left;
+		}
+		
+	#external-events h4 {
+		font-size: 16px;
+		margin-top: 0;
+		padding-top: 1em;
+		}
+		
+	.external-event { /* try to mimick the look of a real event */
+		margin: 10px 0;
+		padding: 2px 4px;
+		background: #3366CC;
+		color: #fff;
+		font-size: .85em;
+		cursor: pointer;
+		}
+		
+	#external-events p {
+		margin: 1.5em 0;
+		font-size: 11px;
+		color: #666;
+		}
+		
+	#external-events p input {
+		margin: 0;
+		vertical-align: middle;
+		}
+
+	#calendar {
+/* 		float: right; */
+        margin: 0 auto;
+		width: 500px;
+		background-color: #FFFFFF;
+		  border-radius: 6px;
+        box-shadow: 0 1px 2px #C3C3C3;
+		-webkit-box-shadow: 0px 0px 21px 2px rgba(0,0,0,0.18);
+-moz-box-shadow: 0px 0px 21px 2px rgba(0,0,0,0.18);
+box-shadow: 0px 0px 21px 2px rgba(0,0,0,0.18);
+		}
+
+</style>
 </head>
-
 <body>
-
     <nav class="navbar">
-        <img class="logo" src="./css/images/logo.png" alt="...">
+       <img class="logo" src="./css/images/logo.png" alt="...">
         <h3>भारतीय प्रौद्योगिकी संस्थान इंदौर <br> Indian Institute of Technology Indore</h3>
     </nav>
 
     <div class="bar">
         <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Mark Attendance</a></li>
-            <li><a href="#">Time Table</a></li>
-            <li><a href="#">Courses</a></li>
-            <li><a href="#">Study Material</a></li>
-            <li><a href="#">LogOut</a></li>
+             
+            <li>  <a  href="#">Home</a></li>
+            <li> <a  href="/ongoing_classes">Mark Attendance</a></li>
+            <li><a  href="/student_timetable">Time Table</a></li>
+            <li> <a href="/student_courses">Courses</a></li>
+            <li> <a  href="/study_material">Study Material</a></li>
+            <li>  <a href="/student_change_password">Change Password</a></li>
+            <li><a href="/logout">Log Out</a></li>
         </ul>
     </div>
 
     <h1>Check Attendance</h1>
 
+   
+
     <form action="" method="post">
         <input type="text" name="course" placeholder="Enter Course Code" required="true">
         <button type="submit">Check</button>
     </form>
+<div id='wrap'>
 
-    <div class="calendar">
+<div id='calendar'></div>
 
-        <div class="box">
-
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Select Month
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">
-                        <h5>January</h5>
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        <h5>February</h5>
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        <h5>March</h5>
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        <h5>April</h5>
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        <h5>May</h5>
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        <h5>June</h5>
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        <h5>July</h5>
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        <h5>August</h5>
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        <h5>September</h5>
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        <h5>October</h5>
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        <h5>November</h5>
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        <h5>December</h5>
-                    </a>
-                </div>
-            </div>
-
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Select Year
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">
-                        <h5>2020</h5>
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        <h5>2021</h5>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <table>
-            <tr>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td style="background-color: rgb(120, 226, 120);">4</td>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
-            </tr>
-            <tr>
-                <td>8</td>
-                <td>9</td>
-                <td style="background-color: rgb(120, 226, 120);">10</td>
-                <td>11</td>
-                <td>12</td>
-                <td>13</td>
-                <td style="background-color: rgb(120, 226, 120);">14</td>
-            </tr>
-            <tr>
-                <td style="background-color: rgb(120, 226, 120);">15</td>
-                <td>16</td>
-                <td>17</td>
-                <td>18</td>
-                <td style="background-color: rgb(120, 226, 120);">19</td>
-                <td>20</td>
-                <td>21</td>
-            </tr>
-            <tr>
-                <td>22</td>
-                <td>23</td>
-                <td>24</td>
-                <td>25</td>
-                <td>26</td>
-                <td>27</td>
-                <td>28</td>
-            </tr>
-            <tr>
-                <td style="background-color: rgb(120, 226, 120);">29</td>
-                <td>30</td>
-                <td style="background-color: rgb(120, 226, 120);">31</td>
-            </tr>
-        </table>
-    </div>
-    <!-- Optional JavaScript; choose one of the two! -->
-
-    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
-        crossorigin="anonymous"></script>
-
-    <!-- Option 2: jQuery, Popper.js, and Bootstrap JS
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
-    -->
+<div style='clear:both'></div>
+</div>
 </body>
-
 </html>
