@@ -25,7 +25,7 @@ begin
 set rif=1;
 end;
 case
-	when name not regexp '^[A-Za-z]+$' then set inv=1;
+	when name not regexp '^[A-Za-z ]+$' then set inv=1;
     when gender not regexp '[MF]' then set inv=2;
     when year not regexp '[1234]' then set inv=3;
     else set inv=0;
