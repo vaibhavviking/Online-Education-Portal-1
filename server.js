@@ -1525,7 +1525,7 @@ async function teacher_authenticate(username, password, res, req) {
                     console.log(result[1][0]['@ID']);
                     console.log('Instance created');
                 })
-                res.redirect('/teacher_home/?empid=' + result[1][0]['@ID']);
+                res.redirect('/teacher_home');
                 // res.redirect('/teacher_home');
             }
         })

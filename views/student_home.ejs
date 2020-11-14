@@ -27,44 +27,23 @@
             <li><a href="/logout">Log Out</a></li>
         </ul>
     </div>
-    <table class="table">
-        <tr style="color: rgb(151, 4, 156); background-color: chartreuse;">
-            <th>Field</th>
-            <th>information</th>
-        </tr>
-        <tr>
-            <td style="background-color: rgb(161, 228, 255);">Name</td>
-            <td><%=data.S_Name%></td>
-        </tr>
-        <tr>
-            <td style="background-color: rgb(161, 228, 255);">Roll-Number</td>
-            <td><%=data.Roll_No%></td>
-        </tr>
-        <tr>
-            <td style="background-color: rgb(161, 228, 255);">Program</td>
-            <td><%=data.Program_Enrolled%></td>
-        </tr>
-        <tr>
-            <td style="background-color: rgb(161, 228, 255);">Branch</td>
-            <td><%=data.Department_ID%></td>
-        </tr>
-        <tr>
-            <td style="background-color: rgb(161, 228, 255);">Email</td>
-            <td><%=data.Email%></td>
-        </tr>
-        <tr>
-            <td style="background-color: rgb(161, 228, 255);">Academic Year</td>
-            <td><%=data.Year_Of_Study%></td>
-        </tr>
-        <tr>
-            <td style="background-color: rgb(161, 228, 255);">Gender</td>
-            <td><%=data.Gender%></td>
-        </tr>
-        <tr>
-            <td style="background-color: rgb(161, 228, 255);">Date of Birth</td>
-            <td><%=fdate%></td>
-        </tr>
-</table>
+    
+    <div class="container">
+        <div class="box" id="box1" style="color: white; background-color: #979ffc;">Field</div>
+        <div class="box" id="box2" style="color: white; background-color: #979ffc;">Information</div>
+        <div class="box" id="box3" style="background-color: rgb(161, 228, 255);">Name</div>
+        <div class="box" id="box4" style="background-color: white;"><%=data.S_Name%></div>
+        <div class="box" id="box5" style="background-color: rgb(161, 228, 255);">Roll Number</div>
+        <div class="box" id="box6" style="background-color: white;"><%=data.Roll_No%></div>
+        <div class="box" id="box7" style="background-color: rgb(161, 228, 255);">Branch</div>
+        <div class="box" id="box8" style="background-color: white;"><%=data.Department_ID%></div>
+        <div class="box" id="box9" style="background-color: rgb(161, 228, 255);">Academic Year</div>
+        <div class="box" id="box10" style="background-color: white;"><%=data.Year_Of_Study%></div>
+        <div class="box" id="box9" style="background-color: rgb(161, 228, 255);">Gender</div>
+        <div class="box" id="box10" style="background-color: white;"><%=data.Gender%></div>
+        <div class="box" id="box9" style="background-color: rgb(161, 228, 255);">Date Of Birth</div>
+        <div class="box" id="box10" style="background-color: white;"><%=fdate%></div>
+    </div>
 
     <div class="row">
 

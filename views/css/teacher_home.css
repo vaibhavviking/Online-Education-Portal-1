@@ -70,6 +70,18 @@ li {
     font-size: 15px;
 }
 
+.container{
+     display: grid;
+     margin: 30px;
+     background-color: slategrey;
+     grid-template-columns: repeat(2, 1fr);
+}
+
+.box{
+     height: 50px;
+     padding: 13px;
+     font-size: 20px;
+}
 
 @media (min-width: 770px){
 
@@ -134,20 +146,6 @@ li {
         height: 50px;
         width: 220px;
         background-color: transparent;
-    }
-    
-    th,td{
-        font-size: 12px;
-        height: 30px;
-        width: 200px;
-        top: 0px;
-    }
-    table {
-        position: absolute;
-        left: 10px;
-        margin: 20px 10px;
-        border: 2px solid black;
-        display: inline-block;
     }
     
 
@@ -218,22 +216,7 @@ li {
         width: 220px;
         background-color: transparent;
     }
-    
-    
-    th,td{
-        font-size: 10px;
-        height: 20px;
-        width: 100px;
-        top: 0px;
-    }
-    table {
-        position: absolute;
-        left: 10px;
-        margin: 18px 9px;
-        border: 2px solid black;
-        display: inline-block;
-    }
-    
+
 }
 
 
@@ -316,34 +299,9 @@ li {
         height: 40px;
         width: 200px;
     }
-    th,td{
-        font-size: 10px;
-        height: 20px;
-        width: 100px;
-        top: 0px;
-    }
-    table {
-        position: absolute;
-        left: 5px;
-        margin: 15px 5px;
-        border: 2px solid black;
-        display: inline-block;
-    }
     
-}
-
-table {
-    position: absolute;
-    left: 10px;
-    margin: 40px 10px;
-    border: 2px solid black;
-    display: inline-block;
-}
-
-th,td {
-    font-weight: bold;
-    font-size: 25px;
-    height: 70px;
-    width: 350px;
-    top: 0px;
+     .box{
+         font-size: 12px;
+     }
+    
 }
