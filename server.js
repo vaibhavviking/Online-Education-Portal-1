@@ -361,28 +361,31 @@ app.post('/student_login', (req, res) => {
 
 app.get('/student_home', (req, res) => {
     if (req.session.loggedin && req.session.user) {
+
         let rno = req.query.rollno;
-        let sql = `select * from Student where Roll_No = ${rno}`;
-        connection.query(sql, (err, result) => {
-            if (err) throw err;
-            console.log(result);
-            let idate = result[0].DOB;
-            console.log(idate);
-            let month = idate.getMonth() + 1;
-            let day = idate.getDate();
-            let year = idate.getFullYear();
-            // console.log(month>10,day>10);
-            month < 10 ? month = '0' + month : month = month;
-            day < 10 ? day = '0' + day : day = day;
-            let fdate = day + '-' + month + '-' + year;
-            console.log(fdate);
-            let rdate = year + '-' + month + '-' + day;
-            res.render('student_home.ejs', { data: result[0], fdate: fdate });
-        })
+        load_student_home(req,res,rno);
+        // let sql = `select * from Student where Roll_No = ${rno}`;
+        // connection.query(sql, (err, result) => {
+        //     if (err) throw err;
+        //     console.log(result);
+        //     let idate = result[0].DOB;
+        //     console.log(idate);
+        //     let month = idate.getMonth() + 1;
+        //     let day = idate.getDate();
+        //     let year = idate.getFullYear();
+        //     // console.log(month>10,day>10);
+        //     month < 10 ? month = '0' + month : month = month;
+        //     day < 10 ? day = '0' + day : day = day;
+        //     let fdate = day + '-' + month + '-' + year;
+        //     console.log(fdate);
+        //     let rdate = year + '-' + month + '-' + day;
+        //     res.render('student_home.ejs', { data: result[0], fdate: fdate });
+        // })
     } else {
         res.redirect('/');
     }
 });
+
 
 app.get('/teacher_login', (req, res) => {
     res.render('teacher_login.ejs');
@@ -1164,24 +1167,7 @@ app.get('/student_courses', (req, res) => {
 
 app.get('/teacher_home', (req, res) => {
     if (req.session.loggedin && req.session.user) {
-        let empid = req.query.empid;
-        let sql = `select * from Professor where Employee_ID = ${empid}`;
-        connection.query(sql, (err, result) => {
-            if (err) throw err;
-            console.log(result);
-            let idate = result[0].DOB;
-            console.log(idate);
-            let month = idate.getMonth() + 1;
-            let day = idate.getDate();
-            let year = idate.getFullYear();
-            // console.log(month>10,day>10);
-            month < 10 ? month = '0' + month : month = month;
-            day < 10 ? day = '0' + day : day = day;
-            let fdate = day + '-' + month + '-' + year;
-            let rdate = year + '-' + month + '-' + day;
-            res.render('teacher_home.ejs', { data: result[0], fdate: fdate });
-        })
-        // res.render('teacher_home.ejs');
+        load_teacher_home(req,res);
     } else {
         res.redirect('/');
     }
@@ -1504,7 +1490,7 @@ async function student_authenticate(username, password, res, req) {
                     if (err) throw err;
                     console.log(result[1][0]['@ID']);
                     console.log('Instance created');
-                    res.redirect('/student_home/?rollno=' + result[1][0]['@ID']);
+                    res.redirect('/student_home');
                 })
             }
         })
@@ -2170,4 +2156,52 @@ let insert_token = async function (token, id) {
         console.log('token inserted');
     })
 }
+
+let load_teacher_home = async function(req,res){
+    let id = await GET_ID();
+    console.log(id,'first');
+    let sql2='select * from Professor where Employee_ID = ?';
+        connection.query(sql2,[id],(err2,result)=>{
+            if(err2) throw err2;
+            console.log(result,'third');
+            let idate = result[0].DOB;
+            console.log(idate);
+            let month = idate.getMonth() + 1;
+            let day = idate.getDate();
+            let year = idate.getFullYear();
+            // console.log(month>10,day>10);
+            month < 10 ? month = '0' + month : month = month;
+            day < 10 ? day = '0' + day : day = day;
+            let fdate = day + '-' + month + '-' + year;
+            console.log(fdate);
+            let rdate = year + '-' + month + '-' + day;
+            res.render('teacher_home.ejs', { data: result[0], fdate: fdate });
+        })
+}
+
+
+let load_student_home = async function(req,res){
+    let id = await GET_ID();
+    console.log(id,'first');
+    let sql2='select * from Student where Roll_No = ?';
+        connection.query(sql2,[id],(err2,result)=>{
+            if(err2) throw err2;
+            console.log(result,'third');
+            let idate = result[0].DOB;
+            console.log(idate);
+            let month = idate.getMonth() + 1;
+            let day = idate.getDate();
+            let year = idate.getFullYear();
+            // console.log(month>10,day>10);
+            month < 10 ? month = '0' + month : month = month;
+            day < 10 ? day = '0' + day : day = day;
+            let fdate = day + '-' + month + '-' + year;
+            console.log(fdate);
+            let rdate = year + '-' + month + '-' + day;
+            res.render('student_home.ejs', { data: result[0], fdate: fdate });
+        })
+  
+}
+
+
 // forgot_password('chandravaibhav65@gmail.com');
