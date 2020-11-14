@@ -72,7 +72,7 @@ Stored Procedures stored in database
 47. Set_Sem_Dates (Starting Date, Ending Date, @inv)
 48. Attendance_In_Students (Roll_No, Course_Code)
 49. Retrieve_Email (User_ID, @email)
-50. Request_Course (Roll No, Course Code)
+50. Request_Course (Roll No, Course Code, @did)
 51. Request_Course_List (Roll No)
 
 ** DOB: Date of Birth in YYYY-MM-DD format
