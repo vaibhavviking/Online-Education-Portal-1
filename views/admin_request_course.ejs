@@ -6,9 +6,9 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Study Material</title>
-    <link rel="stylesheet" href="./css/Attendance.css">
-    <style>
+  <title>Course Requests</title>
+  <link rel="stylesheet" href="/css/Attendance.css">
+  <style>
         .bar {
             margin: 20px 0px 10px 0px;
             position: sticky;
@@ -66,8 +66,8 @@
 </head>
 
 <body>
-  <nav class="navbar">
-        <img class="logo" src="./css/images/logo.png" alt="...">
+   <nav class="navbar">
+        <img class="logo" src="/css/images/logo.png" alt="...">
         <h3>भारतीय प्रौद्योगिकी संस्थान इंदौर <br> Indian Institute of Technology Indore</h3>
     </nav>
 
@@ -75,7 +75,7 @@
         <ul>
             <!-- <li><a href="/Home_page">Home</a></li> -->
             
-            <li>  <a  href="/student_home">Home</a></li>
+            <li>  <a  href="/admin_home">Home</a></li>
             <li> <a  href="/ongoing_classes">Mark Attendance</a></li>
             <li><a  href="/student_timetable">Time Table</a></li>
             <li> <a href="/student_courses">Courses</a></li>
@@ -86,26 +86,43 @@
         </ul>
     </div>
 
-  <h1> Study Material </h1>
   
-    <%if(data.length >0){
+ 
+    <%if(typeof data != 'undefined'){
         var i=1; %>
-        <table class="table">
-            <tr style="color: rgb(151, 4, 156); background-color: chartreuse;">
-                <th>Serial No.</th>
-                <th>Couse Code</th>
-                <th>Material Link</th>
-            </tr>
-           <% data.forEach((item)=>{%>
-                <tr>
-                    <td><%= i%></td>
-                    <td><%=item.Course_Code%></td>
-                    <td><%=item.Link%></td>
-                </tr>
-            <%i++})%>
-        </table>
+          <table class="table">
+      <tr style="color: rgb(151, 4, 156); background-color: chartreuse;">
+        <th>Serial No.</th>
+        <th>Roll No.</th>
+        <th>Course Code</th>
+        <th>Accept</th>
+        <th>Reject</th>
+      </tr>
+      <% var i =1%>
+      <% data.forEach((item)=>{ %>
+        <tr>
+          <td><%= i %></td>
+          <td><%= item.Roll_No %></td>
+          <td><%= item.Course_Code %></td>
+          <!-- <td><%= item.Credits %></td> -->
+          <% var link = '/admin_accept_course/?id='+item.Roll_No+'&code=';
+          link += item.Course_Code;%>
+          <td><a href="<%=link%>"><button>Accept</button></a></td>
+          <% var link = '/admin_reject_course/?id='+item.Roll_No+'&code=';
+          link += item.Course_Code;%>
+          <td><a href="<%=link%>"><button>Reject</button></a></td>
+      </tr>
+      <% i++}) %>
+    </table>
+    <%}else{%>
+        <h3>There are no pending Course Requests.</h3>
     <%} %>
-
+    <%if( typeof error != 'undefined'){%>
+        <p><%=error%></p>
+        <%}%>
+        <%if( typeof info != 'undefined'){%>
+            <p><%=info%></p>
+            <%}%>
 </body>
 
 </html>
