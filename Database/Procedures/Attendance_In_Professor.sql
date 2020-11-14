@@ -5,13 +5,13 @@ in code varchar(7),
 in Date date
 )
 begin
-select a.Roll_No, b.S_Name, a.Time 
-from Student as b join Attendance_Marked as a
-on a.Roll_No=b.Roll_No
-where a.CID=code and a.Date=date(Date)
-order by a.Time ASC;
+select Attendance_Marked.Roll_No, Student.S_Name, Attendance_Marked.Time 
+from Student join Attendance_Marked 
+on Attendance_Marked.Roll_No=Student.Roll_No
+where Attendance_Marked.CID=code and Attendance_Marked.Date=date(Date)
+order by Attendance_Marked.Time ASC;
 end //
 delimiter ;
 /*Execute*/
-call Attendance_In_Professor('CS 207','2020-11-13'); /*Course Code, Date */
+call Attendance_In_Professor('CS 207','2020-11-02'); /*Course Code, Date */
 /*End*/
