@@ -14,6 +14,8 @@ Entities used in database
 13. Sem_Dates
 14. Requested_Courses
 15. Post_Wise_Employees
+16. Program_Wise_Students
+17. Course_Wise_Members
 
 Relations used in database
 1.  Admin_Account_Relation
@@ -75,6 +77,8 @@ Stored Procedures stored in database
 49. Retrieve_Email (User_ID, @email)
 50. Request_Course (Roll No, Course Code, @did)
 51. Request_Course_List (Roll No)
+52. Show_Programs()
+53. Show_Courses()
 
 ** DOB: Date of Birth in YYYY-MM-DD format
 
