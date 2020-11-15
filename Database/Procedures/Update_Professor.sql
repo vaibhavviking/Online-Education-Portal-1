@@ -11,7 +11,8 @@ in email varchar(100),
 in cid varchar(7),
 out did int,
 out rif int,
-out inv int
+out inv int,
+out rif1 int
 )
 a:begin
 declare p varchar(30);
@@ -21,7 +22,7 @@ set did=1;
 end;
 declare exit handler for 1452
 begin
-set rif=1;
+set rif1=1;
 end;
 case
 	when name not regexp '^[A-Za-z]+$' then set inv=1;
@@ -43,5 +44,6 @@ call Update_Professor(1,'A','1982-11-25','F','Assistant Professor',1,'A@iiti.ac.
 select @did;
 select @rif;
 select @inv;
+select @rif1;
 /*End*/
-
+drop procedure  Update_Professor;
