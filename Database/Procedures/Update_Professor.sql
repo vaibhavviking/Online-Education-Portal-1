@@ -36,6 +36,7 @@ update Professor set P_Name=name, DOB=dob, Gender=gender, Post=post, Department_
 update Post_Wise_Employees set No_Of_Employees=No_Of_Employees-1 where Post_Wise_Employees.post=p;
 update Post_Wise_Employees set No_Of_Employees=No_Of_Employees+1 where Post_Wise_Employees.post=post;
 call Add_Professor_Course(cid,empid,@did,@rif);  
+select @rif into rif;
 end case;
 end //
 delimiter ;
