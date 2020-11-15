@@ -55,6 +55,7 @@ primary key(Dept_ID)
 
 create table Programs(
 Prog_Name varchar(10),
+Description varchar(100),
 primary key(Prog_Name)
 );
 /*drop table Programs*/
@@ -181,7 +182,7 @@ Roll_No int,
 CID varchar(7),
 Time time,
 Date date,
-primary key(Roll_No, Time),
+primary key(Roll_No, Day, Time),
 foreign key(Roll_No) references Student(Roll_No) on delete cascade,
 foreign key(CID) references Courses(Course_Code) on delete cascade
 );
@@ -210,4 +211,20 @@ primary key(post),
 foreign key(post) references Posts(Post_Name)
 );
 /* drop table Post_Wise_Employees*/
-select * from Professor;
+
+create table Program_Wise_Students(
+program varchar(10),
+No_Of_Students int,
+primary key(program),
+foreign key(program) references Programs(Prog_Name)
+);
+/* drop table Program_Wise_Students */
+
+create table Course_Wise_Members(
+CID varchar(7),
+No_Of_Students int,
+No_Of_Professors int,
+primary key(CID),
+foreign key(CID) references Courses(Course_Code)
+);
+/* drop table Course_Wise_Members */

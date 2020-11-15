@@ -14,6 +14,8 @@ Entities used in database
 13. Sem_Dates
 14. Requested_Courses
 15. Post_Wise_Employees
+16. Program_Wise_Students
+17. Course_Wise_Members
 
 Relations used in database
 1.  Admin_Account_Relation
@@ -63,7 +65,7 @@ Stored Procedures stored in database
 37. Remove_All_Student_Courses (Roll No)
 38. Update_Student_After_Sem (Roll No, Name, DOB, Gender, Program, Year Of Study, Dept ID, Email, Course ID, @did, @rif, @inv)
 39. Remove_All_Professor_Courses (Employee ID)
-40. Update_Professor (Employee ID, Name, DOB, Gender, Post, Dept ID, Email, Course ID, @did, @rif, @inv)
+40. Update_Professor (Employee ID, Name, DOB, Gender, Post, Dept ID, Email, Course ID, @did, @rif, @inv, @rif1)
 41. Update_Courses (Course Code, Course Name, Class Link, Credits)
 42. Insert_Post(Post Name, @did)
 43. Insert_Program(Program name, Program Description, @did)
@@ -75,6 +77,9 @@ Stored Procedures stored in database
 49. Retrieve_Email (User_ID, @email)
 50. Request_Course (Roll No, Course Code, @did)
 51. Request_Course_List (Roll No)
+52. Show_Programs()
+53. Show_Courses()
+54. Update_Professor_Bio(Employee ID, Name, DOB, Gender, Post, Dept ID, Email, Course ID, @did, @rif, @inv)
 
 ** DOB: Date of Birth in YYYY-MM-DD format
 

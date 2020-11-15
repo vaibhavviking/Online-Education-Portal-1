@@ -23,6 +23,7 @@ begin
 set inv=1;
 end;
 insert into Courses_Student_Relation values(code,rollno,total,attend);
+update Course_Wise_Members set No_Of_Students=No_Of_Students+1 where Course_Wise_Members.CID=code;
 end //
 delimiter ;
 /* Execute */
@@ -31,4 +32,4 @@ select @did;                                                /* Duplicate ID prob
 select @rif;                                                /* Referential Integrity Problem( Student or Course DNE ) */
 select @inv;                                                /* Invalid entry of attendance */
 /*End*/
-
+drop procedure Add_Student_Course;

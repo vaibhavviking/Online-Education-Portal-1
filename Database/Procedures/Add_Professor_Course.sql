@@ -16,6 +16,7 @@ begin
 set rif=1;
 end;
 insert into Courses_Professor_Relation values(code,empid);
+update Course_Wise_Members set No_Of_Professors=No_Of_Professors+1 where Course_Wise_Members.CID=code;
 end //
 delimiter ;
 /* Execute */
@@ -23,3 +24,4 @@ call Add_Professor_Course('CS 207',20,@did,@rif);           /* Course Code, Empl
 select @did;                                                /* Duplicate ID problem */
 select @rif;                                                /* Referential Integrity Problem( Professor or Course DNE ) */
 /*End*/
+drop procedure Add_Professor_Course;

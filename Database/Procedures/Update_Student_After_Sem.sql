@@ -38,6 +38,7 @@ update Student set S_Name=name, DOB=dob, Gender=gender, Program_Enrolled=prog, Y
 update Program_Wise_Students set No_Of_Students=No_Of_Students-1 where Program_Wise_Students.program=p;
 update Program_Wise_Students set No_Of_Students=No_Of_Students+1 where Program_Wise_Students.program=prog;
 call Add_Student_Course(cid,rollno,1,1,@did,@rif,@inv);
+select @rif into rif;
 end case;
 end //
 delimiter ;
