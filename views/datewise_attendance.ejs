@@ -8,9 +8,9 @@
     <script src="https://kit.fontawesome.com/63e2b2b603.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./css/add_course.css">
     <link rel="stylesheet" href="./css/Attendance.css">
-    <style>
+   <style>
         .bar {
-            margin: 20px 0px 10px 0px;
+            margin: 10px 0px 10px 0px;
             position: sticky;
             display: flex;
             background-color: rgb(87, 212, 225);
@@ -42,24 +42,67 @@
             background-color: #dbefea;
         }
 
-        @media (min-width: 385px) and (max-width: 510px) {
+        @media (min-width: 770px) {
+            .bar {
+                top: 2px;
+                margin: 10px 0px;
+            }
+
             ul {
                 padding-inline-start: 10px;
             }
 
             li {
-                font-size: 13px;
+                font-size: 17px;
+                margin: 2px;
             }
         }
 
-        @media (max-width: 385px) {
+        @media (min-width: 590px) and (max-width: 770px) {
+            .bar {
+                top: 3px;
+                margin: 10px 0px;
+            }
+
             ul {
                 padding-inline-start: 5px;
             }
 
             li {
-                font-size: 11px;
-                margin: 0px 2px;
+                font-size: 12px;
+                margin: 2px;
+            }
+        }
+
+        @media (min-width: 385px) and (max-width: 590px) {
+            .bar {
+                top: 3px;
+                margin: 6px 0px;
+            }
+
+            ul {
+                padding-inline-start: 2px;
+            }
+
+            li {
+                font-size: 7px;
+                margin: 0px;
+            }
+        }
+
+        @media (max-width: 385px) {
+            .bar {
+                top: 2px;
+                margin: 5px 0px;
+            }
+
+            ul {
+                padding-inline-start: 0px;
+            }
+
+            li {
+                font-size: 6px;
+                margin: 0px;
             }
         }
     </style>
@@ -73,15 +116,13 @@
 
     <div class="bar">
         <ul>
-            <li class="item"><a href="/teacher_home">Home</a></li>
-            <li class="item"><a href="/check_attendance">Check Attendance</a></li>
-            <li class="item"><a href="/today_attendance">Today's attendance</a></li>
-            <li class="item"><a href="/prof_timetable">Time Table</a></li>
-            <li class="item"><a href="/prof_courses">Courses</a></li>
-            <li class="item"><a href="/prof_study_material">Study Material</a></li>
-            <li class="item"><a href="/prof_change_password">Change Password</a></li>
-
-            <li class="item"><a href="/logout">LogOut</a></li>
+            <li><a href="/teacher_home">Home</a></li>
+            <li><a href="/check_attendance">Check Attendance</a></li>
+            <li><a href="/datewise_attendance">Attendance by date</a></li>
+            <li><a href="/prof_timetable">Time Table</a></li>
+            <li><a href="/prof_courses">Courses</a></li>
+            <li><a href="/prof_change_password">Change Password</a></li>
+            <li><a href="/logout">LogOut</a></li>
         </ul>
     </div>
     
