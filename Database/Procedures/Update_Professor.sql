@@ -41,7 +41,7 @@ end case;
 end //
 delimiter ;
 /*Execute*/
-call Update_Professor(1,'A','1982-11-25','F','Assistant Professor',1,'A@iiti.ac.in','CS 207',@did,@rif,@inv); /*Employee ID, Name, DOB, Gender, Post, dept id, Email, course id*/
+call Update_Professor(1,'A','1982-11-25','F','Assistant Professor',1,'A@iiti.ac.in','CS 207',@did,@rif,@inv,@rif1); /*Employee ID, Name, DOB, Gender, Post, dept id, Email, course id*/
 select @did;
 select @rif;
 select @inv;
