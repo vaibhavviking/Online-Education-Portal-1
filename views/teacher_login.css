@@ -1,103 +1,105 @@
-*{
-    margin: 0px;
-    padding: 0px;
-}
-body{
-    background: url("https://images.unsplash.com/photo-1494319827402-c4b839aed26b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80") no-repeat center center fixed;
-    background-size: cover;
-}
+* {
+            margin: 0px;
+            padding: 0px;
+        }
 
-.container{
+        body {
+            background: url("https://images.unsplash.com/photo-1494319827402-c4b839aed26b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80") no-repeat center center fixed;
+            background-size: cover;
+        }
 
-    color:black;
-    position: absolute;
-    top: 45%;
-    left: 40%; 
-}
-.container h1{
-    font-size: 40px;
-    color: black;
-   border-bottom: 5px solid purple;
-    display: inline-block;
-    margin-top: 60px;
-   /* padding: 25px 0px;*/
-    bottom: 0px;
+        .container {
+            color: black;
+            position: absolute;
+            top: 50%;
+            left: 40%;
+        }
 
-}/*h1{
-    text-align: center;
-    font-size: 50px;
-    color: blue;
-    font-family: cursive;
-}*/
+        .container h1 {
+            font-size: 40px;
+            color: black;
+            border-bottom: 5px solid purple;
+            display: inline-block;
+            margin-top: 100px;
+            bottom: 0px;
+        }
 
-.box{
-    width: 100%;
-    border-bottom: 2px solid purple;
-    margin: 22px 0px;
-    
-}
-.box input{
-    background: none;
-    width: 75%;
-    outline:  none;
-    border: none;
-    color: rgba(202, 43, 43, 0.589);
-    padding: 5px 10px;
-    font-size: 25px;
-    font-family: cursive;
-    font-weight: bold;
-}
-.box i{
-    width: 25px;
-    text-align: center;
-}
- .btn{
-     cursor: pointer;
-     outline: none;
-     width: 25%;
-     margin: 12px 0;
-     padding: 10px 21px;
-     color:black;
-     border-radius: 10px ;
-     border: 2px solid purple;
-     font-size: 18px;
-     background: none;
-     font-weight: bold;
- }
+        .box {
+            width: 100%;
+            border-bottom: 2px solid purple;
+            margin: 22px 0px;
 
- .btn:hover{
-    color: rgb(228, 13, 13);
-    
-    background: white;
+        }
 
-}
- 
-.logo{
-    height: 70px;
-    padding: 0px 40vw;
-    width: 20vw;}
+        .box input {
+            background: none;
+            width: 75%;
+            outline: none;
+            border: none;
+            color: rgba(202, 43, 43, 0.589);
+            padding: 5px 10px;
+            font-size: 25px;
+            font-family: cursive;
+            font-weight: bold;
+        }
 
-    .logo img{
-        height: 200px;
-    margin: auto 7px;
-}
-header h1{
-        
-    top: 0px;
-    margin-top: 0px;
-    text-align: center;
-    padding-top: 20px;
-    background-color: #e8e2b9;
-    /*border: 2px solid black;*/
-}
-header h2{
+        .box i {
+            width: 25px;
+            text-align: center;
+        }
 
-    top: 5px;
-    color: blue;
-    margin-top: 0px;
-    text-align: center;
-    padding-top: 20px;
-    font-size: 50px;
-    /*background-color: #e8e2b9;*/
-    border-bottom: 2px solid black;
-}
+        .btn {
+            cursor: pointer;
+            outline: none;
+            display: block;
+            margin: 20px auto;
+            padding: 10px 21px;
+            color: black;
+            border-radius: 10px;
+            border: 2px solid purple;
+            font-size: 18px;
+            background: none;
+            font-weight: bold;
+        }
+
+        a{
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            color: rgb(228, 13, 13);
+
+            background: white;
+
+        }
+
+        .logo {
+            height: 70px;
+            padding: 0px 40vw;
+            width: 20vw;
+        }
+
+        .logo img {
+            height: 200px;
+            margin: 20px 7px;
+        }
+
+        header h1 {
+
+            top: 0px;
+            margin-top: 0px;
+            text-align: center;
+            padding-top: 20px;
+            background-color: #e8e2b9;
+        }
+
+        header h2 {
+
+            top: 5px;
+            color: blue;
+            margin-top: 0px;
+            text-align: center;
+            padding-top: 20px;
+            font-size: 50px;
+            border-bottom: 2px solid black;
+        }

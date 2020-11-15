@@ -121,7 +121,7 @@ li {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        margin-top: 60vh;
+        margin-top: 20vh;
     }
 
     .card {
@@ -189,7 +189,7 @@ li {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        margin-top: 100vh;
+        margin-top:40vh;
     }
 
     .card {
@@ -265,7 +265,7 @@ li {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        margin-top: 70vh;
+        margin-top: 30vh;
     }
 
     .card {

@@ -115,11 +115,13 @@
     .box{
         border-bottom: 2px solid purple;
         margin: 20px 0px;
+        text-align: left;
     }
 
     .box i{
         width: 25px;
         text-align: center;
+        margin-left: 10px;
     }
 
     label{
@@ -128,7 +130,6 @@
 
     .box input{
         background: none;
-        width: 75%;
         outline:  none;
         border: none;
         color: rgba(202, 43, 43, 0.589);
@@ -201,7 +202,6 @@
         }
         .box input{
             font-size: 18px;
-            width: 70%;
         }
         .box i{
             width: 20px;
@@ -268,7 +268,6 @@
         }
         .box input{
             font-size: 10px;
-            width: 60%;
         }
         .box i{
             width: 20px;

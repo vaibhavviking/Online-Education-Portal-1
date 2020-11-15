@@ -13,6 +13,7 @@ Entities used in database
 12. Programs
 13. Sem_Dates
 14. Requested_Courses
+15. Post_Wise_Employees
 
 Relations used in database
 1.  Admin_Account_Relation
@@ -65,7 +66,7 @@ Stored Procedures stored in database
 40. Update_Professor (Employee ID, Name, DOB, Gender, Post, Dept ID, Email, Course ID, @did, @rif, @inv)
 41. Update_Courses (Course Code, Course Name, Class Link, Credits)
 42. Insert_Post(Post Name, @did)
-43. Insert_Program(Program name, @did)
+43. Insert_Program(Program name, Program Description, @did)
 44. Delete_Post(Post Name, @rif)
 45. Delete_Program(Program Name, @rif) 
 46. Update_Student_In_Sem (Roll No, Name, DOB, Gender, Program, Year Of Study, Dept ID, Email, @did, @rif, @inv)

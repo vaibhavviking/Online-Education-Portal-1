@@ -3,16 +3,16 @@
   <head>
     <!-- Place your kit's code here -->
     <script src="https://kit.fontawesome.com/63e2b2b603.js" crossorigin="anonymous"></script>
-    <title>login to for teacher and student</title>
+    <title>Login for students</title>
     <link rel="stylesheet" href="./css/teacher_login.css">
   </head>
 
   <body>
     
     <header>
-      <h1>भारतीय प्रौद्योगिकी संस्थान इंदौर Indian Institute of Technology Indore
+      <h1>भारतीय प्रौद्योगिकी संस्थान इंदौर <br> Indian Institute of Technology Indore
       </h1>
-      <h2>welcome to online education portal</h2>
+      <h2>Welcome to Online Education Portal</h2>
     </header>
     <div class="logo">
       <img src="./css/images/logo.png" alt="logo">
@@ -33,7 +33,7 @@
           </form>
           <a href="/forgot_password"><button class="btn">Forgot Password</button></a>
           <%if( typeof error != 'undefined'){%>
-            <p><%=error%></p>
+            <p id="tryagain"><%=error%></p>
             <%}%>
    
   </body>
