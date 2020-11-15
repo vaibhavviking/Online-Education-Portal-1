@@ -118,6 +118,10 @@ schedule.scheduleJob({ minute: 0 }, () => {
     increment_days();
 })
 
+schedule.scheduleJob('*/15* * * *', () => {
+    clear_token();
+})
+
 app.use(express.static('views'));
 app.set('views', __dirname + '/views')
 
@@ -202,13 +206,31 @@ let get_id = new Promise((resolve, reject) => {
 
 // let days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 // let timeslots=['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00',];
+// let sw=0,code;
 // days.forEach((day)=>{
+    
+    
 //     timeslots.forEach((slot)=>{
-//         let sql = 'call Insert_Time_Slot(?,?,@did);'
+        
+//         if(sw%2 == 0){
+//             console.log(sw,'up');
+//             sw++;
+//             let sql = 'call Assign_Time_Slot("CS 207",?,?,@rif);'
 //         connection.query(sql,[day,slot],(err,results)=>{
 //             if(err) throw err;
-//             console.log(day,slot,'slot added');
+//             console.log('CS 207',day,slot,'slot added');
 //         })
+//         }else{
+//             console.log(sw,'down');
+//             sw++;
+//             let sql = 'call Assign_Time_Slot("CS 201",?,?,@rif);'
+//         connection.query(sql,[day,slot],(err,results)=>{
+//             if(err) throw err;
+            
+//             console.log('CS 201',day,slot,'slot added');
+//         })
+//         }
+        
 //     })
 // })
 
@@ -2663,5 +2685,11 @@ let load_student_home = async function (req, res) {
 
 }
 
-
+let clear_token = async function(){
+    let sql = 'delete from Reset_Token';
+    connection.query(sql,(err,token)=>{
+        if(err) throw err;
+        console.log('tokens cleared');
+    })
+}
 // forgot_password('chandravaibhav65@gmail.com');
