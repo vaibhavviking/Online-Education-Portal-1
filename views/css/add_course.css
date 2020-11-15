@@ -19,7 +19,7 @@ body {
 }
 
 .bar{
-    margin: 20px 0px 10px 0px;
+    margin: 10px 0px 10px 0px;
     position: sticky;
     display: flex;
     background-color:rgb(87, 212, 225);
@@ -117,6 +117,20 @@ button:hover{
         margin: 10px;
     }
 
+    .bar{
+        top: 2px;
+        margin: 10px 0px;
+    }
+
+    ul{
+        padding-inline-start: 10px;
+    }
+
+    li{
+        font-size: 17px;
+        margin: 2px;
+    }
+
     .container{
         width: 500px;
         margin: 50px auto;
@@ -169,6 +183,20 @@ button:hover{
         margin: 8px;
     }
 
+    .bar{
+        top: 3px;
+        margin: 10px 0px;
+    }
+
+    ul{
+        padding-inline-start: 5px;
+    }
+
+    li{
+        font-size: 12px;
+        margin: 2px;
+    }
+
     .container{
         width: 440px;
         margin: 50px auto;
@@ -213,6 +241,20 @@ button:hover{
         position: relative;
         top: 15px;
         font-size: 2em;
+    }
+
+    .bar{
+        top: 2px;
+        margin: 5px 0px;
+    }
+
+    ul{
+        padding-inline-start: 0px;
+    }
+
+    li{
+        font-size: 6px;
+        margin: 0px;
     }
 
     h2 {
@@ -273,12 +315,18 @@ button:hover{
         margin: 7px;
     }
 
+    .bar{
+        top: 2px;
+        margin: 5px 0px;
+    }
+
     ul{
-        padding-inline-start: 10px;
+        padding-inline-start: 0px;
     }
 
     li{
-        font-size: 13px;
+        font-size: 6px;
+        margin: 0px;
     }
 
     .container{
@@ -334,13 +382,18 @@ button:hover{
         margin: 4px;
     }
 
-    ul{
-        padding-inline-start: 5px;
+    .bar{
+        top: 2px;
+        margin: 5px 0px;
     }
-    
+
+    ul{
+        padding-inline-start: 0px;
+    }
+
     li{
-        font-size: 11px;
-        margin: 0px 2px;
+        font-size: 6px;
+        margin: 0px;
     }
 
     .container{
