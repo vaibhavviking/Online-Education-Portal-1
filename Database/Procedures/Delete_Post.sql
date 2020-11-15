@@ -9,7 +9,7 @@ declare exit handler for 1451
 begin
 set rif=1;
 end;
-delete from Posts where Posts.P_Name=name;
+delete from Posts where Posts.Post_Name=name;
 end //
 delimiter ;
 /*Execute*/
