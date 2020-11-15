@@ -11,10 +11,10 @@ begin
 set did=1;
 end;
 insert into Programs values(name, descr);
+insert into Program_Wise_Students values(name, 0);
 end //
 delimiter ;
 /*Execute*/
 call Insert_Program('B.Tech', 'Bachelor of Technology', @did); /* Program Name, Program Description */
 select @did;                         /* Duplicate Name */
 /*End*/
-drop procedure Insert_Program;
