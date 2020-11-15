@@ -794,13 +794,29 @@ app.post('/update_course_1', (req, res) => {
 
 app.post('/delete_admin', (req, res) => {
     var adminid = req.body.adminid;
-    var sql = 'call Delete_Admin(?)';
-    connection.query(sql, [adminid], (err, results) => {
-        if (err) throw err;
-        console.log('Admin Removed');
-        res.redirect('/admin_home');
-    })
+    delete_admin(req,res,adminid);
+    // var sql = 'call Delete_Admin(?)';
+    // connection.query(sql, [adminid], (err, results) => {
+    //     if (err) throw err;
+    //     console.log('Admin Removed');
+    //     res.redirect('/admin_home');
+    // })
 })
+
+let delete_admin = async function(req,res,adminid){
+    var sql = 'call Delete_Admin(?)';
+    let id = await GET_User_ID();
+    console.log(adminid,id);
+    if(id!=adminid){
+        connection.query(sql, [adminid], (err, results) => {
+            if (err) throw err;
+            console.log('Admin Removed');
+            res.redirect('/admin_home');
+        })
+    }else{
+        res.redirect('/delete_admin/?error="You cannot remove yourself"');
+    }
+}
 
 app.get('/add_student', (req, res) => {
     if (req.session.loggedin && req.session.user) {
@@ -847,7 +863,8 @@ app.get('/delete_course', (req, res) => {
 
 app.get('/delete_admin', (req, res) => {
     if (req.session.loggedin && req.session.user) {
-        res.render('delete_admin.ejs');
+        let error=req.query.error;
+        res.render('delete_admin.ejs',{ error : error});
     } else {
         res.redirect('/admin_login');
     }
@@ -1443,14 +1460,23 @@ app.post('/reset_password', (req, res) => {
         let sql1 = 'select * from Reset_Token where Token = ?';
         connection.query(sql1, [token], (err, result) => {
             if (err) throw err
+            console.log(result);
             if (result.length > 0) {
                 newpass = md5(md5(md5(newpass)));
                 let sql = 'update Account set Password_=? where Account.User_ID_=?';
+                let sql2 = 'delete from Reset_Token where Token = ?';
                 connection.query(sql, [newpass, id], (err2, results) => {
                     if (err2) throw err2;
                     console.log(results);
-                    res.send('password is reset.you can close this window');
+                    
                 })
+                connection.query(sql2,[token],(err,results2)=>{
+                    if(err) throw err;
+                    console.log('token cleared');
+                    res.redirect('/reset_password/?error="Your password has been reset. You can close this window now."');
+                })
+                
+                
             } else {
                 let error = 'Token has expired. Please Try Again';
                 res.redirect('/reset_password/?token='+token+'&id='+id+'&error='+error);
@@ -1574,11 +1600,14 @@ app.post('/student_attendance',(req,res)=>{
 })
 
 let student_attendance = async function (req,res,code){
-    let sql = 'call Attendance_In_Student(?,?)';
+    let sql = 'call Attendance_In_Student(?,?); select * from Courses_Student_Relation where Roll_No = ?';
     let id = await GET_ID();
-    connection.query(sql,[id,code],(err,results)=>{
+    connection.query(sql,[id,code,id],(err,results)=>{
         if(err) throw err;
-        res.render('calender_attendance.ejs', { data : results[0]});
+        console.log(results);
+        console.log(results[0]);
+        console.log(results[2][0]);
+        res.render('calender_attendance.ejs', { data : results[0] , sdata : results[2]});
     })
 }
 
@@ -2308,8 +2337,8 @@ let forgot_password = async function (req, res, email, id) {
         // text: 'http://' + req.headers.host + '/reset_password/?s=' + token + '&id='+id+'\n\n' ,
         // html: '<p>Click the link given below to reset your password</p><a href="'+link+'">Click here</a>'
         // html: '<p>Click the link given below to reset your password</p><a href='"+link+'">Click here</a>';
-        html: "To reset your password, click this <a href='" + "http://localhost:5000/reset_password/?s=" + token + "&id=" + id + "'><span>link</span></a>.<br>This is a <b>test</b> email."
-        // html: "To reset your password, click this <a href='" + "https://mysterious-beyond-20244.herokuapp.com/reset_password/?s=" + token + "&id=" + id + "'><span>link</span></a>.<br>This is a <b>test</b> email."
+        html: "To reset your password, click this <a href='" + "http://localhost:5000/reset_password/?token=" + token + "&id=" + id + "'><span>link</span></a>.<br>This is a <b>test</b> email."
+        // html: "To reset your password, click this <a href='" + "https://mysterious-beyond-20244.herokuapp.com/reset_password/?token=" + token + "&id=" + id + "'><span>link</span></a>.<br>This is a <b>test</b> email."
 
         // html: `<p>Click the link given below to reset your password</p><a href="">Click here</a>`
     };

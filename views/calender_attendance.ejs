@@ -273,7 +273,24 @@
                     </tr>
                  <%})%>
             </table>
-    
+
+            <%if(typeof sdata!='undefined'){%>
+                <table>
+                     <tr style="color: rgb(151, 4, 156); background-color: chartreuse;">
+                        <th>Roll No.</th>
+                        <th>Days Attended</th>
+                        <th>Total Classes</th>
+                    </tr>
+                    <% sdata.forEach((item)=>{%>
+                        <tr>
+                            <td><%=item.Course_Code%></td>
+                            <!-- <td><%=item.S_Name%></td> -->
+                            <td><%=item.Days_Attended%></td>
+                            <td><%=item.Total_Days%></td>
+                        </tr>
+                   <% })%>
+                </table>
+           <% }%>
 </body>
 
 <script src="CalendarPicker.js"></script>
