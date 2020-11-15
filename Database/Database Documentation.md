@@ -13,6 +13,7 @@ Entities used in database
 12. Programs
 13. Sem_Dates
 14. Requested_Courses
+15. Post_Wise_Employees
 
 Relations used in database
 1.  Admin_Account_Relation
