@@ -4,9 +4,9 @@ create procedure Total_Days_Increment(
     in course varchar(7)
 )
 begin
-update Courses_Student_Relation as a
-set a.Total_Days=a.Total_Days+1
-where a.Course_Code=course;
+update Courses_Student_Relation
+set Courses_Student_Relation.Total_Days=Courses_Student_Relation.Total_Days+1
+where Courses_Student_Relation.Course_Code=course;
 end //
 delimiter ;
 /*Execute*/
