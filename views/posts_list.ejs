@@ -127,12 +127,8 @@
         <table class="table">
            <tr style="color: rgb(151, 4, 156); background-color: chartreuse;">
                 <th>Serial No.</th>
-                <th>Name</th>
-                <th>Roll No.</th>
-                <th>Program</th>
-                <th>Year Of study</th>
-                <th>Gender</th>
-                <th>Email</th>
+                <th>Post</th>
+                <th>No. Of Employees</th>
             </tr>
 
 
@@ -143,13 +139,8 @@
                     %>
                     <tr>
                         <td><%= i; %></td>
-                        <td><%= inf.S_Name %></td>
-                        <td><%= inf.Roll_No %></td>
-                        <td><%= inf.Program_Enrolled %></td>
-                        <td><%= inf.Year_Of_Study %></td>
-                        <td><%= inf.Gender %></td>
-                        <td><%= inf.Email %></td>
-                        <!-- <td><%= inf.DOB %></td> -->
+                        <td><%= inf.post %></td>
+                        <td><%= inf.No_Of_Employees %></td>
                     </tr>
             <% i++;    })%>
             <% }else{ %>

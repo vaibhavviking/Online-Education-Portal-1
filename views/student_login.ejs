@@ -32,7 +32,9 @@
            <button class="btn">Sign In</button>
           </form>
           <a href="/forgot_password"><button class="btn">Forgot Password</button></a>
-
+          <%if( typeof error != 'undefined'){%>
+            <p><%=error%></p>
+            <%}%>
    
   </body>
 </html>
