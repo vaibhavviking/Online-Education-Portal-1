@@ -574,7 +574,7 @@ app.post('/update_student_1', (req, res) => {
                 let fdate = day + '-' + month + '-' + year;
                 let rdate = year + '-' + month + '-' + day;
                 // console.log(fdate,rdate);
-                if (tdate < sdate || tdate > edate) {
+                if (1) {
                     console.log('after sem');
                     res.render('update_student_after_sem.ejs', { data1: results[0][0], data2: results[1], rollno: rollno, clen: results[1].length, fdate: fdate, rdate: rdate });
                 } else {
@@ -597,12 +597,26 @@ app.post('/update_student_1', (req, res) => {
         let year = req.body.year;
         let depid = req.body.depid;
         var course = req.body['course[]'];
+        var old_course = req.body['old_courses[]'];
+        let old_arr=[];
         let arr = [];
         if (typeof course == 'object') {
             arr = course;
         } else {
             arr[0] = course;
         }
+        if (typeof old_course == 'object') {
+            old_arr = old_course;
+        } else {
+            old_arr[0] = old_course;
+        }
+        let cc=0;
+        arr.forEach((temp)=>{
+            if(temp!=''){
+                cc++;
+            }
+        })
+        console.log(typeof course);
         let sql = `call Remove_All_Student_Courses(${rollno})`;
 
         connection.query('select * from Sem_Dates', (err, results) => {
@@ -611,33 +625,81 @@ app.post('/update_student_1', (req, res) => {
             let edate = results[0].Ending_Date;
             let tdate = new Date();
             // tdate < sdate || tdate > edate
-            if (tdate < sdate || tdate > edate) {
+            console.log(cc)
+            if (1 && course != '' && typeof course != 'undefined' && cc!=0) {
                 connection.query(sql, (err, results) => {
                     if (err) throw err;
                     console.log('Courses Removed');
                 });
-                let sql2 = 'call Update_Student_After_Sem(?,?,?,?,?,?,?,?,?,@did,@rif,@inv); select @did,@rif,@inv';
+                let sql2 = 'call Update_Student_After_Sem(?,?,?,?,?,?,?,?,?,@did,@rif,@inv,@rif1); select @did,@rif,@inv,@rif1';
+                let e=0;
+                let c=0;
                 arr.forEach((item) => {
                     if (item !== undefined) {
 
                         connection.query(sql2, [rollno, name, dob, gender, program, year, depid, email, item], (err, results) => {
+                            c++;
                             if (err) throw err;
                             console.log(results);
                             if (results[1][0]['@did'] != null) {
-                                res.render('update_student_1.ejs', { error: "duplicate entry detected" })
+                                e++;
+                                if(e!=0 && c==arr.length){
+
+                                    let sql3 ='call Add_Student_Course(?,?,?,?,@did,@rif,@inv)';
+                                    old_arr.forEach((inf)=>{
+                                        connection.query(sql3,[inf,rollno,0,0],(err3,results3)=>{
+                                            if(err3) throw err3;
+                                            console.log(inf,': course restored');
+                                        })
+                                    })
+                                    res.render('update_student_1.ejs', { error: "duplicate entry detected" })
+                                }
                             } else if (results[1][0]['@rif'] != null) {
-                                res.render('update_student_1.ejs', { error: "Referential integrity breached. Please Check Input." })
+                                e++;
+                                if(e!=0 && c==arr.length){
+                                    res.render('update_student_1.ejs', { error: "Referential integrity breached. Please Check Input." })
+                                }
                             } else if (results[1][0]['@inv'] != 0) {
-                                res.render('update_student_1.ejs', { error: "Invalid entries detected." })
-                            } else {
+                                e++;
+                                if(e!=0 && c==arr.length){
+                                    let sql3 ='call Add_Student_Course(?,?,?,?,@did,@rif,@inv)';
+                                    old_arr.forEach((inf)=>{
+                                        connection.query(sql3,[inf,rollno,0,0],(err3,results3)=>{
+                                            if(err3) throw err3;
+                                            console.log(inf,': course restored');
+                                        })
+                                    })
+                                    res.render('update_student_1.ejs', { error: "Invalid entries detected." })
+                                }
+                            } else if(results[1][0]['@rif1'] != null){
+                                e++;
+                                if(e!=0 && c==arr.length){
+                                    let sql3 ='call Add_Student_Course(?,?,?,?,@did,@rif,@inv)';
+                                    old_arr.forEach((inf)=>{
+                                        connection.query(sql3,[inf,rollno,0,0],(err3,results3)=>{
+                                            if(err3) throw err3;
+                                            console.log(inf,': course restored');
+                                        })
+                                    })
+                                    res.render('update_student_1.ejs', { error: "Referential integrity breached.Please Check Input" })
+                                }
+                            }else {
                                 console.log(item,': course updated after sems');
+                                if(c==arr.length){
+                                    res.redirect('/admin_home');
+                                }
                             }
                         })
                     }
                 })
-                res.redirect('/admin_home');
+                // res.redirect('/admin_home');
             } else {
-                let sql2 = 'call Update_Student_In_Sem(?,?,?,?,?,?,?,?,@did,@rif,@inv); select @did,@rif,@inv;';
+                let sql = `call Remove_All_Student_Courses(${rollno})`;
+                connection.query(sql, (err, results) => {
+                    if (err) throw err;
+                    console.log('Courses Removed');
+                });
+                let sql2 = 'call Update_Student_In_Sem(?,?,?,?,?,?,?,?,@did,@rif,@inv,@rif1); select @did,@rif,@inv,@rif1;';
                 connection.query(sql2, [rollno, name, dob, gender, program, year, depid, email], (err, results) => {
                     if (err) throw err;
                     console.log(results);
@@ -706,30 +768,121 @@ app.post('/update_prof_1', (req, res) => {
         let gender = req.body.gender;
         let depid = req.body.depid;
         var course = req.body['course[]'];
+        var old_course = req.body['old_courses[]'];
+        let old_arr=[];
         let arr = [];
         if (typeof course == 'object') {
             arr = course;
         } else {
             arr[0] = course;
         }
-
+        if (typeof old_course == 'object') {
+            old_arr = old_course;
+        } else {
+            old_arr[0] = old_course;
+        }
         let sql = `call Remove_All_Professor_Courses(${empid})`;
-        connection.query(sql, (err, results) => {
-            if (err) throw err;
-            console.log('Courses Removed');
-        })
-
-        let sql2 = 'call Update_Professor(?,?,?,?,?,?,?,?,@did,@rif,@inv)';
-        arr.forEach((item) => {
-            if (item !== undefined) {
-
-                connection.query(sql2, [empid, name, dob, gender, post, depid, email,item], (err, results) => {
-                    if (err) throw err;
-                    console.log('course updated');
-                })
-            }
-        })
-        res.redirect('/admin_home');
+            connection.query(sql, (err, results) => {
+                if (err) throw err;
+                console.log('Courses Removed');
+            })
+            let cc=0;
+            arr.forEach((item)=>{
+                if(item!=''){
+                    cc++;
+                }
+            })
+        if(typeof course != 'undefined' && cc!=0 && course!='' ){
+            
+            let e=0;
+            let c=0;
+            let sql2 = 'call Update_Professor(?,?,?,?,?,?,?,?,@did,@rif,@inv,@rif1); select @did,@rif,@inv,@rif1';
+            arr.forEach((item) => {
+                if (item !== undefined) {
+    
+                    connection.query(sql2, [empid, name, dob, gender, post, depid, email,item], (err, results) => {
+                        c++;
+                        if (err) throw err;
+                        console.log(e,c,'compare');
+                        if (results[1][0]['@did'] != null) {
+                            e++;
+                            if(e!=0 && c==arr.length){
+                                let sql3 ='call Add_Professor_Course(?,?,@did,@rif)';
+                                        old_arr.forEach((inf)=>{
+                                            connection.query(sql3,[inf,empid,0,0],(err3,results3)=>{
+                                                if(err3) throw err3;
+                                                console.log(inf,': course restored');
+                                            })
+                                        })
+                                res.render('update_prof_1.ejs', { error: "duplicate entry detected" })
+                            }
+                        } else if (results[1][0]['@rif'] != null) {
+                            e++;
+                            if(e!=0 && c==arr.length){
+                                res.render('update_prof_1.ejs', { error: "Referential integrity breached. Please Check Input." })
+                            }
+                        } else if (results[1][0]['@inv'] != 0) {
+                            e++;
+                            if(e!=0 && c==arr.length){
+                                let sql3 ='call Add_Professor_Course(?,?,@did,@rif)';
+                                        old_arr.forEach((inf)=>{
+                                            connection.query(sql3,[inf,empid,0,0],(err3,results3)=>{
+                                                if(err3) throw err3;
+                                                console.log(inf,': course restored');
+                                            })
+                                        })
+                                res.render('update_prof_1.ejs', { error: "Invalid entries detected." })
+                            }
+                        } else if(results[1][0]['@rif1'] != null){
+                            e++;
+                            if(e!=0 && c==arr.length){
+                                let sql3 ='call Add_Professor_Course(?,?,@did,@rif)';
+                                        old_arr.forEach((inf)=>{
+                                            connection.query(sql3,[inf,empid,0,0],(err3,results3)=>{
+                                                if(err3) throw err3;
+                                                console.log(inf,': course restored');
+                                            })
+                                        })
+                                res.render('update_prof_1.ejs', { error: "Referential integrity breached.Please Check Input" })
+                            }
+                        }else {
+                            console.log(item,': course updated');
+                            if(e==0 && c==arr.length){
+                                res.redirect('/admin_home');
+                            }
+                        }
+                        // console.log('course updated');
+                    })
+                }
+            })
+        }else{
+            
+            let sql2 = 'call Update_Professor_Bio(?,?,?,?,?,?,?,@did,@rif,@inv); select @did,@rif,@inv';
+                    connection.query(sql2, [empid, name, dob, gender, post, depid, email], (err, results) => {
+                        
+                        if (err) throw err;
+                        // console.log(e,c,'compare');
+                        console.log(results);
+                        if (results[1][0]['@did'] != null) {
+                            
+                            res.render('update_prof_1.ejs', { error: "duplicate entry detected" })
+                        } else if (results[1][0]['@rif'] != null) {
+                           
+                            res.render('update_prof_1.ejs', { error: "Referential integrity breached. Please Check Input." })
+                        } else if (results[1][0]['@inv'] != 0) {
+                            
+                            res.render('update_prof_1.ejs', { error: "Invalid entries detected." })
+                        }else {
+                
+                            res.redirect('/admin_home');
+                        }
+                        // console.log('course updated');
+                    })
+                
+            
+        }
+       
+        // res.redirect('/admin_home');
     }
 })
 
@@ -2440,8 +2593,8 @@ let forgot_password = async function (req, res, email, id) {
         // text: 'http://' + req.headers.host + '/reset_password/?s=' + token + '&id='+id+'\n\n' ,
         // html: '<p>Click the link given below to reset your password</p><a href="'+link+'">Click here</a>'
         // html: '<p>Click the link given below to reset your password</p><a href='"+link+'">Click here</a>';
-        // html: "To reset your password, click this <a href='" + "http://localhost:5000/reset_password/?token=" + token + "&id=" + id + "'><span>link</span></a>.<br>This is a <b>test</b> email."
-        html: "To reset your password, click this <a href='" + "https://mysterious-beyond-20244.herokuapp.com/reset_password/?token=" + token + "&id=" + id + "'><span>link</span></a>.<br>This is a <b>test</b> email."
+        html: "To reset your password, click this <a href='" + "http://localhost:5000/reset_password/?token=" + token + "&id=" + id + "'><span>link</span></a>.<br>This is a <b>test</b> email."
+        // html: "To reset your password, click this <a href='" + "https://mysterious-beyond-20244.herokuapp.com/reset_password/?token=" + token + "&id=" + id + "'><span>link</span></a>.<br>This is a <b>test</b> email."
 
         // html: `<p>Click the link given below to reset your password</p><a href="">Click here</a>`
     };

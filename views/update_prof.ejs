@@ -190,7 +190,7 @@
         <td style="background-color: rgb(161, 228, 255);">Courses</td>
         <td>
             <% data2.forEach((item)=>{%>
-            <span style="display: inline-block;"><%=item.Course_Code%></span>
+            <span style="display: block;"><%=item.Course_Code%></span>
             <%})%>
         </td>
         </tr>
@@ -200,6 +200,9 @@
 
         <h1>New Data</h1>
         <form action="" method="POST">
+            <% data2.forEach((item)=>{%>
+                <input type="text" name="old_courses[]" style="display: none;" value="<%=item.Course_Code%>" >
+                <%})%>
             <div class="box">
                 <i class="fa fa-user"></i>
                 <label for="username">Name:</label>

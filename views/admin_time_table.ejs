@@ -206,7 +206,7 @@
     </code> -->
     <%if(typeof data != 'undefined'){%>
     <p style="display: none;" id="dlen"><%=data.length%></p>
-            <table id="data" style="display: none;">
+            <table id="data">
                 <tr>
                     <th>date</th>
                     <th>status</th>
@@ -282,7 +282,7 @@
         //             }
         //     }
         // }
-        for(j=0;j<=31;j++){
+        for(j=0;j<=42;j++){
             for(i=0;i<dlen;i++){
                 if(mon == document.getElementsByClassName('dates')[i].innerHTML.slice(4,7)){
                     if(document.getElementsByClassName('disabled')[j]){
