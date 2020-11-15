@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="./css/Attendance.css">
     <style>
         .bar {
-            margin: 10px 0px 10px 0px;
+            margin: 20px 0px 10px 0px;
             position: sticky;
             display: flex;
             background-color: rgb(87, 212, 225);
@@ -39,67 +39,25 @@
             background-color: #dbefea;
         }
 
-        @media (min-width: 770px){
-            .bar{
-                 top: 2px;
-                 margin: 10px 0px;
-              }
-
-              ul{
-                   padding-inline-start: 10px;
-              }
-
-              li{
-                   font-size: 17px;
-                   margin: 2px;
-               }
-         }
-         
-        @media (min-width: 590px) and (max-width: 770px){
-                .bar{
-                    top: 3px;
-                    margin: 10px 0px;
-                 }
-
-                 ul{
-                    padding-inline-start: 5px;
-                }
-
-                 li{
-                     font-size: 12px;
-                     margin: 2px;
-                 } 
-         }
         @media (min-width: 385px) and (max-width: 510px) {
-            .bar{
-                    top: 3px;
-                    margin: 6px 0px;
-                 }
-                 
-             ul {
-                     padding-inline-start: 2px;
-                  }
+            ul {
+                padding-inline-start: 10px;
+            }
 
-             li {
-                     font-size: 7px;
-                     margin: 0px;
-                 }
+            li {
+                font-size: 13px;
+            }
         }
 
         @media (max-width: 385px) {
-           .bar{
-        top: 2px;
-        margin: 5px 0px;
-    }
+            ul {
+                padding-inline-start: 5px;
+            }
 
-    ul{
-        padding-inline-start: 0px;
-    }
-
-    li{
-        font-size: 6px;
-        margin: 0px;
-    }
+            li {
+                font-size: 11px;
+                margin: 0px 2px;
+            }
         }
     </style>
 </head>
@@ -112,6 +70,7 @@
 
     <div class="bar">
         <ul>
+            <!-- <li><a href="/Home_page">Home</a></li> -->
             <li><a href="/Admin_home">Admin Home</a></li>
             <li><a href="/admin_change_password">Change Password</a></li>
             <li><a href="/set_sem_dates">Set Semester Dates</a></li>
