@@ -6,7 +6,6 @@
     <title>Check Attendance</title>
     <link rel="stylesheet" href="./css/add_course.css">
     <link rel="stylesheet" href="./css/Attendance.css">
-    <link rel="stylesheet" href="./css/check_attendance.css">
     <style>
         .bar {
             margin: 20px 0px 10px 0px;
@@ -72,15 +71,15 @@
 
     <div class="bar">
         <ul>
-            <li class="item"><a href="/teacher_home">Home</a></li>
-            <li class="item"><a href="/check_attendance">Check Attendance</a></li>
-            <li class="item"><a href="/attendance_today">Today's attendance</a></li>
-            <li class="item"><a href="/prof_timetable">Time Table</a></li>
-            <li class="item"><a href="/prof_courses">Courses</a></li>
-            <li class="item"><a href="/prof_study_material">Study Material</a></li>
-            <li class="item"><a href="/prof_change_password">Change Password</a></li>
-
-            <li class="item"><a href="/logout">LogOut</a></li>
+            <li>  <a  href="/student_home">Home</a></li>
+            <li> <a  href="/ongoing_classes">Mark Attendance</a></li>
+            <li> <a  href="/student_attendance">My Attendance</a></li>
+            <li><a  href="/student_timetable">Time Table</a></li>
+            <li> <a href="/student_courses">Courses</a></li>
+            <li> <a  href="/study_material">Study Material</a></li>
+            <li>  <a href="/student_change_password">Change Password</a></li>
+            <li>  <a href="/student_request_course">Request Course</a></li>
+            <li><a href="/logout">Log Out</a></li>
         </ul>
     </div>
 
@@ -90,7 +89,7 @@
         <!-- <input type="text" name="course" placeholder="Course Code" required="true"> -->
         <div class="box">
             <i class="fa fa-vcard-o"></i>
-            <input style="width: 25%; margin: auto;" type="text" name="course" placeholder="Course Code" required="true">
+            <input style="width: 25%; margin: auto;" type="text" name="code" placeholder="Course Code" required="true">
         </div>
         <button type="submit">Check</button>
     </form>

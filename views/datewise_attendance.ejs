@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Today's Attendance</title>
+    <title>Attendance</title>
     <script src="https://kit.fontawesome.com/63e2b2b603.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./css/add_course.css">
     <link rel="stylesheet" href="./css/Attendance.css">
@@ -92,7 +92,11 @@
         <form id="form" action="" method="post">
             <div class="box">
                 <i class="fa fa-vcard-o"></i>
-                <input placeholder="Course Code" name="course_code" type="text" required=true>
+                <input placeholder="Course Code" name="code" type="text" required=true>
+            </div>
+            <div class="box">
+                <i class="fa fa-vcard-o"></i>
+                <input placeholder="Date" name="date" type="date" required=true>
             </div>
 
             <button class="btn" type="submit">Today's Attendance</button>
@@ -126,7 +130,7 @@
 
     </table>
     <%}else{%>
-    <h3>No attendance registered today</h3>
+    <h3>No attendance registered on the entered date.</h3>
     <%}%>
       <%}%>
 </body>
