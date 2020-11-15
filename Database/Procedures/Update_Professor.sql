@@ -14,6 +14,7 @@ out rif int,
 out inv int
 )
 a:begin
+declare p varchar(30);
 declare exit handler for 1062
 begin
 set did=1;
@@ -29,7 +30,10 @@ case
 end case;
 case when inv!=0 then leave a;
 else
+select Professor.Post into p from Professor where Professor.Employee_ID=empid;
 update Professor set P_Name=name, DOB=dob, Gender=gender, Post=post, Department_ID=dept_id, Email=email where Professor.Employee_ID=empid;
+update Post_Wise_Employees set No_Of_Employees=No_Of_Employees-1 where Post_Wise_Employees.post=p;
+update Post_Wise_Employees set No_Of_Employees=No_Of_Employees+1 where Post_Wise_Employees.post=post;
 call Add_Professor_Course(cid,empid,@did,@rif);  
 end case;
 end //
