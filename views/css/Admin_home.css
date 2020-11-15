@@ -119,7 +119,17 @@ li {
     }
 
     .bar{
-        top: 10px;
+        top: 2px;
+        margin: 10px 0px;
+    }
+
+    ul{
+        padding-inline-start: 10px;
+    }
+
+    li{
+        font-size: 17px;
+        margin: 2px;
     }
 
     .row {
@@ -187,7 +197,17 @@ li {
     }
 
     .bar{
-        top: 8px;
+        top: 3px;
+        margin: 10px 0px;
+    }
+
+    ul{
+        padding-inline-start: 5px;
+    }
+
+    li{
+        font-size: 12px;
+        margin: 2px;
     }
 
     .row {
@@ -255,15 +275,17 @@ li {
     }
 
     .bar{
-        top: 5px;
+        top: 2px;
+        margin: 5px 0px;
     }
 
     ul{
-        padding-inline-start: 10px;
+        padding-inline-start: 0px;
     }
 
     li{
-        font-size: 14px;
+        font-size: 6px;
+        margin: 0px;
     }
     
     .row {
