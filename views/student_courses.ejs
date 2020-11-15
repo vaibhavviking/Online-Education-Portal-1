@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="./css/Attendance.css">
   <style>
         .bar {
-            margin: 20px 0px 10px 0px;
+            margin: 10px 0px 10px 0px;
             position: sticky;
             display: flex;
             background-color: rgb(87, 212, 225);
@@ -42,24 +42,67 @@
             background-color: #dbefea;
         }
 
-        @media (min-width: 385px) and (max-width: 510px) {
+        @media (min-width: 770px) {
+            .bar {
+                top: 2px;
+                margin: 10px 0px;
+            }
+
             ul {
                 padding-inline-start: 10px;
             }
 
             li {
-                font-size: 13px;
+                font-size: 17px;
+                margin: 2px;
             }
         }
 
-        @media (max-width: 385px) {
+        @media (min-width: 590px) and (max-width: 770px) {
+            .bar {
+                top: 3px;
+                margin: 10px 0px;
+            }
+
             ul {
                 padding-inline-start: 5px;
             }
 
             li {
-                font-size: 11px;
-                margin: 0px 2px;
+                font-size: 12px;
+                margin: 2px;
+            }
+        }
+
+        @media (min-width: 385px) and (max-width: 590px) {
+            .bar {
+                top: 3px;
+                margin: 6px 0px;
+            }
+
+            ul {
+                padding-inline-start: 2px;
+            }
+
+            li {
+                font-size: 7px;
+                margin: 0px;
+            }
+        }
+
+        @media (max-width: 385px) {
+            .bar {
+                top: 2px;
+                margin: 5px 0px;
+            }
+
+            ul {
+                padding-inline-start: 0px;
+            }
+
+            li {
+                font-size: 6px;
+                margin: 0px;
             }
         }
     </style>
@@ -73,16 +116,15 @@
 
     <div class="bar">
         <ul>
-            <!-- <li><a href="/Home_page">Home</a></li> -->
-            
-            <li>  <a  href="/student_home">Home</a></li>
-            <li> <a  href="/ongoing_classes">Mark Attendance</a></li>
-            <li><a  href="/student_timetable">Time Table</a></li>
+            <li> <a href="/student_home">Home</a></li>
+            <li> <a href="/ongoing_classes">Mark Attendance</a></li>
+            <li> <a href="/student_attendance">My Attendance</a></li>
+            <li><a href="/student_timetable">Time Table</a></li>
             <li> <a href="/student_courses">Courses</a></li>
-            <li> <a  href="/study_material">Study Material</a></li>
-            <li>  <a href="/student_change_password">Change Password</a></li>
+            <li> <a href="/study_material">Study Material</a></li>
+            <li> <a href="/student_change_password">Change Password</a></li>
+            <li> <a href="/student_request_course">Request Course</a></li>
             <li><a href="/logout">Log Out</a></li>
-             
         </ul>
     </div>
 
