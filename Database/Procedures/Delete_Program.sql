@@ -10,6 +10,7 @@ begin
 set rif=1;
 end;
 delete from Programs where Programs.Prog_Name=name;
+delete from Program_Wise_Students where Program_Wise_Students.program=name;
 end //
 delimiter ;
 /*Execute*/

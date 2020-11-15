@@ -16,6 +16,7 @@ out rif int,
 out inv int
 )
 a:begin
+declare val int;
 declare exit handler for 1062
 begin
 set did=1;
@@ -25,9 +26,9 @@ begin
 set rif=1;
 end;
 case
-	when name not regexp '^[A-Za-z_ ]+$' then set inv=1;
+	-- when name not regexp '^[A-Za-z_ ]+$' then set inv=1;
     when gender not regexp '[MF]' then set inv=2;
-    when year not regexp '[1234]' then set inv=3;
+    when year not regexp '^[0-9]+$' then set inv=3;
     else set inv=0;
 end case;
 case when inv!=0 then leave a;
@@ -35,6 +36,9 @@ else
 insert into Student values(rollno, name, dob, gender, prog, year, deptid, email);
 insert into Account values(userid, password, 'Student');
 insert into Student_Account_Relation values(rollno, userid);
+select Program_Wise_Students.No_Of_Students into val from Program_Wise_Students where Program_Wise_Students.program=prog;
+set val=val+1;
+update Program_Wise_Students set No_Of_Students=val where Program_Wise_Students.program=prog;
 end case;
 end //
 delimiter ;
