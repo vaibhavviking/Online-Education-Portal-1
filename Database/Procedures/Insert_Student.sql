@@ -25,9 +25,9 @@ begin
 set rif=1;
 end;
 case
-	when name not regexp '^[A-Za-z_ ]+$' then set inv=1;
+	-- when name not regexp '^[A-Za-z_ ]+$' then set inv=1;
     when gender not regexp '[MF]' then set inv=2;
-    when year not regexp '[1234]' then set inv=3;
+    when year not regexp '^[0-9]+$' then set inv=3;
     else set inv=0;
 end case;
 case when inv!=0 then leave a;
@@ -44,4 +44,4 @@ select @did;                                                 /* Duplicate ID (at
 select @rif;                                                 /* Referential Integrity failure (Dept DNE) */
 select @inv;                                                 /* Invalid entry */
 /*End*/
-drop procedure Insert_Student;
+
