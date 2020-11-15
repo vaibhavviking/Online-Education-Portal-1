@@ -182,7 +182,7 @@ Roll_No int,
 CID varchar(7),
 Time time,
 Date date,
-primary key(Roll_No, Time),
+primary key(Roll_No, Day, Time),
 foreign key(Roll_No) references Student(Roll_No) on delete cascade,
 foreign key(CID) references Courses(Course_Code) on delete cascade
 );
