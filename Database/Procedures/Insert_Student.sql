@@ -16,6 +16,7 @@ out rif int,
 out inv int
 )
 a:begin
+declare val int;
 declare exit handler for 1062
 begin
 set did=1;
@@ -35,6 +36,9 @@ else
 insert into Student values(rollno, name, dob, gender, prog, year, deptid, email);
 insert into Account values(userid, password, 'Student');
 insert into Student_Account_Relation values(rollno, userid);
+select Program_Wise_Students.No_Of_Students into val from Program_Wise_Students where Program_Wise_Students.program=prog;
+set val=val+1;
+update Program_Wise_Students set No_Of_Students=val where Program_Wise_Students.program=prog;
 end case;
 end //
 delimiter ;
@@ -44,4 +48,4 @@ select @did;                                                 /* Duplicate ID (at
 select @rif;                                                 /* Referential Integrity failure (Dept DNE) */
 select @inv;                                                 /* Invalid entry */
 /*End*/
-
+drop procedure Insert_Student;
