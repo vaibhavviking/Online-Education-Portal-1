@@ -10,6 +10,7 @@ begin
 set did=1;
 end;
 insert into Posts values(name);
+insert into Post_Wise_Employees values(name, 0);
 end //
 delimiter ;
 /*Execute*/
