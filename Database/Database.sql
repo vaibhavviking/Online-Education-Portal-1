@@ -202,3 +202,12 @@ foreign key(Roll_No) references Student(Roll_No),
 foreign key(Course_Code) references Courses(Course_Code)
 );
 /*drop table Requested_Courses*/
+
+create table Post_Wise_Employees(
+post varchar(30),
+No_Of_Employees int,
+primary key(post),
+foreign key(post) references Posts(Post_Name)
+);
+/* drop table Post_Wise_Employees*/
+select * from Professor;
