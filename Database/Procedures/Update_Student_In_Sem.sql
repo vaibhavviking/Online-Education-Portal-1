@@ -23,9 +23,9 @@ begin
 set rif=1;
 end;
 case
-	when name not regexp '^[A-Za-z]+$' then set inv=2;
+	-- when name not regexp '^[A-Za-z]+$' then set inv=2;
     when gender not regexp '[MF]' then set inv=3;
-    when year not regexp '[1234]' then set inv=4;
+    when year not regexp '^[0-9]+$' then set inv=4;
     else set inv=0;
 end case;
 case when inv!=0 then leave a;
@@ -40,4 +40,5 @@ select @did;
 select @rif;
 select @inv;
 /*End*/
+drop procedure Update_Student_In_Sem;
 
