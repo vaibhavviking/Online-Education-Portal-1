@@ -40,7 +40,7 @@ An Admin can
 * assign time slots in a week to the courses
 * add other admins
 
-We hope that this project solves the general problems faced by Students and Professors atleast to some extent, if not fully.
+We hope that this project solves the general problems faced by Students and Professors atleast to some extent, if not fully. Please refer to 'Execution_Instructions.md' to download, use and edit this project from your local machine.
 
 This project is made by
 * Komal Kumar (kkomalk)
