@@ -43,7 +43,7 @@ An Admin can
 We hope that this project solves the general problems faced by Students and Professors atleast to some extent, if not fully.
 
 This project is made by
-* Komal Kumar (komalk)
+* Komal Kumar (kkomalk)
 * Priyanshu Uttam (uttam509)
 * Purnadip Chakrabarti (ChakPC)
 * Vaibhav Chandra (vaibhavviking)
