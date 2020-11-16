@@ -2664,8 +2664,8 @@ let forgot_password = async function (req, res, email, id) {
         // text: 'http://' + req.headers.host + '/reset_password/?s=' + token + '&id='+id+'\n\n' ,
         // html: '<p>Click the link given below to reset your password</p><a href="'+link+'">Click here</a>'
         // html: '<p>Click the link given below to reset your password</p><a href='"+link+'">Click here</a>';
-        html: "To reset your password, click this <a href='" + "http://localhost:5000/reset_password/?token=" + token + "&id=" + id + "'><span>link</span></a>.<br>This is a <b>test</b> email."
-        // html: "To reset your password, click this <a href='" + "https://mysterious-beyond-20244.herokuapp.com/reset_password/?token=" + token + "&id=" + id + "'><span>link</span></a>.<br>This is a <b>test</b> email."
+        // html: "To reset your password, click this <a href='" + "http://localhost:5000/reset_password/?token=" + token + "&id=" + id + "'><span>link</span></a>.<br>This is a <b>test</b> email."
+        html: "To reset your password, click this <a href='" + "https://mysterious-beyond-20244.herokuapp.com/reset_password/?token=" + token + "&id=" + id + "'><span>link</span></a>.<br>This is a <b>test</b> email."
 
         // html: `<p>Click the link given below to reset your password</p><a href="">Click here</a>`
     };
