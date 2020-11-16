@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Courses Dates</title>
     <link rel="stylesheet" href="./css/CalendarPicker.style.css">
-    <link rel="stylesheet" href="./css/add_course.css">
     <link rel="stylesheet" href="./css/Attendance.css">
+    <link rel="stylesheet" href="./css/add_course.css">
     <style>
         body {
             display: grid;
@@ -232,6 +232,32 @@
             }
         }
 
+        .BOX {
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+            justify-content: center;
+            margin-bottom: 50px;
+        }
+
+        .block {
+            display: flex;
+            align-items: center;
+        }
+
+        .box1 {
+            width: 30px;
+            height: 30px;
+            background-color: #32a8a8;
+
+        }
+
+        .box2 {
+            width: 30px;
+            height: 30px;
+            background-color: #21d159;
+        }
+        
     </style>
 </head>
 
@@ -276,6 +302,20 @@
         </div> -->
     </div>
 
+    <div class="BOX">
+
+        <div class="block">
+            <div class="box1"></div>
+            <p style="display: inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;One class on that day</p>
+        </div>
+
+        <div class="block">
+            <div class="box2"></div>
+            <p style="display: inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Multiple classes on that day</p>
+        </div>
+
+    </div>
+    
     <!-- <code>
         <h3>Setup code:</h3>
         <pre>const nextYear = new Date().getFullYear() + 1;</pre>
