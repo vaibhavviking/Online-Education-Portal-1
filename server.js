@@ -1109,7 +1109,7 @@ app.post('/add_student', (req, res) => {
                 arr.forEach((item) => {
                     
                     if (item != undefined) {
-                        var sql = 'call Add_Student_Course(?,?,100,0,@did,@rif,@inv);select @did;select @rif;select @inv';
+                        var sql = 'call Add_Student_Course(?,?,0,0,@did,@rif,@inv);select @did;select @rif;select @inv';
 
                         connection.query(sql, [item, Rno], (err, results) => {
                             c++;
@@ -2337,7 +2337,7 @@ let increment_days = function () {
     var arr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     let day2 = arr[day];
     let sql = 'select Course_Code from Courses_Time_Slots_Relation where Day= ? and Time = ?';
-    connection.query(sql, [h3, day2], (err, results) => {
+    connection.query(sql, [day2, h3], (err, results) => {
         if (err) throw err;
         if (results.length > 0) {
             let course = results[0].Course_Code;
