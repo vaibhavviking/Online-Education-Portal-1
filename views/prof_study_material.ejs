@@ -187,13 +187,14 @@
         <h3>भारतीय प्रौद्योगिकी संस्थान इंदौर <br> Indian Institute of Technology Indore</h3>
     </nav>
 
-   <div class="bar">
+    <div class="bar">
         <ul>
             <li><a href="/teacher_home">Home</a></li>
             <li><a href="/check_attendance">Check Attendance</a></li>
             <li><a href="/datewise_attendance">Attendance by date</a></li>
             <li><a href="/prof_timetable">Time Table</a></li>
             <li><a href="/prof_courses">Courses</a></li>
+            <li><a href="/prof_study_material">Study Material</a></li>
             <li><a href="/prof_change_password">Change Password</a></li>
             <li><a href="/logout">LogOut</a></li>
         </ul>
@@ -232,6 +233,7 @@
             <th>Serial No.</th>
             <th>Couse Code</th>
             <th>Material Link</th>
+            <th>Remove</th>
         </tr>
         <% data.forEach((item)=>{%>
         <tr class="material_details">
@@ -244,6 +246,8 @@
             <td><%= sr%></td>
             <td class="code"><%=item.Course_Code%></td>
             <td class="mlink"><%=item.Link%></td>
+            <%let dlink = "/delete_study_material/?mno="+ item.Material_No%>
+            <td><a href=<%=dlink%>>Remove</a></td>
         </tr>
         <%count++;sr++;})%>
     </table>

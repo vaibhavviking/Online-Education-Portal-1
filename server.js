@@ -253,7 +253,13 @@ app.get('/add_study_material', (req, res) => {
 
 app.get('/delete_study_material', (req, res) => {
     if (req.session.loggedin && req.session.user) {
-        res.render('delete_study_material.ejs');
+        let mno = req.query.mno;
+        let sql='delete from Study_Material where Material_No = ?';
+        connection.query(sql,[mno],(err,results)=>{
+            if(err) throw err;
+            console.log('course removed');
+            res.redirect('/prof_study_material');
+        })
     } else {
         res.redirect('/');
     }
@@ -535,7 +541,7 @@ app.post('/delete_dept', (req, res) => {
         console.log(results[1][0]['@rif']);
         if (results[1][0]['@rif'] != null) {
             // console.log(results[1][0]['@rif']);
-            res.send('rif detected');
+            // res.send('rif detected');
             res.render('delete_dept.ejs', { error: 'rif detected' })
             console.log('Department not Deleted');
             // res.end();
@@ -1035,6 +1041,15 @@ app.get('/all_courses', (req, res) => {
         if (err) throw err;
         console.log(results);
         res.render('all_courses.ejs', { data: results[0] });
+    })
+})
+
+app.get('/admin_all_courses',(req,res)=>{
+    var sql = 'call Show_Courses()';
+    connection.query(sql, (err, results) => {
+        if (err) throw err;
+        console.log(results);
+        res.render('admin_all_courses.ejs', { data: results[0] });
     })
 })
 
@@ -1650,8 +1665,8 @@ app.post('/delete_post', (req, res) => {
 })
 
 app.post('/add_program', (req, res) => {
-    let pcode = req.body.code;
-    let pname=req.body.name;
+    let pcode = req.body.pcode;
+    let pname=req.body.pname;
     let sql = 'call Insert_Program(?,?,@did); select @did';
     connection.query(sql, [pcode,pname], (err, result) => {
         if (err) throw err;
@@ -1689,10 +1704,12 @@ app.post('/set_sem_dates', (req, res) => {
 app.post('/delete_program', (req, res) => {
     let program = req.body.program;
     let sql = 'call Delete_Program(?,@rif); select @rif';
+    console.log(program);
     connection.query(sql, [program], (err, result) => {
         if (err) throw err;
+        console.log(result);
         if (result[1][0]['@rif'] == 1) {
-            res.render('delete_program.ejs', { error: "Entered Program doesn't exists" });
+            res.render('delete_program.ejs', { error: "Entered Program could not be deleted." });
         } else {
             console.log(program, " : program removed");
             res.redirect('/admin_home');
