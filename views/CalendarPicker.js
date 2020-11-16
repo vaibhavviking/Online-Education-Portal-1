@@ -271,6 +271,7 @@ CalendarPicker.prototype._insertDaysIntoGrid = function () {
 
     this.calendarElement.appendChild(this.calendarGrid);
     this.activeDateElement.classList.add('selected');
+    this.activeDateElement.setAttribute('id','today');
 }
 
 /**

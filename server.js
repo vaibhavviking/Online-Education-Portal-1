@@ -68,7 +68,6 @@ var db_config = {
 //     port: 3306
 // });
 
-
 function handleDisconnect() {
     console.log('1. connecting to db:');
     connection = mysql.createConnection(db_config); // Recreate the connection, since
@@ -148,17 +147,18 @@ var upload = multer({
     }
 }).single('file');
 
-function GET_ID() {
+function GET_ID(req,res) {
     return new Promise((resolve, reject) => {
-        var sql1 = 'select User_ID from current_session';
+        var sql1 = 'call Retrieve_ID(?,?,@ID,@t); select @ID';
         // var id;
-        connection.query(sql1, (err, results1) => {
+        connection.query(sql1,[req.session.user,req.session.pass], (err, results1) => {
             if (err) throw err;
             if (results1.length > 0) {
                 // id = results1[0].User_ID;
                 // console.log(id,'here');
-                console.log(results1[0].User_ID);
-                resolve(results1[0].User_ID);
+                console.log(results1);
+                console.log(results1[1][0]['@ID']);
+                resolve(results1[1][0]['@ID']);
 
             } else {
                 resolve(-1);
@@ -995,7 +995,8 @@ app.post('/delete_admin', (req, res) => {
 
 let delete_admin = async function(req,res,adminid){
     var sql = 'call Delete_Admin(?)';
-    let id = await GET_User_ID();
+    // let id = await GET_User_ID();
+    let id = req.session.user;
     console.log(adminid,id);
     if(id!=adminid){
         connection.query(sql, [adminid], (err, results) => {
@@ -1029,11 +1030,11 @@ app.get('/add_student', (req, res) => {
 })
 
 app.get('/all_courses', (req, res) => {
-    var sql = 'select * from Courses';
+    var sql = 'call Show_Courses()';
     connection.query(sql, (err, results) => {
         if (err) throw err;
         console.log(results);
-        res.render('all_courses.ejs', { data: results });
+        res.render('all_courses.ejs', { data: results[0] });
     })
 })
 
@@ -1109,7 +1110,7 @@ app.post('/add_student', (req, res) => {
                 arr.forEach((item) => {
                     
                     if (item != undefined) {
-                        var sql = 'call Add_Student_Course(?,?,100,0,@did,@rif,@inv);select @did;select @rif;select @inv';
+                        var sql = 'call Add_Student_Course(?,?,0,0,@did,@rif,@inv);select @did;select @rif;select @inv';
 
                         connection.query(sql, [item, Rno], (err, results) => {
                             c++;
@@ -1203,7 +1204,7 @@ app.post('/admin_change_email', (req, res) => {
 })
 
 let admin_change_email = async function (req, res, email) {
-    let id = await GET_ID();
+    let id = await GET_ID(req,res);
     console.log(email);
     let sql = 'Update Administration set Email = ? where Admin_ID=?';
     connection.query(sql, [email, id], (err, results) => {
@@ -1879,18 +1880,19 @@ app.post('/student_attendance',(req,res)=>{
 
 let student_attendance = async function (req,res,code){
     let sql = 'call Attendance_In_Student(?,?); select * from Courses_Student_Relation where Roll_No = ?';
-    let id = await GET_ID();
+    let id = await GET_ID(req,res);
+    console.log(id,'id')
     connection.query(sql,[id,code,id],(err,results)=>{
         if(err) throw err;
-        console.log(results);
-        console.log(results[0]);
-        console.log(results[2][0]);
+        // console.log(results,'first');
+        // console.log(results[0],'second');
+        console.log(results[2],'third');
         res.render('calender_attendance.ejs', { data : results[0] , sdata : results[2]});
     })
 }
 
 let load_request_list = async function (req, res, info, error) {
-    let id = await GET_ID();
+    let id = await GET_ID(req,res);
     let sql = 'call Request_Course_List(?)';
     connection.query(sql, [id], (err, results) => {
         if (err) throw err;
@@ -1959,20 +1961,24 @@ async function student_authenticate(username, password, res, req) {
                 console.log(result);
                 var Rno = req.body.Rno;
                 req.session.user = username;
+                req.session.pass = password;
                 req.session.loggedin = true;
                 req.session.username = username;
-                var sql2 = 'delete from current_session';
-                connection.query(sql2, (err, results) => {
-                    if (err) throw err;
-                    console.log('cache cleared');
-                })
-                var query2 = 'INSERT INTO current_session VALUES (?,?)';
-                connection.query(query2, [req.session.user, result[1][0]['@ID']], (err, results1) => {
-                    if (err) throw err;
-                    console.log(result[1][0]['@ID']);
-                    console.log('Instance created');
-                    res.redirect('/student_home');
-                })
+                // var sql2 = 'delete from current_session';
+                // connection.query(sql2, (err, results) => {
+                //     if (err) throw err;
+                //     console.log('cache cleared');
+                // })
+                // console.log(req.session.user,'info');
+                // console.log(req.session.pass,'info');
+                // console.log('info');
+                // var query2 = 'INSERT INTO current_session VALUES (?,?)';
+                // connection.query(query2, [req.session.user, result[1][0]['@ID']], (err, results1) => {
+                //     if (err) throw err;
+                //     console.log(result[1][0]['@ID']);
+                //     console.log('Instance created');
+                // })
+                res.redirect('/student_home');
             }
         })
     } else {
@@ -1993,19 +1999,20 @@ async function teacher_authenticate(username, password, res, req) {
                 console.log(result);
                 var Rno = req.body.Rno;
                 req.session.user = username;
+                req.session.pass = password;
                 req.session.loggedin = true;
                 req.session.username = username;
                 var sql2 = 'delete from current_session';
-                connection.query(sql2, (err, results) => {
-                    if (err) throw err;
-                    console.log('cache cleared');
-                })
-                var query2 = 'INSERT INTO current_session VALUES (?,?)';
-                connection.query(query2, [req.session.user, result[1][0]['@ID']], (err, results1) => {
-                    if (err) throw err;
-                    console.log(result[1][0]['@ID']);
-                    console.log('Instance created');
-                })
+                // connection.query(sql2, (err, results) => {
+                //     if (err) throw err;
+                //     console.log('cache cleared');
+                // })
+                // var query2 = 'INSERT INTO current_session VALUES (?,?)';
+                // connection.query(query2, [req.session.user, result[1][0]['@ID']], (err, results1) => {
+                //     if (err) throw err;
+                //     console.log(result[1][0]['@ID']);
+                //     console.log('Instance created');
+                // })
                 res.redirect('/teacher_home');
                 // res.redirect('/teacher_home');
             }
@@ -2027,19 +2034,20 @@ async function admin_authenticate(username, password, res, req) {
                 console.log(result);
                 var Rno = req.body.Rno;
                 req.session.user = username;
+                req.session.pass = password;
                 req.session.loggedin = true;
                 req.session.username = username;
-                var sql2 = 'delete from current_session';
-                connection.query(sql2, (err, results) => {
-                    if (err) throw err;
-                    console.log('cache cleared');
-                })
-                var query2 = 'INSERT INTO current_session VALUES (?,?)';
-                connection.query(query2, [req.session.user, result[1][0]['@ID']], (err, results1) => {
-                    if (err) throw err;
-                    console.log(result[1][0]['@ID']);
-                    console.log('Instance created');
-                })
+                // var sql2 = 'delete from current_session';
+                // connection.query(sql2, (err, results) => {
+                //     if (err) throw err;
+                //     console.log('cache cleared');
+                // })
+                // var query2 = 'INSERT INTO current_session VALUES (?,?)';
+                // connection.query(query2, [req.session.user, result[1][0]['@ID']], (err, results1) => {
+                //     if (err) throw err;
+                //     console.log(result[1][0]['@ID']);
+                //     console.log('Instance created');
+                // })
                 res.redirect('/admin_home');
             }
         })
@@ -2058,7 +2066,7 @@ async function clear_Attendance() {
 }
 
 let get_prof_courses = async function (req, res) {
-    let id = await GET_ID();
+    let id = await GET_ID(req,res);
     console.log(id);
     if (id != undefined) {
         var sql = 'call Get_Professor_Courses(?)';
@@ -2071,7 +2079,7 @@ let get_prof_courses = async function (req, res) {
 }
 
 let get_student_courses = async function (req, res) {
-    let id = await GET_ID();
+    let id = await GET_ID(req,res);
     console.log(id);
     if (id != undefined) {
         var sql = 'call Get_Student_Courses(?)';
@@ -2084,7 +2092,7 @@ let get_student_courses = async function (req, res) {
 }
 
 let get_ongoing_courses = async function (req, res) {
-    let id = await GET_ID();
+    let id = await GET_ID(req,res);
     if (id < 0) {
         res.redirect('/student_login');
         res.end();
@@ -2140,7 +2148,7 @@ let get_ongoing_courses = async function (req, res) {
 }
 
 let prof_timetable = async function (req, res) {
-    let id = await GET_ID();
+    let id = await GET_ID(req,res);
     if (id < 0) {
         res.redirect('/teacher_login');
         res.end();
@@ -2164,7 +2172,7 @@ let prof_timetable = async function (req, res) {
 
 let student_timetable = async (req, res) => {
     console.log('here');
-    let id = await GET_ID();
+    let id = await GET_ID(req,res);
     console.log(id);
     if (id < 0) {
         res.redirect('/student_login');
@@ -2190,7 +2198,7 @@ let student_timetable = async (req, res) => {
 
 let Get_Student_Material = async function (req, res) {
     var sql = 'select * from Study_Material where Course_Code in (select Course_Code from Courses_Student_Relation where Roll_No = ?)';
-    let id = await GET_ID();
+    let id = await GET_ID(req,res);
     connection.query(sql, [id], (err, results) => {
         if (err) throw err;
         console.log(results);
@@ -2199,20 +2207,40 @@ let Get_Student_Material = async function (req, res) {
 }
 
 let mark_attendance = async function (req, res) {
-    let id = await GET_ID();
+    let id = await GET_ID(req,res);
     let date = new Date();
     console.log(req.query);
     var course = req.query.course;
     var time = req.query['amp;time'];
-    console.log(course, time, id);
-    var sql = 'call Mark_Attendance(?,?,?,?,@did); select @did';
-    connection.query(sql, [id, course, time, date], (err, result) => {
-        if (err) throw err
-        if (result[1]['@did'] == 1) {
-            res.redirect('/student_home');
-
-        } else {
-            res.render('ongoing_classes.ejs', { error: "attendance marked successfully" });
+    console.log(course, time, id,date);
+    let sql2='select * from Attendance_Marked where Roll_No=? and Date=? and Time=? ';
+    let idate = date;
+    console.log(idate);
+    let month = idate.getMonth() + 1;
+    let day = idate.getDate();
+    let year = idate.getFullYear();
+    // console.log(month>10,day>10);
+    month < 10 ? month = '0' + month : month = month;
+    day < 10 ? day = '0' + day : day = day;
+    let fdate = day + '-' + month + '-' + year;
+    console.log(fdate);
+    let rdate = year + '-' + month + '-' + day;
+    connection.query(sql2,[id,rdate,time],(err,result)=>{
+        console.log(result);
+        if(err) throw err;
+        if(result.length ==0){
+            var sql = 'call Mark_Attendance(?,?,?,?,@did); select @did';
+            connection.query(sql, [id, course, time, rdate], (err, result) => {
+                if (err) throw err
+                if (result[1]['@did'] == 1) {
+                    res.redirect('/student_home');
+        
+                } else {
+                    res.render('ongoing_classes.ejs', { error: "attendance marked successfully" });
+                }
+            })
+        }else{
+            res.render('ongoing_classes.ejs', { error: "attendance already marked" });
         }
     })
 }
@@ -2227,7 +2255,8 @@ let change_password_stud = async function (req, res) {
     if (newpass != connewpass) {
         res.render('change_password.ejs', { error: "password do not match" });
     } else {
-        let id = await GET_User_ID();
+        // let id = await GET_User_ID();
+        let id = req.session.user;
         let sql = 'call Change_Password(?,?,?,@m); select @m';
         connection.query(sql, [id, oldpass, newpass], (err, results) => {
             if (err) throw err;
@@ -2243,7 +2272,7 @@ let change_password_stud = async function (req, res) {
 }
 
 let professor_study_material = async function (req, res) {
-    let id = await GET_ID();
+    let id = await GET_ID(req,res);
     let sql = 'call Retrieve_Professor_Study_Material(?)';
     connection.query(sql, [id], (err, results) => {
         if (err) throw err;
@@ -2261,7 +2290,8 @@ let change_password_prof = async function (req, res) {
     if (newpass != connewpass) {
         res.render('change_password.ejs', { error: "password do not match" });
     } else {
-        let id = await GET_User_ID();
+        // let id = await GET_User_ID();
+        let id = req.session.user;
         let sql = 'call Change_Password(?,?,?,@m); select @m';
         connection.query(sql, [id, oldpass, newpass], (err, results) => {
             if (err) throw err;
@@ -2286,7 +2316,7 @@ let change_password_admin = async function (req, res) {
     if (newpass != connewpass) {
         res.render('change_password.ejs', { error: "password do not match" });
     } else {
-        let id = await GET_User_ID();
+        let id = req.session.user;
         let sql = 'call Change_Password(?,?,?,@m); select @m';
         connection.query(sql, [id, oldpass, newpass], (err, results) => {
             if (err) throw err;
@@ -2302,7 +2332,7 @@ let change_password_admin = async function (req, res) {
 }
 
 let Prof_Insert_Study_Material = async function (req, res) {
-    let id = await GET_ID();
+    let id = await GET_ID(req,res);
     let code = req.body.code;
     let link = req.body.link;
     let sql = 'call Insert_Study_Material(?,?,?,@rif,@inv); select @rif; select @inv';
@@ -2337,7 +2367,7 @@ let increment_days = function () {
     var arr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     let day2 = arr[day];
     let sql = 'select Course_Code from Courses_Time_Slots_Relation where Day= ? and Time = ?';
-    connection.query(sql, [h3, day2], (err, results) => {
+    connection.query(sql, [day2,h3], (err, results) => {
         if (err) throw err;
         if (results.length > 0) {
             let course = results[0].Course_Code;
@@ -2346,6 +2376,8 @@ let increment_days = function () {
                 if (err2) throw err2;
                 console.log(course, ': total classes incremented');
             })
+        }else{
+            console.log('no class');
         }
     })
 }
@@ -2640,7 +2672,7 @@ let insert_token = async function (token, id) {
 }
 
 let load_teacher_home = async function (req, res) {
-    let id = await GET_ID();
+    let id = await GET_ID(req,res);
     console.log(id, 'first');
     let sql2 = 'select * from Professor where Employee_ID = ?';
     connection.query(sql2, [id], (err2, result) => {
@@ -2661,9 +2693,8 @@ let load_teacher_home = async function (req, res) {
     })
 }
 
-
 let load_student_home = async function (req, res) {
-    let id = await GET_ID();
+    let id = await GET_ID(req,res);
     console.log(id, 'first');
     let sql2 = 'select * from Student where Roll_No = ?';
     connection.query(sql2, [id], (err2, result) => {
@@ -2692,4 +2723,3 @@ let clear_token = async function(){
         console.log('tokens cleared');
     })
 }
-// forgot_password('chandravaibhav65@gmail.com');
