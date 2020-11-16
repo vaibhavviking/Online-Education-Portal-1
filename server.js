@@ -1120,9 +1120,9 @@ app.post('/add_student', (req, res) => {
                                 e++;
                                 // res.render('add_student.ejs', { error: 'Duplicate Entry' })
                                 if(e==0 && c==arr.length){
-                                    res.redirect('/admin_home/?error="Professor was added"')
+                                    res.redirect('/admin_home/?error="Student was added"')
                                 }else if(e!=0 && c==arr.length){
-                                    res.redirect('/admin_home/?error="Professor was added but some courses were not added"');
+                                    res.redirect('/admin_home/?error="Student was added but some courses were not added"');
                                 } 
                             } else if (results[2][0]['@rif'] != null) {
                                 e++;
@@ -1132,7 +1132,7 @@ app.post('/add_student', (req, res) => {
                                 }else if(e!=0 && c==arr.length){
                                     res.redirect('/admin_home/?error="Student was added but some courses were not added"');
                                 } 
-                            } else if (results[3][0]['@inv'] != 0) {
+                            } else if (results[3][0]['@inv'] != null) {
                                 e++;
                                 // res.render('add_student.ejs', { error: 'Invalid attendance value.Please try again.' })
                                 if(e==0 && c==arr.length){
