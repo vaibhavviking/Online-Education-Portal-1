@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Attendance</title>
     <link rel="stylesheet" href="./css/CalendarPicker.style.css">
-    <link rel="stylesheet" href="./css/add_course.css">
     <link rel="stylesheet" href="./css/Attendance.css">
+    <link rel="stylesheet" href="./css/add_course.css">
+    <script src="https://kit.fontawesome.com/63e2b2b603.js" crossorigin="anonymous"></script>
     <style>
         body {
             display: grid;
@@ -231,7 +232,38 @@
                 margin: 0px;
             }
         }
+        
+        .BOX {
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+            justify-content: center;
+        }
 
+        .block {
+            display: flex;
+            align-items: center;
+        }
+
+        .box1 {
+            width: 30px;
+            height: 30px;
+            background-color: #ff4d4d;
+
+        }
+
+        .box2 {
+            width: 30px;
+            height: 30px;
+            background-color: #ffff00;
+        }
+
+        .box3 {
+            width: 30px;
+            height: 30px;
+            background-color: #99ff66;
+        }
+        
     </style>
 </head>
 
@@ -277,6 +309,28 @@
             </h3>
         </div> -->
     </div>
+    
+    <div class="BOX">
+
+        <div class="block">
+            <div class="box1"></div>
+            <p style="display: inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Class not
+                attended</p>
+        </div>
+
+        <div class="block">
+            <div class="box2"></div>
+            <p style="display: inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Classes
+                partially attended</p>
+        </div>
+
+        <div class="block">
+            <div class="box3"></div>
+            <p style="display: inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;All classes
+                attended</p>
+        </div>
+
+    </div>
 
     <!-- <code>
         <h3>Setup code:</h3>
@@ -320,8 +374,8 @@
             <%if(typeof sdata!='undefined'){%>
                 <table>
                      <tr style="color: rgb(151, 4, 156); background-color: chartreuse;">
-                        <th>Roll No.</th>
-                        <th>Days Attended</th>
+                        <th>Course Code</th>
+                        <th>Classes Attended</th>
                         <th>Total Classes</th>
                     </tr>
                     <% sdata.forEach((item)=>{%>
@@ -383,20 +437,51 @@
         for(j=0;j<=42;j++){
             for(i=0;i<dlen;i++){
                 if(mon == document.getElementsByClassName('dates')[i].innerHTML.slice(4,7)){
+                    if(document.getElementById('today').innerHTML == document.getElementsByClassName('dates')[i].innerHTML.slice(8,10)){
+                        console.log(document.getElementById('today').innerHTML , document.getElementsByClassName('dates')[i].innerHTML.slice(8,10),' compare');
+                        if(document.getElementsByClassName('statuses')[i].innerHTML==0){
+                            document.getElementById('today').style.backgroundColor="#ff4d4d";
+                          
+                        }else if(document.getElementsByClassName('statuses')[i].innerHTML == 1){
+                            document.getElementById('today').style.backgroundColor="#ffff00";
+                           
+                        }else{
+                            document.getElementById('today').style.backgroundColor="#99ff66";
+                          
+                        }
+                        document.getElementsByClassName('dates')[i].style.color="blue";
+                    }
                     if(document.getElementsByClassName('disabled')[j].innerHTML == document.getElementsByClassName('dates')[i].innerHTML.slice(8,10)){
                         
                         if(document.getElementsByClassName('statuses')[i].innerHTML==0){
                             document.getElementsByClassName('disabled')[j].style.backgroundColor="#ff4d4d";
-                        }else if(document.getElementsByClassName('dates')[i].innerHTML == 1){
+                          
+                        }else if(document.getElementsByClassName('statuses')[i].innerHTML == 1){
                             document.getElementsByClassName('disabled')[j].style.backgroundColor="#ffff00";
+                           
                         }else{
                             document.getElementsByClassName('disabled')[j].style.backgroundColor="#99ff66";
+                          
                         }
                         document.getElementsByClassName('dates')[i].style.color="red";
                         console.log(document.getElementsByClassName('dates')[i].innerHTML.slice(8,10),'rhs',i);
                         console.log(document.getElementsByClassName('disabled')[j].innerHTML,'lhs',j);
                         // console.log(document.getElementsByClassName('dates')[i]);
                     }
+
+                    
+                    // else if(document.getElementsByClassName('selected')[j].innerHTML == document.getElementsByClassName('dates')[i].innerHTML.slice(8,10)){
+                    //     if(document.getElementsByClassName('statuses')[i].innerHTML==0){
+                    //         document.getElementsByClassName('selected')[j].style.backgroundColor="#ff4d4d";
+                    //     }else if(document.getElementsByClassName('dates')[i].innerHTML == 1){
+                    //         document.getElementsByClassName('selected')[j].style.backgroundColor="#ffff00";
+                    //     }else{
+                    //         document.getElementsByClassName('selected')[j].style.backgroundColor="#99ff66";
+                    //     }
+                    //     document.getElementsByClassName('dates')[i].style.color="red";
+                    //     console.log(document.getElementsByClassName('dates')[i].innerHTML.slice(8,10),'rhs',i);
+                    //     console.log(document.getElementsByClassName('selected')[j].innerHTML,'lhs',j);
+                    // }
                 }
             }
         }
