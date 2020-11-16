@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Attendance</title>
+    <title>Courses Dates</title>
     <link rel="stylesheet" href="./css/CalendarPicker.style.css">
     <link rel="stylesheet" href="./css/add_course.css">
     <link rel="stylesheet" href="./css/Attendance.css">
@@ -145,14 +145,12 @@
     </header>
     <div class="bar">
         <ul>
-            <li>  <a  href="/student_home">Home</a></li>
-            <li> <a  href="/ongoing_classes">Mark Attendance</a></li>
-            <li> <a  href="/student_attendance">My Attendance</a></li>
-            <li><a  href="/student_timetable">Time Table</a></li>
-            <li> <a href="/student_courses">Courses</a></li>
-            <li> <a  href="/study_material">Study Material</a></li>
-            <li>  <a href="/student_change_password">Change Password</a></li>
-            <li>  <a href="/student_request_course">Request Course</a></li>
+            <!-- <li><a href="/Home_page">Home</a></li> -->
+            <li><a href="/Admin_home">Admin Home</a></li>
+            <li><a href="/admin_change_password">Change Password</a></li>
+            <li><a href="/set_sem_dates">Set Semester Dates</a></li>
+            <li><a href="/admin_change_email">Edit Email</a></li>
+            <li><a href="/admin_request_course">Courses Request List</a></li>
             <li><a href="/logout">Log Out</a></li>
         </ul>
     </div>
@@ -206,8 +204,9 @@
         <pre>   console.log(`The current value of the calendar is: ${currentValue}`);</pre>
         <pre>});</pre>
     </code> -->
+    <%if(typeof data != 'undefined'){%>
     <p style="display: none;" id="dlen"><%=data.length%></p>
-            <table id="data" style="display: none;">
+            <table id="data">
                 <tr>
                     <th>date</th>
                     <th>status</th>
@@ -215,12 +214,12 @@
                 <%data.forEach((item)=>{%>
                     <tr class="details">
                         <td class="dates"><%=item.Date%></td>
-                        <td class="statuses"><%=item.Status%></td>
+                        <td class="statuses"><%=item.No_Of_Classes%></td>
                     </tr>
                  <%})%>
             </table>
-
-            <%if(typeof sdata!='undefined'){%>
+    <%}%>
+            <!-- <%if(typeof sdata!='undefined'){%>
                 <table>
                      <tr style="color: rgb(151, 4, 156); background-color: chartreuse;">
                         <th>Roll No.</th>
@@ -230,13 +229,13 @@
                     <% sdata.forEach((item)=>{%>
                         <tr>
                             <td><%=item.Course_Code%></td>
-                            <!-- <td><%=item.S_Name%></td> -->
+                            <td><%=item.S_Name%></td>
                             <td><%=item.Days_Attended%></td>
                             <td><%=item.Total_Days%></td>
                         </tr>
                    <% })%>
                 </table>
-           <% }%>
+           <% }%> -->
 </body>
 
 <script src="CalendarPicker.js"></script>
@@ -286,19 +285,19 @@
         for(j=0;j<=42;j++){
             for(i=0;i<dlen;i++){
                 if(mon == document.getElementsByClassName('dates')[i].innerHTML.slice(4,7)){
-                    if(document.getElementsByClassName('disabled')[j].innerHTML == document.getElementsByClassName('dates')[i].innerHTML.slice(8,10)){
-                        
-                        if(document.getElementsByClassName('statuses')[i].innerHTML==0){
-                            document.getElementsByClassName('disabled')[j].style.backgroundColor="#ff4d4d";
-                        }else if(document.getElementsByClassName('dates')[i].innerHTML == 1){
-                            document.getElementsByClassName('disabled')[j].style.backgroundColor="#ffff00";
-                        }else{
-                            document.getElementsByClassName('disabled')[j].style.backgroundColor="#99ff66";
+                    if(document.getElementsByClassName('disabled')[j]){
+                        if(document.getElementsByClassName('disabled')[j].innerHTML == document.getElementsByClassName('dates')[i].innerHTML.slice(8,10)){
+                            
+                            if(document.getElementsByClassName('statuses')[i].innerHTML == 1){
+                                document.getElementsByClassName('disabled')[j].style.backgroundColor="#32a8a8";
+                            }else if(document.getElementsByClassName('statuses')[i].innerHTML == 2){
+                                document.getElementsByClassName('disabled')[j].style.backgroundColor="#21d159";
+                            }
+                            document.getElementsByClassName('dates')[i].style.color="red";
+                            console.log(document.getElementsByClassName('dates')[i].innerHTML.slice(8,10),'rhs',i);
+                            console.log(document.getElementsByClassName('disabled')[j].innerHTML,'lhs',j);
+                            // console.log(document.getElementsByClassName('dates')[i]);
                         }
-                        document.getElementsByClassName('dates')[i].style.color="red";
-                        console.log(document.getElementsByClassName('dates')[i].innerHTML.slice(8,10),'rhs',i);
-                        console.log(document.getElementsByClassName('disabled')[j].innerHTML,'lhs',j);
-                        // console.log(document.getElementsByClassName('dates')[i]);
                     }
                 }
             }

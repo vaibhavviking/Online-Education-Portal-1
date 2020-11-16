@@ -118,6 +118,10 @@ schedule.scheduleJob({ minute: 0 }, () => {
     increment_days();
 })
 
+schedule.scheduleJob('*/15* * * *', () => {
+    clear_token();
+})
+
 app.use(express.static('views'));
 app.set('views', __dirname + '/views')
 
@@ -202,13 +206,31 @@ let get_id = new Promise((resolve, reject) => {
 
 // let days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 // let timeslots=['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00',];
+// let sw=0,code;
 // days.forEach((day)=>{
+    
+    
 //     timeslots.forEach((slot)=>{
-//         let sql = 'call Insert_Time_Slot(?,?,@did);'
+        
+//         if(sw%2 == 0){
+//             console.log(sw,'up');
+//             sw++;
+//             let sql = 'call Assign_Time_Slot("CS 207",?,?,@rif);'
 //         connection.query(sql,[day,slot],(err,results)=>{
 //             if(err) throw err;
-//             console.log(day,slot,'slot added');
+//             console.log('CS 207',day,slot,'slot added');
 //         })
+//         }else{
+//             console.log(sw,'down');
+//             sw++;
+//             let sql = 'call Assign_Time_Slot("CS 201",?,?,@rif);'
+//         connection.query(sql,[day,slot],(err,results)=>{
+//             if(err) throw err;
+            
+//             console.log('CS 201',day,slot,'slot added');
+//         })
+//         }
+        
 //     })
 // })
 
@@ -524,6 +546,18 @@ app.post('/delete_dept', (req, res) => {
     })
 })
 
+app.get('/program_list',(req,res)=>{
+    if (req.session.loggedin && req.session.user) {
+        let sql = 'call Show_Programs()';
+        connection.query(sql,(err,results)=>{
+            if(err) throw err;
+            res.render('program_list.ejs',{data : results[0]});
+        })
+    } else {
+        res.redirect('/');
+    }
+})
+
 app.get('/update_student_1', (req, res) => {
     let error;
     if (req.session.loggedin && req.session.user) {
@@ -562,7 +596,7 @@ app.post('/update_student_1', (req, res) => {
                 let fdate = day + '-' + month + '-' + year;
                 let rdate = year + '-' + month + '-' + day;
                 // console.log(fdate,rdate);
-                if (tdate < sdate || tdate > edate) {
+                if (1) {
                     console.log('after sem');
                     res.render('update_student_after_sem.ejs', { data1: results[0][0], data2: results[1], rollno: rollno, clen: results[1].length, fdate: fdate, rdate: rdate });
                 } else {
@@ -585,12 +619,26 @@ app.post('/update_student_1', (req, res) => {
         let year = req.body.year;
         let depid = req.body.depid;
         var course = req.body['course[]'];
+        var old_course = req.body['old_courses[]'];
+        let old_arr=[];
         let arr = [];
         if (typeof course == 'object') {
             arr = course;
         } else {
             arr[0] = course;
         }
+        if (typeof old_course == 'object') {
+            old_arr = old_course;
+        } else {
+            old_arr[0] = old_course;
+        }
+        let cc=0;
+        arr.forEach((temp)=>{
+            if(temp!=''){
+                cc++;
+            }
+        })
+        console.log(typeof course);
         let sql = `call Remove_All_Student_Courses(${rollno})`;
 
         connection.query('select * from Sem_Dates', (err, results) => {
@@ -598,34 +646,85 @@ app.post('/update_student_1', (req, res) => {
             let sdate = results[0].Starting_Date;
             let edate = results[0].Ending_Date;
             let tdate = new Date();
-            if (tdate < sdate || tdate > edate) {
+            // tdate < sdate || tdate > edate
+            console.log(cc)
+            if (1 && course != '' && typeof course != 'undefined' && cc!=0) {
                 connection.query(sql, (err, results) => {
                     if (err) throw err;
                     console.log('Courses Removed');
                 });
-                let sql2 = 'call Update_Student_After_Sem(?,?,?,?,?,?,?,?,?,@did,@rif,@inv); select @did,@rif,@inv';
+                let sql2 = 'call Update_Student_After_Sem(?,?,?,?,?,?,?,?,?,@did,@rif,@inv,@rif1); select @did,@rif,@inv,@rif1';
+                let e=0;
+                let c=0;
                 arr.forEach((item) => {
                     if (item !== undefined) {
 
                         connection.query(sql2, [rollno, name, dob, gender, program, year, depid, email, item], (err, results) => {
+                            c++;
                             if (err) throw err;
+                            console.log(results);
                             if (results[1][0]['@did'] != null) {
-                                res.render('update_student_1.ejs', { error: "duplicate entry detected" })
+                                e++;
+                                if(e!=0 && c==arr.length){
+
+                                    let sql3 ='call Add_Student_Course(?,?,?,?,@did,@rif,@inv)';
+                                    old_arr.forEach((inf)=>{
+                                        connection.query(sql3,[inf,rollno,0,0],(err3,results3)=>{
+                                            if(err3) throw err3;
+                                            console.log(inf,': course restored');
+                                        })
+                                    })
+                                    res.render('update_student_1.ejs', { error: "duplicate entry detected" })
+                                }
                             } else if (results[1][0]['@rif'] != null) {
-                                res.render('update_student_1.ejs', { error: "Referential integrity breached. Please Check Input." })
+                                e++;
+                                if(e!=0 && c==arr.length){
+                                    res.render('update_student_1.ejs', { error: "Referential integrity breached. Please Check Input." })
+                                }
                             } else if (results[1][0]['@inv'] != 0) {
-                                res.render('update_student_1.ejs', { error: "Invalid entries detected." })
-                            } else {
-                                console.log('course updated after sems');
+                                e++;
+                                if(e!=0 && c==arr.length){
+                                    let sql3 ='call Add_Student_Course(?,?,?,?,@did,@rif,@inv)';
+                                    old_arr.forEach((inf)=>{
+                                        connection.query(sql3,[inf,rollno,0,0],(err3,results3)=>{
+                                            if(err3) throw err3;
+                                            console.log(inf,': course restored');
+                                        })
+                                    })
+                                    res.render('update_student_1.ejs', { error: "Invalid entries detected." })
+                                }
+                            } else if(results[1][0]['@rif1'] != null){
+                                e++;
+                                if(e!=0 && c==arr.length){
+                                    let sql3 ='call Add_Student_Course(?,?,?,?,@did,@rif,@inv)';
+                                    old_arr.forEach((inf)=>{
+                                        connection.query(sql3,[inf,rollno,0,0],(err3,results3)=>{
+                                            if(err3) throw err3;
+                                            console.log(inf,': course restored');
+                                        })
+                                    })
+                                    res.render('update_student_1.ejs', { error: "Referential integrity breached.Please Check Input" })
+                                }
+                            }else {
+                                console.log(item,': course updated after sems');
+                                if(c==arr.length){
+                                    res.redirect('/admin_home');
+                                }
                             }
                         })
                     }
                 })
-                res.redirect('/admin_home');
+                // res.redirect('/admin_home');
             } else {
-                let sql2 = 'call Update_Student_In_Sem(?,?,?,?,?,?,?,?,@did,@rif,@inv); select @did,@rif,@inv;';
+                let sql = `call Remove_All_Student_Courses(${rollno})`;
+                connection.query(sql, (err, results) => {
+                    if (err) throw err;
+                    console.log('Courses Removed');
+                });
+                let sql2 = 'call Update_Student_In_Sem(?,?,?,?,?,?,?,?,@did,@rif,@inv,@rif1); select @did,@rif,@inv,@rif1;';
                 connection.query(sql2, [rollno, name, dob, gender, program, year, depid, email], (err, results) => {
                     if (err) throw err;
+                    console.log(results);
                     if (results[1][0]['@did'] != null) {
                         res.render('update_student_1.ejs', { error: "duplicate entry detected" })
                     } else if (results[1][0]['@rif'] != null) {
@@ -691,30 +790,121 @@ app.post('/update_prof_1', (req, res) => {
         let gender = req.body.gender;
         let depid = req.body.depid;
         var course = req.body['course[]'];
+        var old_course = req.body['old_courses[]'];
+        let old_arr=[];
         let arr = [];
         if (typeof course == 'object') {
             arr = course;
         } else {
             arr[0] = course;
         }
-
+        if (typeof old_course == 'object') {
+            old_arr = old_course;
+        } else {
+            old_arr[0] = old_course;
+        }
         let sql = `call Remove_All_Professor_Courses(${empid})`;
-        connection.query(sql, (err, results) => {
-            if (err) throw err;
-            console.log('Courses Removed');
-        })
-
-        let sql2 = 'call Update_Professor(?,?,?,?,?,?,?,?,@did,@rif,@inv)';
-        arr.forEach((item) => {
-            if (item !== undefined) {
-
-                connection.query(sql2, [empid, name, dob, gender, post, depid, email,item], (err, results) => {
-                    if (err) throw err;
-                    console.log('course updated');
-                })
-            }
-        })
-        res.redirect('/admin_home');
+            connection.query(sql, (err, results) => {
+                if (err) throw err;
+                console.log('Courses Removed');
+            })
+            let cc=0;
+            arr.forEach((item)=>{
+                if(item!=''){
+                    cc++;
+                }
+            })
+        if(typeof course != 'undefined' && cc!=0 && course!='' ){
+            
+            let e=0;
+            let c=0;
+            let sql2 = 'call Update_Professor(?,?,?,?,?,?,?,?,@did,@rif,@inv,@rif1); select @did,@rif,@inv,@rif1';
+            arr.forEach((item) => {
+                if (item !== undefined) {
+    
+                    connection.query(sql2, [empid, name, dob, gender, post, depid, email,item], (err, results) => {
+                        c++;
+                        if (err) throw err;
+                        console.log(e,c,'compare');
+                        if (results[1][0]['@did'] != null) {
+                            e++;
+                            if(e!=0 && c==arr.length){
+                                let sql3 ='call Add_Professor_Course(?,?,@did,@rif)';
+                                        old_arr.forEach((inf)=>{
+                                            connection.query(sql3,[inf,empid,0,0],(err3,results3)=>{
+                                                if(err3) throw err3;
+                                                console.log(inf,': course restored');
+                                            })
+                                        })
+                                res.render('update_prof_1.ejs', { error: "duplicate entry detected" })
+                            }
+                        } else if (results[1][0]['@rif'] != null) {
+                            e++;
+                            if(e!=0 && c==arr.length){
+                                res.render('update_prof_1.ejs', { error: "Referential integrity breached. Please Check Input." })
+                            }
+                        } else if (results[1][0]['@inv'] != 0) {
+                            e++;
+                            if(e!=0 && c==arr.length){
+                                let sql3 ='call Add_Professor_Course(?,?,@did,@rif)';
+                                        old_arr.forEach((inf)=>{
+                                            connection.query(sql3,[inf,empid,0,0],(err3,results3)=>{
+                                                if(err3) throw err3;
+                                                console.log(inf,': course restored');
+                                            })
+                                        })
+                                res.render('update_prof_1.ejs', { error: "Invalid entries detected." })
+                            }
+                        } else if(results[1][0]['@rif1'] != null){
+                            e++;
+                            if(e!=0 && c==arr.length){
+                                let sql3 ='call Add_Professor_Course(?,?,@did,@rif)';
+                                        old_arr.forEach((inf)=>{
+                                            connection.query(sql3,[inf,empid,0,0],(err3,results3)=>{
+                                                if(err3) throw err3;
+                                                console.log(inf,': course restored');
+                                            })
+                                        })
+                                res.render('update_prof_1.ejs', { error: "Referential integrity breached.Please Check Input" })
+                            }
+                        }else {
+                            console.log(item,': course updated');
+                            if(e==0 && c==arr.length){
+                                res.redirect('/admin_home');
+                            }
+                        }
+                        // console.log('course updated');
+                    })
+                }
+            })
+        }else{
+            
+            let sql2 = 'call Update_Professor_Bio(?,?,?,?,?,?,?,@did,@rif,@inv); select @did,@rif,@inv';
+                    connection.query(sql2, [empid, name, dob, gender, post, depid, email], (err, results) => {
+                        
+                        if (err) throw err;
+                        // console.log(e,c,'compare');
+                        console.log(results);
+                        if (results[1][0]['@did'] != null) {
+                            
+                            res.render('update_prof_1.ejs', { error: "duplicate entry detected" })
+                        } else if (results[1][0]['@rif'] != null) {
+                           
+                            res.render('update_prof_1.ejs', { error: "Referential integrity breached. Please Check Input." })
+                        } else if (results[1][0]['@inv'] != 0) {
+                            
+                            res.render('update_prof_1.ejs', { error: "Invalid entries detected." })
+                        }else {
+                
+                            res.redirect('/admin_home');
+                        }
+                        // console.log('course updated');
+                    })
+                
+            
+        }
+       
+        // res.redirect('/admin_home');
     }
 })
 
@@ -794,27 +984,45 @@ app.post('/update_course_1', (req, res) => {
 
 app.post('/delete_admin', (req, res) => {
     var adminid = req.body.adminid;
-    var sql = 'call Delete_Admin(?)';
-    connection.query(sql, [adminid], (err, results) => {
-        if (err) throw err;
-        console.log('Admin Removed');
-        res.redirect('/admin_home');
-    })
+    delete_admin(req,res,adminid);
+    // var sql = 'call Delete_Admin(?)';
+    // connection.query(sql, [adminid], (err, results) => {
+    //     if (err) throw err;
+    //     console.log('Admin Removed');
+    //     res.redirect('/admin_home');
+    // })
 })
+
+let delete_admin = async function(req,res,adminid){
+    var sql = 'call Delete_Admin(?)';
+    let id = await GET_User_ID();
+    console.log(adminid,id);
+    if(id!=adminid){
+        connection.query(sql, [adminid], (err, results) => {
+            if (err) throw err;
+            console.log('Admin Removed');
+            res.redirect('/admin_home');
+        })
+    }else{
+        res.redirect('/delete_admin/?error="You cannot remove yourself"');
+    }
+}
 
 app.get('/add_student', (req, res) => {
     if (req.session.loggedin && req.session.user) {
-        connection.query('select * from Sem_Dates', (err, results) => {
-            if (err) throw err;
-            let sdate = results[0].Starting_Date;
-            let edate = results[0].Ending_Date;
-            let tdate = new Date();
-            if (tdate < sdate || tdate > edate) {
-                res.render('add_student.ejs');
-            } else {
-                res.render('add_student_error.ejs', { error: "Students cannot be added during a semester" });
-            }
-        })
+        // connection.query('select * from Sem_Dates', (err, results) => {
+        //     if (err) throw err;
+        //     let sdate = results[0].Starting_Date;
+        //     let edate = results[0].Ending_Date;
+        //     let tdate = new Date();
+        //     if (tdate < sdate || tdate > edate) {
+        //         res.render('add_student.ejs');
+        //     } else {
+        //         res.render('add_student_error.ejs', { error: "Students cannot be added during a semester" });
+        //     }
+        // })
+
+        res.render('add_student.ejs');
     } else {
         res.redirect('/');
     }
@@ -847,7 +1055,8 @@ app.get('/delete_course', (req, res) => {
 
 app.get('/delete_admin', (req, res) => {
     if (req.session.loggedin && req.session.user) {
-        res.render('delete_admin.ejs');
+        let error=req.query.error;
+        res.render('delete_admin.ejs',{ error : error});
     } else {
         res.redirect('/admin_login');
     }
@@ -895,27 +1104,55 @@ app.post('/add_student', (req, res) => {
                 }
                 res.render('add_student.ejs', { error: error });
             } else {
+                let e=0;
+                let c=0;
                 arr.forEach((item) => {
+                    
                     if (item != undefined) {
                         var sql = 'call Add_Student_Course(?,?,100,0,@did,@rif,@inv);select @did;select @rif;select @inv';
 
                         connection.query(sql, [item, Rno], (err, results) => {
+                            c++;
                             if (err) throw err;
+                            console.log(c,arr.length, 'compare');
                             console.log(results)
                             if (results[1][0]['@did'] != null) {
-                                res.render('add_student.ejs', { error: 'Duplicate Entry' })
+                                e++;
+                                // res.render('add_student.ejs', { error: 'Duplicate Entry' })
+                                if(e==0 && c==arr.length){
+                                    res.redirect('/admin_home/?error="Professor was added"')
+                                }else if(e!=0 && c==arr.length){
+                                    res.redirect('/admin_home/?error="Professor was added but some courses were not added"');
+                                } 
                             } else if (results[2][0]['@rif'] != null) {
-                                res.render('add_student.ejs', { error: 'referential integrity breached' })
-                            } else if (results[3][0]['@inv'] != null) {
-                                res.render('add_student.ejs', { error: 'Invalid attendance value.Please try again.' })
+                                e++;
+                                // res.render('add_student.ejs', { error: 'referential integrity breached' })
+                                if(e==0 && c==arr.length){
+                                    res.redirect('/admin_home/?error="Student was added"')
+                                }else if(e!=0 && c==arr.length){
+                                    res.redirect('/admin_home/?error="Student was added but some courses were not added"');
+                                } 
+                            } else if (results[3][0]['@inv'] != 0) {
+                                e++;
+                                // res.render('add_student.ejs', { error: 'Invalid attendance value.Please try again.' })
+                                if(e==0 && c==arr.length){
+                                    res.redirect('/admin_home/?error="Student was added"')
+                                }else if(e!=0 && c==arr.length){
+                                    res.redirect('/admin_home/?error="Student was added but some courses were not added"');
+                                } 
                             } else {
                                 console.log('Course addded : ', item)
+                                if(e==0 && c==arr.length){
+                                    res.redirect('/admin_home/?error="Student was added"')
+                                }else if(e!=0 && c==arr.length){
+                                    res.redirect('/admin_home/?error="Student was added but some courses were not added"');
+                                } 
                             }
                         })
                     }
                 })
                 console.log('student added');
-                res.redirect('/admin_home');
+                // res.redirect('/admin_home');
             }
         })
     } else {
@@ -976,9 +1213,40 @@ let admin_change_email = async function (req, res, email) {
     })
 }
 
+app.get('/admin_time_table',(req,res)=>{
+    if (req.session.loggedin && req.session.user) {
+        res.render('admin_time_table.ejs');
+    } else {
+        res.redirect('/');
+    }
+})
+
+app.post('/admin_time_table',(req,res)=>{
+    let code = req.body.code;
+    let sql= 'call Admin_Time_Table(?)';
+    connection.query(sql,[code],(err,result)=>{
+        if(err) throw err;
+        console.log(result);
+        res.render('admin_time_table.ejs', { data : result[0]});
+    })
+})
+
 app.get('/add_dept', (req, res) => {
     if (req.session.loggedin && req.session.user) {
         res.render('add_dept.ejs');
+    } else {
+        res.redirect('/');
+    }
+})
+
+app.get('/posts_list',(req,res)=>{
+    if (req.session.loggedin && req.session.user) {
+        let sql = 'select * from Post_Wise_Employees';
+        connection.query(sql,(err,results)=>{
+            if(err) throw err;
+            console.log(results);
+            res.render('posts_list.ejs', {data : results});
+        })
     } else {
         res.redirect('/');
     }
@@ -1125,6 +1393,8 @@ app.get('/add_prof', (req, res) => {
 })
 
 app.post('/add_prof', (req, res) => {
+    console.log(req.body);
+    console.log('here');
     var name = req.body.Name;
     var empid = req.body.empid;
     var user_id = req.body.uid;
@@ -1143,6 +1413,7 @@ app.post('/add_prof', (req, res) => {
     var pass = req.body.password;
     pass = md5(md5(md5(pass)));
     var sql = 'call Insert_Professor(?,?,?,?,?,?,?,?,?,@did,@rif,@inv); select @did; select @rif; select @inv';
+    console.log(name,empid,user_id,Dep,post,dob,email,gender,course,arr);
     connection.query(sql, [empid, name, dob, gender, post, Dep, email, user_id, pass], (err, results2) => {
         if (err) throw err;
 
@@ -1162,27 +1433,49 @@ app.post('/add_prof', (req, res) => {
             }
             res.render('add_prof.ejs', { error: error });
         } else {
+            let e=0;
+            let c=0;
             arr.forEach((item) => {
                 if (item != undefined) {
                     var sql = 'call Add_Professor_Course(?,?,@did,@rif); select @did; select @rif;';
                     connection.query(sql, [item, empid], (err, results) => {
+                        c++;
                         if (err) throw err;
                         console.log(results)
                         if (results[1][0]['@did'] != null) {
-                            res.render('add_prof.ejs', { error: 'Duplicate Entry detected' })
+                            e++;
+                            if(e==0 && c==arr.length){
+                                res.redirect('/admin_home/?error="Professor was added"')
+                            }else if(e!=0 && c==arr.length){
+                                res.redirect('/admin_home/?error="Professor was added but some courses were not added"');
+                            } 
+                            // res.render('add_prof.ejs', { error: 'Duplicate Entry detected' })
+                            // res.end();
                         } else if (results[2][0]['@rif'] != null) {
-                            res.render('add_prof.ejs', { error: 'referential integrity breached' })
+                            e++;
+                            if(e==0 && c==arr.length){
+                                res.redirect('/admin_home/?error="Professor was added"')
+                            }else if(e!=0 && c==arr.length){
+                                res.redirect('/admin_home/?error="Professor was added but some courses were not added"');
+                            } 
+                            // res.render('add_prof.ejs', { error: 'referential integrity breached. please check input.' })
+                            // res.end();
                         } else {
                             console.log('Course addded : ', item)
+                            if(e==0 && c==arr.length){
+                                res.redirect('/admin_home/?error="Professor was added"')
+                            }else if(e!=0 && c==arr.length){
+                                res.redirect('/admin_home/?error="Professor was added but some courses were not added"');
+                            }   
                         }
 
 
                     })
                 }
             })
+            console.log('Professor added');
+            // res.redirect('/admin_home');
         }
-        console.log('Professor added');
-        res.redirect('/admin_home');
     })
 })
 
@@ -1201,7 +1494,8 @@ app.get('/teacher_home', (req, res) => {
 
 app.get('/admin_home', (req, res) => {
     if (req.session.loggedin && req.session.user) {
-        res.render('Admin_home.ejs');
+        let error = req.query.error;
+        res.render('Admin_home.ejs', {error : error});
     } else {
         res.redirect('/');
     }
@@ -1346,7 +1640,7 @@ app.post('/delete_post', (req, res) => {
     connection.query(sql, [post], (err, result) => {
         if (err) throw err;
         if (result[1][0]['@rif'] == 1) {
-            res.render('delete_post.ejs', { error: "Entered Post doesn't exists" });
+            res.render('delete_post.ejs', { error: "Entered Post cannot be removed." });
         } else {
             console.log(post, " : post removed");
             res.redirect('/admin_home');
@@ -1355,14 +1649,15 @@ app.post('/delete_post', (req, res) => {
 })
 
 app.post('/add_program', (req, res) => {
-    let program = req.body.program;
-    let sql = 'call Insert_Program(?,@did); select @did';
-    connection.query(sql, [program], (err, result) => {
+    let pcode = req.body.code;
+    let pname=req.body.name;
+    let sql = 'call Insert_Program(?,?,@did); select @did';
+    connection.query(sql, [pcode,pname], (err, result) => {
         if (err) throw err;
         if (result[1][0]['@did'] == 1) {
             res.render('add_program.ejs', { error: "Program already exists" });
         } else {
-            console.log(program, " : program added");
+            console.log(pcode, " : program added");
             res.redirect('/admin_home');
         }
     })
@@ -1443,14 +1738,23 @@ app.post('/reset_password', (req, res) => {
         let sql1 = 'select * from Reset_Token where Token = ?';
         connection.query(sql1, [token], (err, result) => {
             if (err) throw err
+            console.log(result);
             if (result.length > 0) {
                 newpass = md5(md5(md5(newpass)));
                 let sql = 'update Account set Password_=? where Account.User_ID_=?';
+                let sql2 = 'delete from Reset_Token where Token = ?';
                 connection.query(sql, [newpass, id], (err2, results) => {
                     if (err2) throw err2;
                     console.log(results);
-                    res.send('password is reset.you can close this window');
+                    
                 })
+                connection.query(sql2,[token],(err,results2)=>{
+                    if(err) throw err;
+                    console.log('token cleared');
+                    res.redirect('/reset_password/?error="Your password has been reset. You can close this window now."');
+                })
+                
+                
             } else {
                 let error = 'Token has expired. Please Try Again';
                 res.redirect('/reset_password/?token='+token+'&id='+id+'&error='+error);
@@ -1574,11 +1878,14 @@ app.post('/student_attendance',(req,res)=>{
 })
 
 let student_attendance = async function (req,res,code){
-    let sql = 'call Attendance_In_Student(?,?)';
+    let sql = 'call Attendance_In_Student(?,?); select * from Courses_Student_Relation where Roll_No = ?';
     let id = await GET_ID();
-    connection.query(sql,[id,code],(err,results)=>{
+    connection.query(sql,[id,code,id],(err,results)=>{
         if(err) throw err;
-        res.render('calender_attendance.ejs', { data : results[0]});
+        console.log(results);
+        console.log(results[0]);
+        console.log(results[2][0]);
+        res.render('calender_attendance.ejs', { data : results[0] , sdata : results[2]});
     })
 }
 
@@ -2308,8 +2615,8 @@ let forgot_password = async function (req, res, email, id) {
         // text: 'http://' + req.headers.host + '/reset_password/?s=' + token + '&id='+id+'\n\n' ,
         // html: '<p>Click the link given below to reset your password</p><a href="'+link+'">Click here</a>'
         // html: '<p>Click the link given below to reset your password</p><a href='"+link+'">Click here</a>';
-        html: "To reset your password, click this <a href='" + "http://localhost:5000/reset_password/?s=" + token + "&id=" + id + "'><span>link</span></a>.<br>This is a <b>test</b> email."
-        // html: "To reset your password, click this <a href='" + "https://mysterious-beyond-20244.herokuapp.com/reset_password/?s=" + token + "&id=" + id + "'><span>link</span></a>.<br>This is a <b>test</b> email."
+        html: "To reset your password, click this <a href='" + "http://localhost:5000/reset_password/?token=" + token + "&id=" + id + "'><span>link</span></a>.<br>This is a <b>test</b> email."
+        // html: "To reset your password, click this <a href='" + "https://mysterious-beyond-20244.herokuapp.com/reset_password/?token=" + token + "&id=" + id + "'><span>link</span></a>.<br>This is a <b>test</b> email."
 
         // html: `<p>Click the link given below to reset your password</p><a href="">Click here</a>`
     };
@@ -2378,5 +2685,11 @@ let load_student_home = async function (req, res) {
 
 }
 
-
+let clear_token = async function(){
+    let sql = 'delete from Reset_Token';
+    connection.query(sql,(err,token)=>{
+        if(err) throw err;
+        console.log('tokens cleared');
+    })
+}
 // forgot_password('chandravaibhav65@gmail.com');

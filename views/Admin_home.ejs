@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adminstration page</title>
-    <link rel="stylesheet" href="./css/Admin_home.css">
+    <link rel="stylesheet" href="/css/Admin_home.css">
 </head>
 
 <body>
 
     <nav class="navbar">
-        <img class="logo" src="./css/images/logo.png" alt="...">
+        <img class="logo" src="/css/images/logo.png" alt="...">
         <h3>भारतीय प्रौद्योगिकी संस्थान इंदौर <br> Indian Institute of Technology Indore</h3>
     </nav>
 
@@ -29,7 +29,9 @@
 
     <h1>ADMIN</h1>
     <h2>Welcome to Online Education Portal</h2>
-
+    <%if(typeof error != 'undefined'){%>
+    <h3><%=error%></h3>
+    <%}%>
     <div class="row">
 
         <div class="card" id="card1">
@@ -55,7 +57,7 @@
         </div>
 
         <div class="card" id="card3">
-            <img src="./css/images/department.png" alt="...">
+            <img src="/css/images/department.png" alt="...">
             <div class="card-body">
                 <h2 class="card-title"><a href="/dept_list">Department</a></h2>
                 <a href="/add_dept"><button id="button">Add Department</button></a><br>
@@ -65,7 +67,7 @@
         </div>
 
         <div class="card" id="card4">
-            <img src="./css/images/book.png" alt="...">
+            <img src="/css/images/book.png" alt="...">
             <div class="card-body">
                 <h2 class="card-title"><a href="/all_courses">Course</a></h2>
                 <a href="/add_course"><button id="button">Add Course</button></a><br>
@@ -75,7 +77,7 @@
         </div>
 
         <div class="card" id="card5">
-            <img src="./css/images/tav1.png" alt="...">
+            <img src="/css/images/tav1.png" alt="...">
             <div class="card-body">
                 <h2 class="card-title" style="color: #072ff2;">Admin</h2><br><br>
                 <a href="/add_admin"><button id="button">Add Admin</button></a><br>
@@ -84,25 +86,25 @@
         </div>
 
          <div class="card" id="card6">
-            <img src="./css/images/table.png" alt="...">
+            <img src="/css/images/table.png" alt="...">
             <div class="card-body">
-                <h2 class="card-title" style="color: #072ff2;">Time Table</h2><br><br>
+                <h2 class="card-title"><a href="/admin_time_table">Time Table</a></h2><br><br>
                 <a href="/assign_time_slot"><button id="button">Assign Time Slot</button></a><br>
                 <a href="/unassign_time_slot"><button id="button">Unassign Time Slot</button></a>
             </div>
         </div>
          <div class="card" id="card6">
-            <img src="./css/images/tav1.png" alt="...">
+            <img src="/css/images/tav1.png" alt="...">
             <div class="card-body">
-                <h2 class="card-title" style="color: #072ff2;">Faculty Posts</h2><br><br>
+                <h2 class="card-title"><a href="/posts_list">Faculty Posts</a></h2><br><br>
                 <a href="/add_post"><button id="button">Add Post</button></a><br>
                 <a href="/delete_post"><button id="button">Remove Post</button></a>
             </div>
         </div>
          <div class="card" id="card6">
-            <img src="./css/images/book.png" alt="...">
+            <img src="/css/images/book.png" alt="...">
             <div class="card-body">
-                <h2 class="card-title" style="color: #072ff2;">Programs</h2><br><br>
+                <h2 class="card-title"><a href="/program_list">Programs</a></h2><br><br>
                 <a href="/add_program"><button id="button">Add Program</button></a><br>
                 <a href="/delete_program"><button id="button">Remove Program</button></a>
             </div>
